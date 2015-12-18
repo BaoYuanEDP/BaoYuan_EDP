@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TwoMaViewController">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="byAppQR.png" translatesAutoresizingMaskIntoConstraints="NO" id="cAL-Hf-p6C">
+                    <rect key="frame" x="60" y="184" width="200" height="200"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="200" id="YHJ-eu-tqt"/>
+                        <constraint firstAttribute="height" constant="200" id="aLP-Vp-8Ez"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="IOS7.0以上及安卓" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="usq-bG-vPz">
+                    <rect key="frame" x="86" y="392" width="148" height="21"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="148" id="52S-k2-Z4u"/>
+                        <constraint firstAttribute="height" constant="21" id="V0i-JD-MH9"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="centerY" secondItem="cAL-Hf-p6C" secondAttribute="centerY" id="4oZ-cm-XXV"/>
+                <constraint firstAttribute="centerY" secondItem="cAL-Hf-p6C" secondAttribute="centerY" id="LOP-jk-uOX"/>
+                <constraint firstAttribute="centerX" secondItem="cAL-Hf-p6C" secondAttribute="centerX" constant="-8" id="eWM-PE-vFj"/>
+                <constraint firstAttribute="centerY" secondItem="cAL-Hf-p6C" secondAttribute="centerY" constant="40" id="fg3-vZ-NtJ"/>
+                <constraint firstAttribute="centerX" secondItem="usq-bG-vPz" secondAttribute="centerX" id="jvi-tx-Con"/>
+                <constraint firstAttribute="centerX" secondItem="cAL-Hf-p6C" secondAttribute="centerX" id="m4C-mB-6V3"/>
+                <constraint firstAttribute="centerX" secondItem="cAL-Hf-p6C" secondAttribute="centerX" id="nfR-Fu-JF2"/>
+                <constraint firstItem="usq-bG-vPz" firstAttribute="top" secondItem="cAL-Hf-p6C" secondAttribute="bottom" constant="8" id="rSx-B5-S43"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="LOP-jk-uOX"/>
+                    <exclude reference="eWM-PE-vFj"/>
+                    <exclude reference="fg3-vZ-NtJ"/>
+                    <exclude reference="nfR-Fu-JF2"/>
+                </mask>
+            </variation>
+        </view>
+    </objects>
+    <resources>
+        <image name="byAppQR.png" width="136" height="136"/>
+    </resources>
+</document>

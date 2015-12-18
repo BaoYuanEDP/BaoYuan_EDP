@@ -1,0 +1,342 @@
+//
+//  AppDelegate.m
+//  BYFCApp
+//
+//  Created by PengLee on 14/12/2.
+//  Copyright (c) 2014年 PengLee. All rights reserved.
+//
+
+#import "AppDelegate.h"
+#import "GesturePasswordController.h"
+#import "ViewController.h"
+#import "PL_Header.h"
+#import "Reachability.h"
+#import "UMSocialWechatHandler.h"
+@interface AppDelegate ()<BMKGeneralDelegate>
+{
+    Reachability *hostReach;
+}
+ @property (nonatomic, strong) Reachability *conn;
+@end
+
+@implementation AppDelegate
+
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    // Override point for customization after application launch.
+    @try {
+        //appid   ==957656447
+        //监测网络
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+        hostReach = [Reachability reachabilityWithHostName:@"www.baidu.com"];
+        [hostReach startNotifier];
+        
+        [UMSocialData setAppKey:@"54b730dcfd98c5d5ed000a3b"];
+        
+        [UMSocialConfig setSupportedInterfaceOrientations:UIInterfaceOrientationMaskAll];
+        [UMSocialWechatHandler setWXAppId:@"wxaac161767f0f7958" appSecret:@"f8b0fc2e8a2d5be2290b8dfd9453f027" url:@"www.bypro.com.cn"];
+        
+        [UMSocialData openLog:NO];
+        NSLog(@"沙盒路径：%@",NSHomeDirectory());
+       // NSDate *date=[[NSUserDefaults standardUserDefaults]objectForKey:@"date"];
+       // [self compareCurrentTime:date];
+        
+        //[WXApi registerApp:@"wxaac161767f0f7958" withDescription:@"BYFCApp 1.0.0"];
+        NSLog(@"++++");
+        NSLog(@"hhhhh");
+        _manager = [[BMKMapManager alloc]init];
+        BOOL ret = [_manager start:@"DdDXr28lncIfpna2hBids0ZV" generalDelegate:self];
+        if (ret)
+        {
+            NSLog(@"认证成功");
+            
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+    
+        
+        [[AppUpdateManager shareDefault] getUpdateVersion:@"" token:@"" modeios:@"2" callBack:^(NSString *str) {
+            NSString * appVersion = APP_VERSION_NUM;
+            NSString * appName = APP_NAME_DISPLY;
+            
+            NSLog(@"%@",appVersion);
+            if ([appVersion compare:str options:NSNumericSearch] ==NSOrderedAscending) {
+                //需要升级
+                NSLog(@"123");
+                PL_ALERTVIEW_SHOW(@"需要升级");
+                
+               
+                [[Harpy sharedInstance]setAppID:APP_ID];
+                [[Harpy sharedInstance] setAppName:appName];
+                [[Harpy sharedInstance] setPresentingViewController:_window.rootViewController];
+                [[Harpy sharedInstance] setCountryCode:APP_COUNTRY_CODE];
+                [[Harpy sharedInstance] setAlertType:HarpyAlertTypeOption];
+                [[Harpy sharedInstance] setForceLanguageLocalization:HarpyLanguageChineseSimplified];
+                [[Harpy sharedInstance]checkVersion];
+               
+                
+            }
+            else
+            {
+                //不需要升级
+                NSLog(@"321");
+                // PL_ALERTVIEW_SHOW(@"不需要升级");
+                
+            }
+            
+            
+        }];
+            });
+        
+        
+        
+        
+    }
+    @catch (NSException *exception) {
+        NSLog(@"expect==%@",exception);
+        
+    }
+    @finally {
+        
+        
+    }
+   
+    
+//    for (int i = 0; i < 1; i++)
+//    {
+//        [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:[NSString stringWithFormat:@"wxaac161767f0f7958%d://",i]]];
+//    }
+    return YES;
+}
+#pragma mark --检测网络状态和key值是否授权成功
+- (void)onGetNetworkState:(int)iError
+{
+    if (0 == iError) {
+        NSLog(@"联网成功");
+    }
+    else{
+        NSLog(@"onGetNetworkState %d",iError);
+    }
+    
+}
+
+- (void)onGetPermissionState:(int)iError
+{
+    if (0 == iError) {
+        NSLog(@"授权成功");
+    }
+    else {
+        NSLog(@"onGetPermissionState %d",iError);
+    }
+}
+
+#pragma mark --增加忽略备份的文件的地址
+-(BOOL)addSkipBackupAttributeToItemAtURL:(NSURL *)URL
+{
+    assert(![[NSFileManager defaultManager]fileExistsAtPath:[URL path]]);
+    NSError * error = nil;
+    BOOL success = [URL setResourceValue:[NSNumber numberWithBool:YES] forKey:NSURLIsExcludedFromBackupKey error:&error];
+    if (success)
+    {
+        NSLog(@"ERRor excluding %@ from back %@",[URL lastPathComponent],error);
+        
+    }
+    return success;
+    
+}
+- (void)checkUpdate:(NSString *)appid
+{
+    NSDictionary * dictVersion = [[NSBundle mainBundle] infoDictionary];
+    CFShow((__bridge CFTypeRef)(dictVersion));
+    //获得version版本号
+    NSString * currentVersion = [dictVersion objectForKey:@"CFBundleShortVersionString"];
+    [dictVersion objectForKey:(NSString *)kCFBundleVersionKey];
+    
+    //取得当前bundle 版本
+   // NSString * bundleVersion = [dictVersion objectForKey:@"CFBundleVersion"];
+    
+    NSLog(@"version ==%@",currentVersion);
+    NSString  * url =[NSString stringWithFormat:@"http://itunes.apple.com/lookup?id=909253"];
+    
+   
+    NSMutableURLRequest *  request = [[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:url]];
+    [request setHTTPMethod:@"GET"];
+//    NSHTTPURLResponse * responce = nil;
+//    NSError * error = nil;
+  __block  NSData * recoveData =nil;
+
+    NSOperationQueue * queue = [[NSOperationQueue alloc]init];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        
+    NSString * results = [[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSUTF8StringEncoding];
+    NSDictionary *dict = [results JSONValue];
+    NSArray *infoArray = [dict objectForKey:@"results"];
+    
+    
+    if ([infoArray count]>0)
+    {
+        NSDictionary * infoRealease = [infoArray firstObject];
+        NSString *lastVersion = [infoRealease objectForKey:@"version"];
+        //下载地址
+        //  = [infoRealease objectForKey:@"trackVireUrl"];
+       trackUrl = [infoRealease objectForKey:@"trackViewUrl"];
+        
+        
+        if (![lastVersion isEqualToString:currentVersion])
+        {
+            
+            
+            UIAlertView * alert1 = [[UIAlertView alloc]initWithTitle:@"更新提醒"
+                                                             message:@"有新版本更新，是否前往下载" delegate:self
+                                                   cancelButtonTitle:@"取消"
+                                                   otherButtonTitles:@"前往更新", nil] ;
+            alert1.tag = 1200;
+            [alert1 show];
+            
+            
+        }
+        else
+        {
+            UIAlertView * alert2 = [[UIAlertView alloc]initWithTitle:@"更新提醒"
+                                                             message:@"此版本为最新版本" delegate:self
+                                                   cancelButtonTitle:nil
+                                                   otherButtonTitles:@"确定", nil] ;
+            alert2.tag = 1201;
+            [alert2 show];
+        }
+        
+        
+        
+        
+        
+        
+        
+    }
+    
+    
+     }] ;
+    
+    
+}
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag==1200)
+    {
+        
+        if (buttonIndex==1)
+        {
+            NSURL *url = [NSURL URLWithString:trackUrl];
+            [[UIApplication sharedApplication]openURL:url];
+            
+        }
+        
+    }
+}
+
+-(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    return [UMSocialSnsService handleOpenURL:url wxApiDelegate:nil];
+}
+-(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    return [UMSocialSnsService handleOpenURL:url];
+    
+}
+-(void)personSendImageContent
+{
+    
+    
+}
+
+-(NSString *) compareCurrentTime:(NSDate*) compareDate
+//
+{
+    NSTimeInterval  timeInterval = [compareDate timeIntervalSinceNow];
+    timeInterval = -timeInterval;
+    long temp = 0;
+    NSString *result;
+    if((temp = timeInterval/60) <60){
+        result = [NSString stringWithFormat:@"%ld分前",temp];
+        NSLog(@"=====%@",result);
+        if (temp<20) {
+            GesturePasswordController *gesture=[[GesturePasswordController alloc]init];
+            UINavigationController *nav=[[UINavigationController alloc]initWithRootViewController:gesture];
+            nav.navigationBarHidden=YES;
+            self.window.rootViewController=nav;
+        }else
+        {
+            ViewController *view=[[ViewController alloc]init];
+            UINavigationController *nav=[[UINavigationController alloc]initWithRootViewController:view];
+            nav.navigationBarHidden=YES;
+            self.window.rootViewController=nav;
+        }
+    }
+    return result;
+}
+
+-(void)applicationDidFinishLaunching:(UIApplication *)application
+{
+    
+    //检测网络状态
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+    hostReach = [Reachability reachabilityWithHostName:@"www.baidu.com"];
+    [hostReach startNotifier];
+    
+}
+
+-(void)reachabilityChanged:(NSNotification *)note
+{
+    //=[self checkNetworkState];
+    Reachability * curReach = [note object];
+    NSParameterAssert([curReach isKindOfClass:[Reachability class]]);
+    NetworkStatus state = [curReach currentReachabilityStatus];
+    if (state==NotReachable)
+    {
+        [[[UIAlertView alloc]initWithTitle:@"提醒" message:@"请检查网络连接" delegate:nil cancelButtonTitle:@"YES" otherButtonTitles:nil, nil]show];
+    }
+    else
+    {
+       // [[[UIAlertView alloc]initWithTitle:@"提醒" message:@"wifi" delegate:nil cancelButtonTitle:@"YES" otherButtonTitles:nil, nil]show];
+    }
+}
+//是否是WiFi信号
++(BOOL)isEnableWIFI
+{
+    return ([[Reachability reachabilityForLocalWiFi]currentReachabilityStatus]!=NotReachable);
+    
+}
++(BOOL)isEnable3g{
+    return ([[Reachability reachabilityForInternetConnection]currentReachabilityStatus]!=NotReachable);
+}
+
+- (void)applicationWillResignActive:(UIApplication *)application {
+     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
+    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
+    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+    
+    GesturePasswordController *gesture=[[GesturePasswordController alloc]init];
+    UINavigationController *nav=[[UINavigationController alloc]initWithRootViewController:gesture];
+    nav.navigationBarHidden=YES;
+    self.window.rootViewController=nav;
+    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    [UMSocialSnsService  applicationDidBecomeActive];
+    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application {
+    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+@end

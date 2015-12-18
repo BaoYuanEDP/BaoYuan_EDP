@@ -1,0 +1,246 @@
+//
+//  LookSeeView.m
+//  BYFCApp
+//
+//  Created by PengLee on 15/5/28.
+//  Copyright (c) 2015年 PengLee. All rights reserved.
+//
+
+#import "LookSeeView.h"
+#import "PL_Header.h"
+@interface LookSeeView()
+{
+    NSInteger pageCount;
+    NSString * _custName;
+    NSString * _custIDString;
+}
+@property (weak, nonatomic) IBOutlet UITableView *dataSourceTableView;
+@property (weak, nonatomic) IBOutlet UITextField *searchNameTextField;
+@property (strong, nonatomic) NSMutableArray *dataSourcesArray;
+@end
+@implementation LookSeeView
+
+-(NSMutableArray *)dataSourcesArray
+{
+    if (!_dataSourcesArray) {
+        _dataSourcesArray = [[NSMutableArray alloc]init];
+    }
+    return _dataSourcesArray;
+}
+-(instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+       self =  [[NSBundle mainBundle]loadNibNamed:@"LookSeeView" owner:self options:nil].lastObject;
+        self.frame = frame;
+        self.backgroundColor = [[UIColor grayColor]colorWithAlphaComponent:0.7];
+        self.dataSourceTableView.delegate = self;
+        self.dataSourceTableView.dataSource = self;
+        pageCount = 1;
+        [self setupRefresh];
+    }
+    return self;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.dataSourcesArray.count;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *reuseStr = @"cellReuseid";
+  
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseStr];
+    for (UIView *view in cell.contentView.subviews) {
+        [view removeFromSuperview];
+    }
+    if (!cell) {
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseStr];
+    }
+    if (_dataSourcesArray.count > 0) {
+          NSDictionary *dic = _dataSourcesArray[indexPath.row];
+        NSString *telString = dic[@"CustTel"];
+        NSArray *array = [telString componentsSeparatedByString:@","];
+        NSMutableArray *resultArray = [[NSMutableArray alloc]init];
+        NSString *teleTitleString = [[NSString alloc]init];
+        for (NSString *string in array) {
+            NSString *compnString = [string componentsSeparatedByString:@"|"].firstObject;
+            if (string.length != 0) {
+                [resultArray addObject:compnString];
+            }
+        }
+        if (resultArray.count > 0) {
+            for (NSInteger index = 0; index < resultArray.count - 1; index ++) {
+                teleTitleString = resultArray[0];
+                if (index > 0) {
+                    
+                    teleTitleString =[teleTitleString stringByAppendingFormat:@",%@",resultArray[index]];
+                }
+            }
+
+        }
+        cell.textLabel.text = dic[@"CustName"];
+        cell.detailTextLabel.text = teleTitleString;
+    }
+    
+    return cell;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSDictionary *dic = self.dataSourcesArray[indexPath.row];
+    _custIDString = dic[@"CustID"];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:[NSString stringWithFormat:@"是否带看:%@",dic[@"CustName"]]
+ delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alert show];
+}
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1)
+    {
+        PL_PROGRESS_SHOW;
+        [[MyRequest defaultsRequest]afSetGoSee:self.propertyIDString CustID:_custIDString Source:@"ios" userID:[PL_USER_STORAGE objectForKey:PL_USER_USERID] userToken:[PL_USER_STORAGE objectForKey:PL_USER_TOKEN] completeBack:^(NSString *str) {
+            PL_PROGRESS_DISMISS;
+            NSLog(@"str:%@",str);
+            
+            if ([str isEqualToString:@"OK"])
+            {
+                PL_ALERT_SHOW(@"添加带看成功");
+                [self fadeOut];
+            }
+            else if ([str isEqualToString:@"ERR"])
+            {
+                
+                PL_ALERTVIEW_SHOW(@"添加带看失败");
+            }else{
+                
+                PL_ALERTVIEW_SHOW(@"房源ID或客源ID不存在");
+            }
+            
+        }];
+
+    }
+}
+- (IBAction)clickSearchButton:(UIButton *)sender
+{
+    pageCount = 1;
+    [self.dataSourcesArray removeAllObjects];
+    _custName = self.searchNameTextField.text.length == 0 ? @"":self.searchNameTextField.text;
+    [self.searchNameTextField resignFirstResponder];
+    [self postGoSeeCustList];
+}
+
+#pragma mark -- 加载数据
+-(void)postGoSeeCustList
+{
+    [[MyRequest defaultsRequest]afGetGoSeeCustListWithCustName:_custName.length == 0 ? @"":_custName StartIndex:[NSString stringWithFormat:@"%ld",(long)pageCount] completeBack:^(NSString *str) {
+        if ([str isEqualToString:@"NOLOGIN"])
+        {
+            ViewController *login=[[ViewController alloc]init];
+           
+        }
+        else if ([str isEqualToString:@"[]"] )
+        {
+            
+        PL_ALERT_SHOW(@"暂无数据");
+            [self.dataSourcesArray removeAllObjects];
+        }
+        else if ([str isEqualToString:@"exception"])
+            {
+            PL_ALERT_SHOW(@"服务器异常");
+            [self.dataSourcesArray removeAllObjects];
+            }
+        else
+     {
+        SBJSON *json = [[SBJSON alloc]init];
+         NSArray *array = [json objectWithString:str error:nil];
+        [self.dataSourcesArray addObjectsFromArray:array];
+        [self.dataSourceTableView reloadData];
+     }}
+     ];
+}
+#pragma mark --上啦下拉刷新
+- (void)setupRefresh
+{
+    // 1.下拉刷新(进入刷新状态就会调用self的headerRereshing)
+    //    [self.tableView addHeaderWithTarget:self action:@selector(headerRereshing)];
+    // dateKey用于存储刷新时间，可以保证不同界面拥有不同的刷新时间
+    // [table addHeaderWithTarget:self action:@selector(headerRereshing) dateKey:@"table"];
+    [self.dataSourceTableView addHeaderWithTarget:self action:@selector(headerRereshingC)];
+    //#warning 自动刷新(一进入程序就下拉刷新)
+    //    [self.tableView headerBeginRefreshing];
+    
+    // 2.上拉加载更多(进入刷新状态就会调用self的footerRereshing)
+    [self.dataSourceTableView addFooterWithTarget:self action:@selector(footerRereshingC)];
+    
+    // 设置文字(也可以不设置,默认的文字在MJRefreshConst中修改)
+    self.dataSourceTableView.headerPullToRefreshText = @"下拉刷新";
+    self.dataSourceTableView.headerReleaseToRefreshText = @"松开刷新";
+    self.dataSourceTableView.headerRefreshingText = @"客源正在刷新中";
+    
+    self.dataSourceTableView.footerPullToRefreshText = @"上拉加载更多数据";
+    self.dataSourceTableView.footerReleaseToRefreshText = @"松开加载更多数据";
+    self.dataSourceTableView.footerRefreshingText = @"客源正在加载中";
+}
+
+#pragma mark 开始进入刷新状态
+- (void)headerRereshingC
+{
+    pageCount ++;
+    [self postGoSeeCustList];
+    [self.dataSourceTableView headerEndRefreshing];
+}
+
+- (void)footerRereshingC
+{
+    pageCount ++ ;
+    [self postGoSeeCustList];
+    [self.dataSourceTableView footerEndRefreshing];
+
+}
+
+
+
+-(void)addSelfInAView:(UIView *)sup
+{
+    [sup.window addSubview:self];
+    [self bringSubviewToFront:sup.window];
+    [self postGoSeeCustList];
+    [self fadeIn];
+}
+- (void)fadeIn
+{
+    self.transform = CGAffineTransformMakeScale(1.4, 1.4);
+    self.alpha = 0;
+    [UIView animateWithDuration:0.25 animations:^{
+        self.alpha = 1;
+        self.transform = CGAffineTransformMakeScale(1, 1);
+    }];
+}
+- (void)fadeOut
+{
+    [UIView animateWithDuration:.25 animations:^{
+        self.transform = CGAffineTransformMakeScale(1.4, 1.4);
+        self.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        if (finished) {
+            [self removeFromSuperview];
+        }
+    }];
+}
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self clearTel:nil];
+}
+- (void)clearTel:(UIGestureRecognizer *)tap
+{
+    [self fadeOut];
+}
+/*
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect {
+    // Drawing code
+}
+*/
+
+@end

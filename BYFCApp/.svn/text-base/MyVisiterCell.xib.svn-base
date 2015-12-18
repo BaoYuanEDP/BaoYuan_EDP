@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="100" id="KGk-i7-Jjw" customClass="MyVisiterCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4lh-w9-nBg">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="101"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="jinglituijian_hui.png" translatesAutoresizingMaskIntoConstraints="NO" id="oUN-To-oP2">
+                                <rect key="frame" x="26" y="70" width="37" height="17"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="急需_hui.png" translatesAutoresizingMaskIntoConstraints="NO" id="uw9-5z-J8h">
+                                <rect key="frame" x="67" y="70" width="34" height="17"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="xuequfang_hui.png" translatesAutoresizingMaskIntoConstraints="NO" id="Vr8-3e-s0x">
+                                <rect key="frame" x="105" y="70" width="35" height="17"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="意向度：" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wit-9b-7ge">
+                                <rect key="frame" x="158" y="16" width="51" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="小灰星星.png" translatesAutoresizingMaskIntoConstraints="NO" id="QGA-zu-LQx">
+                                <rect key="frame" x="202" y="18" width="13" height="13"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="小灰星星.png" translatesAutoresizingMaskIntoConstraints="NO" id="WSf-Vi-ymm">
+                                <rect key="frame" x="217" y="18" width="13" height="13"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="小灰星星.png" translatesAutoresizingMaskIntoConstraints="NO" id="W1S-ah-KL1">
+                                <rect key="frame" x="232" y="18" width="13" height="13"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="小灰星星.png" translatesAutoresizingMaskIntoConstraints="NO" id="tKg-4a-yiW">
+                                <rect key="frame" x="247" y="18" width="13" height="13"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="小灰星星.png" translatesAutoresizingMaskIntoConstraints="NO" id="FJL-jt-yPU">
+                                <rect key="frame" x="262" y="18" width="13" height="13"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="意向:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oee-f6-GqV">
+                                <rect key="frame" x="30" y="45" width="35" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FaE-H5-2Ph">
+                                <rect key="frame" x="56" y="46" width="48" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <state key="normal">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="xiaoqu:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="nmI-0R-tR2"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wl2-zF-Fce">
+                                <rect key="frame" x="102" y="46" width="48" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <state key="normal">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pianqu:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="KrR-pO-Hf0"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jgF-jW-RXZ">
+                                <rect key="frame" x="280" y="52" width="38" height="40"/>
+                                <state key="normal" image="打电话1.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="phoneBtn:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="P6Q-2R-fcX"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mBd-3r-BSE">
+                                <rect key="frame" x="158" y="72" width="118" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oD9-Ho-f0w">
+                                <rect key="frame" x="280" y="8" width="38" height="36"/>
+                                <state key="normal" image="写跟进1.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="genjinBtn:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="vvd-fc-qVb"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="101" id="TVd-8e-2bg"/>
+                            <constraint firstAttribute="width" constant="320" id="o7V-91-hnK"/>
+                        </constraints>
+                    </view>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="gou_hui.png" translatesAutoresizingMaskIntoConstraints="NO" id="GSN-7b-LiZ">
+                        <rect key="frame" x="8" y="16" width="17" height="18"/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="zu_hui.png" translatesAutoresizingMaskIntoConstraints="NO" id="K0B-RB-nZN">
+                        <rect key="frame" x="8" y="44" width="17" height="18"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sXx-jm-44S">
+                        <rect key="frame" x="29" y="15" width="109" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OcP-Ep-Pb9">
+                        <rect key="frame" x="159" y="45" width="119" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailingMargin" secondItem="4lh-w9-nBg" secondAttribute="trailing" constant="-8" id="EHB-ts-AWj"/>
+                    <constraint firstItem="4lh-w9-nBg" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="T5n-xR-1Mf"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="XX1" destination="QGA-zu-LQx" id="c20-c2-UL0"/>
+                <outlet property="XX2" destination="WSf-Vi-ymm" id="XS5-UP-hh2"/>
+                <outlet property="XX3" destination="W1S-ah-KL1" id="xoP-Ib-7Zn"/>
+                <outlet property="XX4" destination="tKg-4a-yiW" id="iyh-Wm-59I"/>
+                <outlet property="XX5" destination="FJL-jt-yPU" id="Tlj-wQ-ft4"/>
+                <outlet property="genjin" destination="oD9-Ho-f0w" id="Oko-EJ-a9c"/>
+                <outlet property="gou" destination="GSN-7b-LiZ" id="dbd-5u-YJ7"/>
+                <outlet property="jinglituijian" destination="oUN-To-oP2" id="4FA-aG-9Pz"/>
+                <outlet property="jixu" destination="uw9-5z-J8h" id="N0d-db-OLD"/>
+                <outlet property="name" destination="sXx-jm-44S" id="vX3-Kn-LSk"/>
+                <outlet property="phoneBtn" destination="jgF-jW-RXZ" id="aQM-Mu-Q2L"/>
+                <outlet property="pianqu" destination="wl2-zF-Fce" id="8m1-uw-3It"/>
+                <outlet property="roomInfo" destination="OcP-Ep-Pb9" id="W1o-nZ-eMC"/>
+                <outlet property="xiaoqu" destination="FaE-H5-2Ph" id="JE6-Lg-fXv"/>
+                <outlet property="xuequfang" destination="Vr8-3e-s0x" id="B8H-o5-01W"/>
+                <outlet property="yixiang" destination="Oee-f6-GqV" id="4yI-O2-sec"/>
+                <outlet property="yixiangPrice" destination="mBd-3r-BSE" id="XYl-67-8nf"/>
+                <outlet property="yixiangdu" destination="Wit-9b-7ge" id="WcR-VF-Q9G"/>
+                <outlet property="zu" destination="K0B-RB-nZN" id="Tkc-uH-o93"/>
+            </connections>
+            <point key="canvasLocation" x="242" y="157"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="gou_hui.png" width="35" height="35"/>
+        <image name="jinglituijian_hui.png" width="79" height="28"/>
+        <image name="xuequfang_hui.png" width="79" height="28"/>
+        <image name="zu_hui.png" width="35" height="35"/>
+        <image name="写跟进1.png" width="90" height="90"/>
+        <image name="小灰星星.png" width="471" height="466"/>
+        <image name="急需_hui.png" width="85" height="30"/>
+        <image name="打电话1.png" width="90" height="90"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

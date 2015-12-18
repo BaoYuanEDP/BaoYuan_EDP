@@ -1,0 +1,155 @@
+//
+//  XJViewController.m
+//  BYFCApp
+//
+//  Created by zzs on 15/3/26.
+//  Copyright (c) 2015年 PengLee. All rights reserved.
+//
+
+#import "XJViewController.h"
+#import "PL_Header.h"
+#import "HolidayCustomCell.h"
+
+@interface XJViewController ()
+
+@end
+
+@implementation XJViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title=@"休假申请";
+    self.edgesForExtendedLayout=UIRectEdgeNone;
+    self.navigationController.navigationBarHidden=NO;
+    UIButton * backItemBnt = [UIButton buttonWithType:UIButtonTypeCustom];
+    backItemBnt.frame = CGRectMake(20, 10, 10, 20);
+    [backItemBnt setBackgroundImage:[UIImage imageNamed:@"返回.png"] forState:UIControlStateNormal];
+    [backItemBnt addTarget:self action:@selector(returnClick) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem * leftBtn = [[UIBarButtonItem alloc]initWithCustomView:backItemBnt];
+    self.navigationItem.leftBarButtonItem = leftBtn;
+    
+//    UIBarButtonItem *right=[[UIBarButtonItem alloc]initWithTitle:@"申请" style:UIBarButtonItemStylePlain target:self action:@selector(rightClick)];
+//    right.tintColor=[UIColor blackColor];
+//    self.navigationItem.rightBarButtonItem=right;
+    
+    UIImageView *heng=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0.1, PL_WIDTH,1)];
+    heng.image=[UIImage imageNamed:@"heng_hong.png"];
+    [self.view addSubview:heng];
+    table=[[UITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(heng.frame), PL_WIDTH, PL_HEIGHT-64) style:UITableViewStyleGrouped];
+    table.delegate=self;
+    table.dataSource=self;
+   // table.tableHeaderView=[[UIView alloc]initWithFrame:CGRectZero];
+    
+    [self.view addSubview:table];
+    [self request];
+}
+
+-(void)request
+{
+    [[MyRequest defaultsRequest]afGetEveryDaylLeaveList:[PL_USER_STORAGE objectForKey:PL_USER_NAME] userToken:[PL_USER_STORAGE objectForKey:PL_USER_TOKEN] completeBack:^(id obj) {
+        
+        NSLog(@"%@",obj);
+        if ([obj isEqualToString:@"[]"]) {
+            PL_ALERT_SHOW(@"暂无请假记录");
+        }
+        else if ([obj isEqualToString:@"exception"]) {
+            PL_ALERT_SHOW(@"服务器异常");
+        }
+        else  if ([obj isEqualToString:@"NOLOGIN"]) {
+            ViewController *login=[[ViewController alloc]init];
+            [self.navigationController pushViewController:login animated:YES];
+        }
+        else
+        {
+            NSString *str=obj;
+            SBJSON *json=[[SBJSON alloc]init];
+            array=[json objectWithString:str error:nil];
+        }
+        
+        [table reloadData];
+    }];
+}
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return array.count;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 0.01;
+}
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 110;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *str=@"cell";
+    HolidayCustomCell *cell=[tableView dequeueReusableCellWithIdentifier:str];
+    if (!cell) {
+        cell=[[HolidayCustomCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:str];
+    }
+    if (array.count>0) {
+        NSDictionary *dic=[array objectAtIndex:indexPath.row];
+        if ([[dic objectForKey:@"LeaveType"]isEqualToString:@"事假"])  {
+            cell.image.image=[UIImage imageNamed:@"shijia.png"];
+        }
+        else if ([[dic objectForKey:@"LeaveType"]isEqualToString:@"婚假"])  {
+            cell.image.image=[UIImage imageNamed:@"hunjia.png"];
+        }
+        else if ([[dic objectForKey:@"LeaveType"]isEqualToString:@"产假"])  {
+            cell.image.image=[UIImage imageNamed:@"chanjia.png"];
+        }
+        else if ([[dic objectForKey:@"LeaveType"]isEqualToString:@"丧假"])  {
+            cell.image.image=[UIImage imageNamed:@"sangjia.png"];
+        }
+        else if ([[dic objectForKey:@"LeaveType"]isEqualToString:@"哺乳假"])  {
+            cell.image.image=[UIImage imageNamed:@"purujia.png"];
+        }
+        else if ([[dic objectForKey:@"LeaveType"]isEqualToString:@"调休"])  {
+            cell.image.image=[UIImage imageNamed:@"tiaoxiu.png"];
+        }
+        else if ([[dic objectForKey:@"LeaveType"]isEqualToString:@"无薪病假"])  {
+            cell.image.image=[UIImage imageNamed:@"wuxinbingjia.png"];
+        }
+        else if ([[dic objectForKey:@"LeaveType"]isEqualToString:@"陪产假"])  {
+            cell.image.image=[UIImage imageNamed:@"peichanjia.png"];
+        }
+        cell.name.text=[dic objectForKey:@"EmpName"];
+        cell.bianhao.text=[dic objectForKey:@"EmpCode"];
+        cell.date.text=[NSString stringWithFormat:@"%@  到  %@",[dic objectForKey:@"StartDate"],[dic objectForKey:@"EndDate"]];
+        cell.reason.text=[dic objectForKey:@"Reason"];
+    }
+    
+    return cell;
+}
+
+
+-(void)rightClick
+{
+    
+}
+-(void)returnClick
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

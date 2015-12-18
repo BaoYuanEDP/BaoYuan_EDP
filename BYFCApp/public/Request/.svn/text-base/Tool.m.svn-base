@@ -1,0 +1,178 @@
+//
+//  Tool.m
+//  适配
+//
+//  Created by c on 14-7-7.
+//  Copyright (c) 2014年 c. All rights reserved.
+//
+
+#import "Tool.h"
+
+@implementation Tool
+
+
+#pragma mark - 颜色转换 IOS中十六进制的颜色转换为UIColor
++ (UIColor *) colorWithHexString: (NSString *)color
+{
+    NSString *cString = [[color stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
+    
+    // String should be 6 or 8 characters
+    if ([cString length] < 6) {
+        return [UIColor clearColor];
+    }
+    
+    // strip 0X if it appears
+    if ([cString hasPrefix:@"0X"])
+        cString = [cString substringFromIndex:2];
+    if ([cString hasPrefix:@"#"])
+        cString = [cString substringFromIndex:1];
+    if ([cString length] != 6)
+        return [UIColor clearColor];
+    
+    // Separate into r, g, b substrings
+    NSRange range;
+    range.location = 0;
+    range.length = 2;
+    
+    //r
+    NSString *rString = [cString substringWithRange:range];
+    
+    //g
+    range.location = 2;
+    NSString *gString = [cString substringWithRange:range];
+    
+    //b
+    range.location = 4;
+    NSString *bString = [cString substringWithRange:range];
+    
+    // Scan values
+    unsigned int r, g, b;
+    [[NSScanner scannerWithString:rString] scanHexInt:&r];
+    [[NSScanner scannerWithString:gString] scanHexInt:&g];
+    [[NSScanner scannerWithString:bString] scanHexInt:&b];
+    
+    return [UIColor colorWithRed:((float) r / 255.0f) green:((float) g / 255.0f) blue:((float) b / 255.0f) alpha:1.0f];
+}
+
+//做ios版本之间的适配
+//不同的ios版本,调用不同的方法,实现相同的功能
++(CGSize)sizeOfStr:(NSString *)str andFont:(UIFont *)font andMaxSize:(CGSize)size andLineBreakMode:(NSLineBreakMode)mode
+{
+//    NSLog(@"版本号:%f",[[[UIDevice currentDevice]systemVersion]doubleValue]);
+    CGSize s;
+    if ([[[UIDevice currentDevice]systemVersion]doubleValue]>=7.0) {
+//        NSLog(@"ios7以后版本");
+        NSDictionary *dic=@{NSFontAttributeName:font};
+        NSMutableDictionary  *mdic=[NSMutableDictionary dictionary];
+        [mdic setObject:[UIColor redColor] forKey:NSForegroundColorAttributeName];
+        [mdic setObject:font forKey:NSFontAttributeName];
+        s = [str boundingRectWithSize:size options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                           attributes:mdic context:nil].size;
+    }
+    else
+    {
+//        NSLog(@"ios7之前版本");
+        s=[str sizeWithFont:font constrainedToSize:size lineBreakMode:mode];
+    }
+    return s;
+}
+
+//解决网址里面有中文的情况
++(NSString *)stringFromChURL:(NSString *)str
+{
+    return (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes( kCFAllocatorDefault, (CFStringRef)str, NULL, NULL,  kCFStringEncodingUTF8 ));
+}
+
+
++ (NSString*)getCurrentDeviceModel
+{
+    struct utsname systemInfo;
+    
+    uname(&systemInfo);
+    
+    NSString *platform = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
+    
+    if ([platform isEqualToString:@"iPhone1,1"]) return @"iPhone 2G (A1203)";
+    if ([platform isEqualToString:@"iPhone1,2"]) return @"iPhone 3G (A1241/A1324)";
+    if ([platform isEqualToString:@"iPhone2,1"]) return @"iPhone 3GS (A1303/A1325)";
+    if ([platform isEqualToString:@"iPhone3,1"]) return @"iPhone 4 (A1332)";
+    if ([platform isEqualToString:@"iPhone3,2"]) return @"iPhone 4 (A1332)";
+    if ([platform isEqualToString:@"iPhone3,3"]) return @"iPhone 4 (A1349)";
+    if ([platform isEqualToString:@"iPhone4,1"]) return @"iPhone 4S (A1387/A1431)";
+    if ([platform isEqualToString:@"iPhone5,1"]) return @"iPhone 5 (A1428)";
+    if ([platform isEqualToString:@"iPhone5,2"]) return @"iPhone 5 (A1429/A1442)";
+    if ([platform isEqualToString:@"iPhone5,3"]) return @"iPhone 5c (A1456/A1532)";
+    if ([platform isEqualToString:@"iPhone5,4"]) return @"iPhone 5c (A1507/A1516/A1526/A1529)";
+    if ([platform isEqualToString:@"iPhone6,1"]) return @"iPhone 5s (A1453/A1533)";
+    if ([platform isEqualToString:@"iPhone6,2"]) return @"iPhone 5s (A1457/A1518/A1528/A1530)";
+    if ([platform isEqualToString:@"iPhone7,1"]) return @"iPhone 6 Plus (A1522/A1524)";
+    if ([platform isEqualToString:@"iPhone7,2"]) return @"iPhone 6 (A1549/A1586)";
+    
+    if ([platform isEqualToString:@"iPod1,1"])   return @"iPod Touch 1G (A1213)";
+    if ([platform isEqualToString:@"iPod2,1"])   return @"iPod Touch 2G (A1288)";
+    if ([platform isEqualToString:@"iPod3,1"])   return @"iPod Touch 3G (A1318)";
+    if ([platform isEqualToString:@"iPod4,1"])   return @"iPod Touch 4G (A1367)";
+    if ([platform isEqualToString:@"iPod5,1"])   return @"iPod Touch 5G (A1421/A1509)";
+    
+    if ([platform isEqualToString:@"iPad1,1"])   return @"iPad 1G (A1219/A1337)";
+    
+    if ([platform isEqualToString:@"iPad2,1"])   return @"iPad 2 (A1395)";
+    if ([platform isEqualToString:@"iPad2,2"])   return @"iPad 2 (A1396)";
+    if ([platform isEqualToString:@"iPad2,3"])   return @"iPad 2 (A1397)";
+    if ([platform isEqualToString:@"iPad2,4"])   return @"iPad 2 (A1395+New Chip)";
+    if ([platform isEqualToString:@"iPad2,5"])   return @"iPad Mini 1G (A1432)";
+    if ([platform isEqualToString:@"iPad2,6"])   return @"iPad Mini 1G (A1454)";
+    if ([platform isEqualToString:@"iPad2,7"])   return @"iPad Mini 1G (A1455)";
+    
+    if ([platform isEqualToString:@"iPad3,1"])   return @"iPad 3 (A1416)";
+    if ([platform isEqualToString:@"iPad3,2"])   return @"iPad 3 (A1403)";
+    if ([platform isEqualToString:@"iPad3,3"])   return @"iPad 3 (A1430)";
+    if ([platform isEqualToString:@"iPad3,4"])   return @"iPad 4 (A1458)";
+    if ([platform isEqualToString:@"iPad3,5"])   return @"iPad 4 (A1459)";
+    if ([platform isEqualToString:@"iPad3,6"])   return @"iPad 4 (A1460)";
+    
+    if ([platform isEqualToString:@"iPad4,1"])   return @"iPad Air (A1474)";
+    if ([platform isEqualToString:@"iPad4,2"])   return @"iPad Air (A1475)";
+    if ([platform isEqualToString:@"iPad4,3"])   return @"iPad Air (A1476)";
+    if ([platform isEqualToString:@"iPad4,4"])   return @"iPad Mini 2G (A1489)";
+    if ([platform isEqualToString:@"iPad4,5"])   return @"iPad Mini 2G (A1490)";
+    if ([platform isEqualToString:@"iPad4,6"])   return @"iPad Mini 2G (A1491)";
+    
+    if ([platform isEqualToString:@"i386"])      return @"iPhone Simulator";
+    if ([platform isEqualToString:@"x86_64"])    return @"iPhone Simulator";
+    
+    return platform;
+    
+}
+
+
++ (instancetype )dictionaryWithJsonString:(NSString *)jsonString {
+    if (jsonString == nil) {
+        return nil;
+    }
+    
+    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *err;
+    id  dic = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                        options:NSJSONReadingMutableContainers
+                                                          error:&err];
+    if(err) {
+        NSLog(@"json解析失败：%@",err);
+        return nil;
+    }
+    return dic;
+}
+
+@end
+
+
+
+
+
+
+
+
+
+
+
+

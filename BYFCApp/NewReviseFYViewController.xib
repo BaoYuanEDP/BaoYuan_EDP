@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewReviseFYViewController">
+            <connections>
+                <outlet property="mainTableView" destination="jD8-HM-hGb" id="Uo3-WC-aWX"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lxf-WL-LB4">
+                    <rect key="frame" x="0.0" y="528" width="170" height="40"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="Inv-Gn-Lvf"/>
+                        <constraint firstAttribute="width" secondItem="lxf-WL-LB4" secondAttribute="height" multiplier="17:4" id="tr0-hn-Cuc"/>
+                    </constraints>
+                    <state key="normal" title="确认提交" backgroundImage="sure.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="sureBut:" destination="-1" eventType="touchUpInside" id="AUX-tt-ynr"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="价格修改上下浮动为10%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PBQ-E8-273">
+                    <rect key="frame" x="0.0" y="64" width="320" height="30"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="nV6-Ik-fXA"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.88962273849999995" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Vy-dJ-2yi">
+                    <rect key="frame" x="170" y="528" width="150" height="40"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="8Vy-dJ-2yi" secondAttribute="height" multiplier="15:4" id="3Az-Xs-ctS"/>
+                        <constraint firstAttribute="height" constant="40" id="YOC-H8-mc4"/>
+                    </constraints>
+                    <state key="normal" title="取消" backgroundImage="cancle.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="cancelBut:" destination="-1" eventType="touchUpInside" id="Y8M-E4-nhC"/>
+                    </connections>
+                </button>
+                <tableView clipsSubviews="YES" tag="10008" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="jD8-HM-hGb">
+                    <rect key="frame" x="0.0" y="94" width="320" height="352"/>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="PBQ-E8-273" secondAttribute="trailing" id="45L-21-Mut"/>
+                <constraint firstAttribute="bottom" secondItem="lxf-WL-LB4" secondAttribute="bottom" id="LgJ-Mz-USA"/>
+                <constraint firstItem="lxf-WL-LB4" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Qni-KB-c3H"/>
+                <constraint firstAttribute="bottom" secondItem="8Vy-dJ-2yi" secondAttribute="bottom" id="Z8C-88-jyP"/>
+                <constraint firstItem="jD8-HM-hGb" firstAttribute="top" secondItem="PBQ-E8-273" secondAttribute="bottom" id="aV2-3n-b3C"/>
+                <constraint firstItem="jD8-HM-hGb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="csf-JJ-4au"/>
+                <constraint firstItem="jD8-HM-hGb" firstAttribute="top" secondItem="PBQ-E8-273" secondAttribute="bottom" id="d8k-VE-prP"/>
+                <constraint firstItem="PBQ-E8-273" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="e9I-2N-WvU"/>
+                <constraint firstItem="jD8-HM-hGb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="eqb-te-aqX"/>
+                <constraint firstAttribute="trailing" secondItem="8Vy-dJ-2yi" secondAttribute="trailing" id="lKg-Bi-kRV"/>
+                <constraint firstAttribute="trailing" secondItem="jD8-HM-hGb" secondAttribute="trailing" id="lgb-aq-N4P"/>
+                <constraint firstItem="PBQ-E8-273" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="64" id="nlH-FI-l2E"/>
+                <constraint firstAttribute="trailing" secondItem="jD8-HM-hGb" secondAttribute="trailing" id="q1i-NF-mhP"/>
+                <constraint firstItem="8Vy-dJ-2yi" firstAttribute="leading" secondItem="lxf-WL-LB4" secondAttribute="trailing" id="rjj-VB-rjl"/>
+                <constraint firstItem="jD8-HM-hGb" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="uxX-K3-A0S"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <point key="canvasLocation" x="328" y="239"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="cancle.png" width="59" height="126"/>
+        <image name="sure.png" width="47" height="126"/>
+    </resources>
+</document>

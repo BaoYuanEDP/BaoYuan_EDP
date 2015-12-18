@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="KGk-i7-Jjw" customClass="HIstoryCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="2015-10-12" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3DN-oz-u97" userLabel="日期">
+                        <rect key="frame" x="3" y="13" width="57" height="14"/>
+                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="14" id="Kpk-Np-48h"/>
+                            <constraint firstAttribute="width" constant="57" id="WGI-hu-0uJ"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YgH-QM-Yov" userLabel="星期">
+                        <rect key="frame" x="61" y="13" width="24" height="14"/>
+                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="24" id="I9L-8I-kgU"/>
+                            <constraint firstAttribute="height" constant="14" id="gA0-dy-iOZ"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wsm-ea-49u" userLabel="上班时间">
+                        <rect key="frame" x="133" y="13" width="70" height="14"/>
+                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="70" id="U5h-2H-lBQ"/>
+                            <constraint firstAttribute="height" constant="14" id="gv5-YR-iCh"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qfw-fQ-zSL" userLabel="下班时间">
+                        <rect key="frame" x="247" y="13" width="73" height="14"/>
+                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="73" id="Juw-9u-HWL"/>
+                            <constraint firstAttribute="height" constant="14" id="Kxz-oS-S8W"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="下班时间" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0LW-Ts-bPa" userLabel="下班时间：">
+                        <rect key="frame" x="203" y="13" width="44" height="14"/>
+                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="44" id="9wM-GR-soV"/>
+                            <constraint firstAttribute="height" constant="14" id="Oj2-8m-vlg"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="上班时间" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PWe-9F-pm6" userLabel="上班时间：">
+                        <rect key="frame" x="85" y="13" width="44" height="14"/>
+                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="44" id="Z5j-iJ-sXo"/>
+                            <constraint firstAttribute="height" constant="14" id="cjq-1F-hYc"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <animations/>
+                <constraints>
+                    <constraint firstItem="3DN-oz-u97" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="-5" id="0me-W4-Usg"/>
+                    <constraint firstItem="PWe-9F-pm6" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="5" id="59C-Ua-9Su"/>
+                    <constraint firstItem="Wsm-ea-49u" firstAttribute="leading" secondItem="PWe-9F-pm6" secondAttribute="trailing" constant="4" id="6zm-1s-RGT"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Qfw-fQ-zSL" secondAttribute="trailing" constant="-8" id="As9-ye-VE5"/>
+                    <constraint firstItem="3DN-oz-u97" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="1" id="Raq-VQ-Cy5"/>
+                    <constraint firstItem="0LW-Ts-bPa" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="5" id="Sve-3T-nSa"/>
+                    <constraint firstItem="YgH-QM-Yov" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="5" id="USB-g6-Rna"/>
+                    <constraint firstItem="3DN-oz-u97" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="5" id="cbo-y0-mCK"/>
+                    <constraint firstItem="Qfw-fQ-zSL" firstAttribute="leading" secondItem="0LW-Ts-bPa" secondAttribute="trailing" id="geL-xj-2ey"/>
+                    <constraint firstItem="Wsm-ea-49u" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="5" id="hUJ-IH-U3k"/>
+                    <constraint firstItem="Qfw-fQ-zSL" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="5" id="vil-aI-c2J"/>
+                    <constraint firstItem="PWe-9F-pm6" firstAttribute="leading" secondItem="YgH-QM-Yov" secondAttribute="trailing" id="xqN-jz-eva"/>
+                    <constraint firstItem="YgH-QM-Yov" firstAttribute="leading" secondItem="3DN-oz-u97" secondAttribute="trailing" constant="1" id="ymC-eq-2ID"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="Raq-VQ-Cy5"/>
+                    </mask>
+                </variation>
+            </tableViewCellContentView>
+            <animations/>
+            <connections>
+                <outlet property="XiabanTimerLable" destination="Qfw-fQ-zSL" id="xEq-97-6g1"/>
+                <outlet property="dateLable" destination="3DN-oz-u97" id="IqQ-xn-w6w"/>
+                <outlet property="shangbanL" destination="PWe-9F-pm6" id="CBL-yl-oDs"/>
+                <outlet property="timerOn" destination="Wsm-ea-49u" id="Evy-fc-noV"/>
+                <outlet property="xingqi" destination="YgH-QM-Yov" id="JOH-eb-33I"/>
+            </connections>
+            <point key="canvasLocation" x="229" y="151"/>
+        </tableViewCell>
+    </objects>
+</document>

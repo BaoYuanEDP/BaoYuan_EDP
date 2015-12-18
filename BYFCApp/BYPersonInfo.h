@@ -1,0 +1,41 @@
+//
+//  BYPersonInfo.h
+//  BYFCApp
+//
+//  Created by PengLee on 14/12/3.
+//  Copyright (c) 2014年 PengLee. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface BYPersonInfo : NSObject
+@property(nonatomic,copy)NSString * userId;
+@property(nonatomic,copy)NSString * orgDisPlay;
+@property(nonatomic,copy)NSString * userName;
+@property(nonatomic,copy)NSString * dutyName;
+@property(nonatomic,copy)NSString * orgid;
+@property(nonatomic,copy)NSString * orgName;
+@property(nonatomic,copy)NSString * userCode;
+@property(nonatomic,copy)NSString * parentOrgid;
+@property(nonatomic,copy)NSString * parentOrgDisplay;
+@property(nonatomic,copy)NSString * level;
+@property(nonatomic,copy)NSString * token;
+@property(nonatomic,copy)NSString * sort;
+@property(nonatomic,copy)NSString * area;
+@property(nonatomic,copy)NSString * branch;
+@property(nonatomic,copy)NSString * department;
+@property(nonatomic,copy)NSString * deptadd;
+@property(nonatomic,copy)NSString * depttel;
+@property(nonatomic,copy)NSString * dutyTypename;
+@property(nonatomic,copy)NSString * fax;
+@property(nonatomic,copy)NSString * fulEmail;
+@property(nonatomic,copy)NSString * mobile;
+@property(nonatomic,copy)NSString * position;
+@property(nonatomic,copy)NSString * unitfullcode;
+@property(nonatomic,copy)NSString * unitid;
+@property(nonatomic,copy)NSString * flagSubs;
+@property(nonatomic,copy)NSString * FLG;
+
+
+
+@end

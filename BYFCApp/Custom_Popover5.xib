@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="Custom_Popover5">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Psj-uL-cs9" userLabel="MainBackgroundView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lIS-8M-s0t" userLabel="小背景视图">
+                            <rect key="frame" x="28" y="60" width="264" height="368"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MAq-OZ-J8H" userLabel="HeaderView">
+                                    <rect key="frame" x="0.0" y="0.0" width="264" height="40"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u4O-M3-i2L">
+                                            <rect key="frame" x="236" y="11" width="20" height="20"/>
+                                            <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="20" id="I5H-MI-SaH"/>
+                                            </constraints>
+                                            <state key="normal" image="取消1.png"/>
+                                        </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="上传房源钥匙信息附件" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ykz-wi-AF9">
+                                            <rect key="frame" x="16" y="10" width="141" height="21"/>
+                                            <animations/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" red="0.013514046720000001" green="0.0087596874890000006" blue="0.0071495539429999996" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <animations/>
+                                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    <accessibility key="accessibilityConfiguration">
+                                        <accessibilityTraits key="traits" summaryElement="YES"/>
+                                    </accessibility>
+                                    <constraints>
+                                        <constraint firstItem="u4O-M3-i2L" firstAttribute="trailing" secondItem="MAq-OZ-J8H" secondAttribute="trailingMargin" id="1Vg-la-TmC"/>
+                                        <constraint firstItem="ykz-wi-AF9" firstAttribute="leading" secondItem="MAq-OZ-J8H" secondAttribute="leading" constant="16" id="2qQ-dy-PqO"/>
+                                        <constraint firstItem="u4O-M3-i2L" firstAttribute="centerY" secondItem="ykz-wi-AF9" secondAttribute="centerY" id="5dG-PQ-qHw"/>
+                                        <constraint firstItem="ykz-wi-AF9" firstAttribute="centerY" secondItem="MAq-OZ-J8H" secondAttribute="centerY" id="BaZ-G8-M5m"/>
+                                        <constraint firstItem="u4O-M3-i2L" firstAttribute="bottom" secondItem="ykz-wi-AF9" secondAttribute="bottom" id="HE0-XS-AmL"/>
+                                        <constraint firstItem="u4O-M3-i2L" firstAttribute="leading" secondItem="ykz-wi-AF9" secondAttribute="trailing" constant="79" id="jCG-sM-bhp"/>
+                                        <constraint firstItem="ykz-wi-AF9" firstAttribute="top" secondItem="MAq-OZ-J8H" secondAttribute="top" constant="10" id="qfp-e2-IAp"/>
+                                    </constraints>
+                                </view>
+                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MIs-xi-WGd" userLabel="BackGroundScroollView">
+                                    <rect key="frame" x="0.0" y="41" width="264" height="325"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z6a-o8-ZjF" userLabel="钥匙协议书">
+                                            <rect key="frame" x="0.0" y="91" width="264" height="91"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SOo-w4-LYx">
+                                                    <rect key="frame" x="57" y="31" width="149" height="30"/>
+                                                    <animations/>
+                                                    <state key="normal" title="钥匙托管协议书" backgroundImage="蓝色(1).png">
+                                                        <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="keyBook:" destination="iN0-l3-epB" eventType="touchUpInside" id="QaF-Bo-HKI"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <animations/>
+                                            <color key="backgroundColor" red="0.79546699605581384" green="0.9059833507194569" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstItem="SOo-w4-LYx" firstAttribute="centerY" secondItem="z6a-o8-ZjF" secondAttribute="centerY" id="9uU-L9-gFZ"/>
+                                                <constraint firstItem="SOo-w4-LYx" firstAttribute="top" secondItem="z6a-o8-ZjF" secondAttribute="top" constant="31" id="AtV-T8-7ZL"/>
+                                                <constraint firstItem="SOo-w4-LYx" firstAttribute="centerX" secondItem="z6a-o8-ZjF" secondAttribute="centerX" id="iCG-dd-1du"/>
+                                                <constraint firstItem="SOo-w4-LYx" firstAttribute="leading" secondItem="z6a-o8-ZjF" secondAttribute="leading" constant="57" id="pVR-pJ-g6r"/>
+                                                <constraint firstAttribute="height" constant="91" id="pif-Rc-omy"/>
+                                            </constraints>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OIc-Wf-va0" userLabel="胸卡">
+                                            <rect key="frame" x="0.0" y="0.0" width="264" height="91"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MIe-C7-TZ2" userLabel="胸卡按钮">
+                                                    <rect key="frame" x="62" y="31" width="139" height="30"/>
+                                                    <animations/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <state key="normal" title="胸卡" backgroundImage="红色(1).png"/>
+                                                    <connections>
+                                                        <action selector="ChestCardBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="j8f-gF-3ji"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <animations/>
+                                            <color key="backgroundColor" red="1" green="0.69912417360569445" blue="0.67164262923114415" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstItem="MIe-C7-TZ2" firstAttribute="leading" secondItem="OIc-Wf-va0" secondAttribute="leading" constant="62" id="5lz-iX-cL4"/>
+                                                <constraint firstItem="MIe-C7-TZ2" firstAttribute="top" secondItem="OIc-Wf-va0" secondAttribute="top" constant="31" id="U6Q-NA-dWa"/>
+                                                <constraint firstItem="MIe-C7-TZ2" firstAttribute="centerX" secondItem="OIc-Wf-va0" secondAttribute="centerX" id="f6w-Eo-01q"/>
+                                                <constraint firstAttribute="height" constant="91" id="oto-nN-2VE"/>
+                                                <constraint firstItem="MIe-C7-TZ2" firstAttribute="centerY" secondItem="OIc-Wf-va0" secondAttribute="centerY" id="zhz-vR-dja"/>
+                                            </constraints>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="idZ-f9-enl" userLabel="上传提交">
+                                            <rect key="frame" x="0.0" y="182" width="264" height="91"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Te-kE-Qgj">
+                                                    <rect key="frame" x="60" y="30" width="149" height="32"/>
+                                                    <animations/>
+                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" type="italicSystem" pointSize="13"/>
+                                                    <state key="normal" title="确认提交"/>
+                                                    <state key="disabled" image="上传图片灰色.png"/>
+                                                    <state key="selected" image="上传图片1.png"/>
+                                                </button>
+                                            </subviews>
+                                            <animations/>
+                                            <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="91" id="3JN-9H-92E"/>
+                                                <constraint firstItem="6Te-kE-Qgj" firstAttribute="centerY" secondItem="idZ-f9-enl" secondAttribute="centerY" id="QFS-D2-vSV"/>
+                                                <constraint firstItem="6Te-kE-Qgj" firstAttribute="top" secondItem="idZ-f9-enl" secondAttribute="top" constant="30" id="ahX-4U-V04"/>
+                                                <constraint firstItem="6Te-kE-Qgj" firstAttribute="leading" secondItem="idZ-f9-enl" secondAttribute="leading" constant="60" id="v2b-AH-tgl"/>
+                                                <constraint firstAttribute="trailing" secondItem="6Te-kE-Qgj" secondAttribute="trailing" constant="55" id="xkf-r7-2Ka"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstItem="z6a-o8-ZjF" firstAttribute="top" secondItem="OIc-Wf-va0" secondAttribute="bottom" id="2Tp-xh-Hz3"/>
+                                        <constraint firstItem="z6a-o8-ZjF" firstAttribute="trailing" secondItem="OIc-Wf-va0" secondAttribute="trailing" id="9hN-u9-mrn"/>
+                                        <constraint firstItem="idZ-f9-enl" firstAttribute="bottom" secondItem="MIs-xi-WGd" secondAttribute="bottomMargin" constant="-38" id="IUf-jf-IRE"/>
+                                        <constraint firstItem="idZ-f9-enl" firstAttribute="top" secondItem="z6a-o8-ZjF" secondAttribute="bottom" id="TFk-MB-2BC"/>
+                                        <constraint firstItem="OIc-Wf-va0" firstAttribute="top" secondItem="MIs-xi-WGd" secondAttribute="top" id="frO-3x-Nop"/>
+                                        <constraint firstItem="z6a-o8-ZjF" firstAttribute="trailing" secondItem="idZ-f9-enl" secondAttribute="trailing" id="gTw-Xt-IY4"/>
+                                        <constraint firstItem="z6a-o8-ZjF" firstAttribute="leading" secondItem="idZ-f9-enl" secondAttribute="leading" id="nZP-nn-Og9"/>
+                                        <constraint firstItem="z6a-o8-ZjF" firstAttribute="leading" secondItem="OIc-Wf-va0" secondAttribute="leading" id="oeD-bo-GDU"/>
+                                        <constraint firstItem="z6a-o8-ZjF" firstAttribute="centerX" secondItem="MIs-xi-WGd" secondAttribute="centerX" id="pAp-Tb-ErB"/>
+                                        <constraint firstItem="OIc-Wf-va0" firstAttribute="trailing" secondItem="MIs-xi-WGd" secondAttribute="trailingMargin" constant="8" id="shl-8d-B5B"/>
+                                        <constraint firstItem="z6a-o8-ZjF" firstAttribute="leading" secondItem="MIs-xi-WGd" secondAttribute="leadingMargin" constant="-8" id="zlj-p5-9UB"/>
+                                    </constraints>
+                                </scrollView>
+                            </subviews>
+                            <animations/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="MAq-OZ-J8H" firstAttribute="top" secondItem="lIS-8M-s0t" secondAttribute="top" id="HPr-ip-kaT"/>
+                                <constraint firstAttribute="trailing" secondItem="MIs-xi-WGd" secondAttribute="trailing" id="QGS-Zu-nNe"/>
+                                <constraint firstItem="MIs-xi-WGd" firstAttribute="centerX" secondItem="MAq-OZ-J8H" secondAttribute="centerX" id="QWs-jb-VCe"/>
+                                <constraint firstAttribute="bottom" secondItem="MIs-xi-WGd" secondAttribute="bottom" constant="2" id="U5A-W3-wVf"/>
+                                <constraint firstItem="MIs-xi-WGd" firstAttribute="centerY" secondItem="lIS-8M-s0t" secondAttribute="centerY" constant="19.5" id="Voy-8u-yZk"/>
+                                <constraint firstItem="MIs-xi-WGd" firstAttribute="leading" secondItem="lIS-8M-s0t" secondAttribute="leading" id="ksV-Ix-15l"/>
+                                <constraint firstItem="MAq-OZ-J8H" firstAttribute="leading" secondItem="lIS-8M-s0t" secondAttribute="leadingMargin" constant="-8" id="rOK-y3-7sC"/>
+                                <constraint firstItem="MIs-xi-WGd" firstAttribute="top" secondItem="MAq-OZ-J8H" secondAttribute="bottom" constant="1" id="rYA-1z-1yW"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="lIS-8M-s0t" secondAttribute="bottom" constant="140" id="0bQ-vh-seq"/>
+                        <constraint firstItem="lIS-8M-s0t" firstAttribute="top" secondItem="Psj-uL-cs9" secondAttribute="top" constant="60" id="8ry-wZ-oUY"/>
+                        <constraint firstItem="lIS-8M-s0t" firstAttribute="leading" secondItem="Psj-uL-cs9" secondAttribute="leading" constant="28" id="LXU-cP-rqn"/>
+                        <constraint firstItem="lIS-8M-s0t" firstAttribute="centerX" secondItem="Psj-uL-cs9" secondAttribute="centerX" id="ahO-EW-irE"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="Psj-uL-cs9" secondAttribute="bottom" id="4HV-5Q-cO8"/>
+                <constraint firstItem="Psj-uL-cs9" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ICV-T5-10N"/>
+                <constraint firstAttribute="trailing" secondItem="Psj-uL-cs9" secondAttribute="trailing" id="RaC-9a-tXH"/>
+                <constraint firstItem="Psj-uL-cs9" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="y5g-qg-aaL"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <connections>
+                <outlet property="BackgroundView" destination="lIS-8M-s0t" id="FQE-5J-7TU"/>
+                <outlet property="Card" destination="OIc-Wf-va0" id="52m-pC-3dh"/>
+                <outlet property="ChestCardBtn" destination="MIe-C7-TZ2" id="1pt-wV-oSR"/>
+                <outlet property="ChestCardLayout" destination="2Tp-xh-Hz3" id="cbB-v7-Ght"/>
+                <outlet property="CommitImage" destination="6Te-kE-Qgj" id="BsB-Ft-vZN"/>
+                <outlet property="KeyBook" destination="z6a-o8-ZjF" id="wax-OP-9e1"/>
+                <outlet property="KeyBookLayout" destination="TFk-MB-2BC" id="5Qs-Gk-hGI"/>
+                <outlet property="KeyBtnBooke" destination="SOo-w4-LYx" id="gtx-8b-wMx"/>
+                <outlet property="MainBackgroundView" destination="Psj-uL-cs9" id="84C-wU-kXd"/>
+                <outlet property="RmoveViewBut" destination="u4O-M3-i2L" id="OvN-32-Hql"/>
+                <outlet property="ScrollView" destination="MIs-xi-WGd" id="qHc-cZ-raB"/>
+                <outlet property="SelectFile" destination="MIe-C7-TZ2" id="2YO-yd-Wng"/>
+            </connections>
+            <point key="canvasLocation" x="181" y="219"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="上传图片1.png" width="78" height="28"/>
+        <image name="上传图片灰色.png" width="78" height="28"/>
+        <image name="取消1.png" width="20" height="20"/>
+        <image name="红色(1).png" width="280" height="60"/>
+        <image name="蓝色(1).png" width="280" height="60"/>
+    </resources>
+</document>

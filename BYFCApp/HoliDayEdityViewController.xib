@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HoliDayEdityViewController">
+            <connections>
+                <outlet property="cancelBut" destination="KVT-Cl-rIu" id="ExP-5s-eWY"/>
+                <outlet property="sureBut" destination="O6v-sa-v0X" id="AWg-C2-Df0"/>
+                <outlet property="tableview" destination="vX6-iX-TKe" id="EYX-kU-heM"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="vX6-iX-TKe">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="514"/>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="mKI-9j-7rl"/>
+                        <outlet property="delegate" destination="-1" id="Np7-Hq-jmX"/>
+                    </connections>
+                </tableView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O6v-sa-v0X">
+                    <rect key="frame" x="0.0" y="522" width="160" height="46"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="140" id="aiP-OW-DR7"/>
+                        <constraint firstAttribute="height" constant="46" id="shF-qI-fCY"/>
+                    </constraints>
+                    <state key="normal" title="确认提交" backgroundImage="sure.png">
+                        <color key="titleColor" red="0.93684895830000003" green="0.93684895830000003" blue="0.93684895830000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="aiP-OW-DR7"/>
+                        </mask>
+                    </variation>
+                    <connections>
+                        <action selector="SureButAction:" destination="-1" eventType="touchUpInside" id="lhv-ID-Sh0"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KVT-Cl-rIu">
+                    <rect key="frame" x="160" y="522" width="160" height="46"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="125" id="BKQ-Jl-ent"/>
+                    </constraints>
+                    <state key="normal" title="取消" backgroundImage="cancle.png">
+                        <color key="titleColor" red="0.96807922980000005" green="0.96807922980000005" blue="0.96807922980000005" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="BKQ-Jl-ent"/>
+                        </mask>
+                    </variation>
+                    <connections>
+                        <action selector="CanleButAction:" destination="-1" eventType="touchUpInside" id="dRR-16-LPW"/>
+                    </connections>
+                </button>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="O6v-sa-v0X" firstAttribute="leading" secondItem="vX6-iX-TKe" secondAttribute="leading" id="DrU-Gg-9sm"/>
+                <constraint firstAttribute="trailing" secondItem="vX6-iX-TKe" secondAttribute="trailing" id="HKg-En-MTo"/>
+                <constraint firstItem="vX6-iX-TKe" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Qmf-oS-gcz"/>
+                <constraint firstAttribute="trailing" secondItem="KVT-Cl-rIu" secondAttribute="trailing" id="RFi-iU-wgo"/>
+                <constraint firstAttribute="bottom" secondItem="O6v-sa-v0X" secondAttribute="bottom" id="Sc4-BM-7rf"/>
+                <constraint firstItem="KVT-Cl-rIu" firstAttribute="trailing" secondItem="vX6-iX-TKe" secondAttribute="trailing" id="SvC-1G-KBf"/>
+                <constraint firstItem="O6v-sa-v0X" firstAttribute="height" secondItem="KVT-Cl-rIu" secondAttribute="height" id="Uvf-ae-hOG"/>
+                <constraint firstAttribute="bottom" secondItem="KVT-Cl-rIu" secondAttribute="bottom" id="beE-oH-qCC"/>
+                <constraint firstAttribute="trailing" secondItem="vX6-iX-TKe" secondAttribute="trailing" id="cJ6-Kh-6Ji"/>
+                <constraint firstItem="vX6-iX-TKe" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="kRc-4f-oQ7"/>
+                <constraint firstItem="vX6-iX-TKe" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="kgY-cN-ExG"/>
+                <constraint firstItem="O6v-sa-v0X" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="nkA-L0-MCO"/>
+                <constraint firstItem="KVT-Cl-rIu" firstAttribute="top" secondItem="vX6-iX-TKe" secondAttribute="bottom" constant="8" id="u2J-bY-ePx"/>
+                <constraint firstItem="KVT-Cl-rIu" firstAttribute="leading" secondItem="O6v-sa-v0X" secondAttribute="trailing" id="ufg-ly-vgn"/>
+                <constraint firstItem="O6v-sa-v0X" firstAttribute="width" secondItem="KVT-Cl-rIu" secondAttribute="width" id="wL4-R5-yUd"/>
+                <constraint firstItem="KVT-Cl-rIu" firstAttribute="leading" secondItem="O6v-sa-v0X" secondAttribute="trailing" id="xG8-Z9-nbO"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="HKg-En-MTo"/>
+                    <exclude reference="Qmf-oS-gcz"/>
+                    <exclude reference="DrU-Gg-9sm"/>
+                    <exclude reference="SvC-1G-KBf"/>
+                    <exclude reference="ufg-ly-vgn"/>
+                </mask>
+            </variation>
+            <point key="canvasLocation" x="21" y="62"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="cancle.png" width="59" height="126"/>
+        <image name="sure.png" width="47" height="126"/>
+    </resources>
+</document>

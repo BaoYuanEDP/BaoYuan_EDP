@@ -1,0 +1,510 @@
+//
+//  ReviseFYView.m
+//  BYFCApp
+//
+//  Created by PengLee on 15/5/15.
+//  Copyright (c) 2015年 PengLee. All rights reserved.
+//
+#import "ReviseFYView.h"
+#import "PL_Header.h"
+@interface ReviseFYView()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
+{
+    UITableView *_topSetTableView;
+    NSString    * _statusString;
+    NSString    * _decorationString;
+    NSString    * _topSetString;
+    NSString    * _topSetSenderString;
+    BOOL isEq;
+}
+@property(nonatomic,strong)NSArray * topSetArray;
+@property(nonatomic,strong)NSArray * topSetSenderArray;
+@property(nonatomic,strong) RoomRevisInfo *newRoomRevisInfo;
+@property(nonatomic,strong) UIButton *buton1;
+
+@end
+@implementation ReviseFYView
+-(NSArray *)topSetArray
+{
+    if (!_topSetArray) {
+        _topSetArray = @[@"不置顶",@"永久置顶",@"3天",@"7天",@"15天",@"30天"];
+    }
+    return _topSetArray;
+}
+- (NSArray *)topSetSenderArray
+{
+    if (!_topSetSenderArray) {
+        _topSetSenderArray = @[@"出租",@"出售",@"租售"];
+    }
+    return _topSetSenderArray;
+}
+
+-(RoomRevisInfo *)newRoomRevisInfo
+{
+    if (!_newRoomRevisInfo ) {
+        _newRoomRevisInfo = [[RoomRevisInfo alloc]init];
+    }
+    return _newRoomRevisInfo;
+}
+
+-(instancetype)initWithFrame:(CGRect)frame
+{
+    frame = CGRectMake(0, 0, PL_WIDTH, PL_HEIGHT);
+    if (self = [super initWithFrame:frame]) {
+        self = [[NSBundle mainBundle]loadNibNamed:@"ReviseFYView" owner:self options:nil].lastObject;
+        isEq = YES;
+        self.frame = CGRectMake(0, 0, PL_WIDTH, PL_HEIGHT);
+        self.backgroundColor = [UIColor purpleColor];
+//        [self loadView:frame];
+    }
+    return self;
+}
+
+-(void)awakeFromNib
+{
+    NSLog(@"%s",__FUNCTION__);
+    [super awakeFromNib];
+    self.needButton.hidden = YES;
+
+  
+    
+}
+
+
+
+
+-(NSString *)followListdutyCode{
+    
+    NSLog(@"%@",[PL_USER_STORAGE objectForKey:PL_USER_DUTYCODE]);
+    _followListdutyCode = [[PL_USER_STORAGE objectForKey:PL_USER_DUTYCODE]substringWithRange:NSMakeRange([[PL_USER_STORAGE objectForKey:PL_USER_DUTYCODE] length] - 1, 1)];
+    
+    return _followListdutyCode;
+}
+
+- (IBAction)didClickToTopButton:(UIButton *)sender
+{
+    isEq = NO;
+    if (isEq == NO) {
+        //如果是经理 不可点击
+        NSLog(@"%@",[PL_USER_STORAGE objectForKey:PL_USER_DUTYCODE]);
+        
+        if (!sender.selected ) {
+            //      _topSetTableView = [[UITableView alloc]initWithFrame:CGRectMake(sender.frame.origin.x - 40, sender.frame.origin.y+sender.frame.size.height, 100, 120)];
+            _topSetTableView = [[UITableView alloc]initWithFrame:CGRectMake(sender.frame.origin.x, sender.frame.origin.y+sender.frame.size.height, 100, 220) style:UITableViewStylePlain];
+            
+            
+            [sender.superview addSubview:_topSetTableView];
+            _topSetTableView.delegate = self;
+            _topSetTableView.dataSource = self;
+            _topSetTableView.layer.backgroundColor = [[UIColor lightGrayColor]colorWithAlphaComponent:1.0].CGColor ;
+            sender.selected = YES;
+            
+        }
+        else
+        {
+            [_topSetTableView removeFromSuperview];
+            sender.selected = NO;
+        }
+    }
+}
+- (IBAction)clickNeedChangedButton:(UIButton *)sender
+{
+
+    RoomRevisInfo *roomReviseInfo = [[RoomRevisInfo alloc]init];
+    roomReviseInfo.schoolString     = @"";
+    roomReviseInfo.recommendString  = @"";
+    roomReviseInfo.fastSellString   = @"";
+    roomReviseInfo.statusString     = _statusString;
+
+    switch (sender.tag) {
+        case 1000:
+            if ([sender.currentImage isEqual:[UIImage imageNamed:@"有"]]) {
+                _statusString = @"无效";
+            }
+            else
+            {
+                _statusString = @"有效";
+                
+            }
+            if ([self.rentPriceTextField.text  isEqual: @""] && [self.salePriceTextField.text isEqual:@""]) {
+                NSLog(@"不通过");
+                UIAlertView *alert3 = [[UIAlertView alloc] initWithTitle:@"提示" message:@"交易状态改为有效时，售价或者租价不能为空" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                [alert3 show];
+            }else{
+            if ([_statusString isEqualToString:@"无效"]) {
+                UIAlertView *aler1 = [[UIAlertView alloc] initWithTitle:@"您好" message:@"是否修改为无效" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+                aler1.tag = 1108;
+                [aler1 show];
+            }else{
+                UIAlertView *aler = [[UIAlertView alloc] initWithTitle:@"您好" message:@"是否修改为有效" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+                aler.tag = 1109;
+                [aler show];
+            }
+            }
+            _buton1 = [UIButton buttonWithType:UIButtonTypeCustom];
+            _buton1 = sender;
+    
+             break;
+   
+        case 1001:
+                if ([sender.currentImage isEqual:[UIImage imageNamed:@"jishou_hui.png"]]) {
+                    roomReviseInfo.fastSellString = @"1";
+            }
+            else
+            {
+                roomReviseInfo.fastSellString = @"0";
+            }
+            if ([self.ViewDelegate respondsToSelector:@selector(transFormSetHouseMarks:)]) {
+                [self.ViewDelegate transFormSetHouseMarks:roomReviseInfo];
+            }
+            break;
+            case 1002:
+            
+            if ([sender.currentImage isEqual:[UIImage imageNamed:@"xuequfang_hui"]]) {
+               roomReviseInfo.schoolString = @"1";
+
+            }
+            else
+            {
+            roomReviseInfo.schoolString = @"0";
+
+            }
+            if ([self.ViewDelegate respondsToSelector:@selector(transFormSetHouseMarks:)]) {
+                [self.ViewDelegate transFormSetHouseMarks:roomReviseInfo];
+            }
+            break;
+            
+        default:
+            if ([sender.currentImage isEqual:[UIImage imageNamed:@"jinglituijian_lan"]]) {
+                roomReviseInfo.recommendString = @"0";
+            }
+            else
+            {
+                roomReviseInfo.recommendString = @"1";
+
+            }if ([self.ViewDelegate respondsToSelector:@selector(transFormSetHouseMarks:)]) {
+                [self.ViewDelegate transFormSetHouseMarks:roomReviseInfo];
+            }
+            break;
+    }
+    
+}
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 1108) {
+        if (buttonIndex == 0) {
+            [self postSetStatus:_buton1];
+        }else{
+            
+        }
+    }
+    if (alertView.tag == 1109) {
+        if (buttonIndex == 0) {
+            [self postSetStatus:_buton1];
+        }else{
+            
+        }
+    }if (alertView.tag == 1110) {
+        if (buttonIndex == 0) {
+            if ([self.ViewDelegate respondsToSelector:@selector(clickViewSender:)]) {
+                [self.salePriceTextField resignFirstResponder];
+                [self.rentPriceTextField resignFirstResponder];
+                self.newRoomRevisInfo.priceString = self.salePriceTextField.text.length == 0 ? @"":self.salePriceTextField.text;
+                self.newRoomRevisInfo.rentpriceString = self.rentPriceTextField.text.length == 0 ? @"":self.rentPriceTextField.text;
+                self.newRoomRevisInfo.daysString = [NSString stringWithFormat:@"%ld",(long)self.topset] == 0 ? @"":[NSString stringWithFormat:@"%ld",(long)self.topset];
+                self.newRoomRevisInfo.decorationString = _decorationString.length == 0 ? @"":_decorationString;
+                self.newRoomRevisInfo.daysString = _topSetString.length == 0 ? @"":_topSetString;
+                self.newRoomRevisInfo.custom = _topSetSenderString;
+                [self.ViewDelegate clickViewSender:self.newRoomRevisInfo];
+            }else{
+                
+            }
+    }
+    
+    }
+    
+  
+}
+- (IBAction)didClickSendButton:(UIButton *)sender
+{
+  
+    if (sender.tag == 1006) {
+        UIAlertView *aery = [[UIAlertView alloc] initWithTitle:@"提示" message:@"您要提交吗？" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消" ,nil];
+        aery.tag = 1110;
+        [aery show];
+    }
+    else
+    {
+        if ([self.ViewDelegate respondsToSelector:@selector(clickClearButton)])
+        {
+            
+            [self.ViewDelegate clickClearButton];
+        }
+      
+    }
+  
+    
+}
+
+-(void)postSetStatus:(UIButton *)sender
+{
+    
+    
+    PL_PROGRESS_SHOW;
+    [[MyRequest defaultsRequest]SetStatusWithPropertyID:self.propertyIDString Status:_statusString call:^(NSString *str) {
+        NSLog(@"%@",str);
+        PL_PROGRESS_DISMISS;
+        if ([str isEqualToString:@"OK"])
+        {
+        
+            PL_ALERT_SHOW(@"修改成功");
+            if ([sender.currentImage isEqual:[UIImage imageNamed:@"有"]]) {
+                [sender setImage:[UIImage imageNamed:@"租_灰"] forState:UIControlStateNormal];
+                _statusString = @"无效";
+            }
+            else
+            {
+                [sender setImage:[UIImage imageNamed:@"有"] forState:UIControlStateNormal];
+                _statusString = @"有效";
+                
+            }
+
+        }
+        if ([str isEqualToString:@"ERR"]) {
+            PL_ALERT_SHOW(@"修改失败");
+        }
+        if ([str isEqualToString:@"1"]) {
+            PL_ALERT_SHOW(@"您无权修改");
+        }
+        
+    }];
+}
+
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (isEq == YES) {
+        return self.topSetSenderArray.count;
+    }else
+    {
+        return self.topSetArray.count;
+    }
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    if (!cell) {
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+    }
+    cell.backgroundColor = [UIColor clearColor];
+    if (isEq == YES) {
+        cell.textLabel.text = self.topSetSenderArray[indexPath.row];
+    }else{
+        cell.textLabel.text = self.topSetArray[indexPath.row];
+    }
+    return cell;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (isEq == YES) {
+        [_topSetTableView removeFromSuperview];
+        if (indexPath.row >1) {
+            [self.topBut setTitle:[NSString stringWithFormat:@"%@",self.topSetSenderArray[indexPath.row]] forState:UIControlStateNormal];
+        }
+        else
+        {
+            [self.topBut setTitle:[NSString stringWithFormat:@"%@",self.topSetSenderArray[indexPath.row]] forState:UIControlStateNormal];
+            
+        }
+        
+        switch (indexPath.row) {
+            case 0:
+                _topSetSenderString = @"出租";
+                break;
+            case 1:
+                _topSetSenderString = @"出售";
+                break;
+            case 2:
+                _topSetSenderString = @"租售";
+                break;
+            default:
+                break;
+        }
+    }else{
+        [_topSetTableView removeFromSuperview];
+        if (indexPath.row >1) {
+            [self.topSetButton setTitle:[NSString stringWithFormat:@"置顶%@",self.topSetArray[indexPath.row]] forState:UIControlStateNormal];
+        }
+        else
+        {
+            [self.topSetButton setTitle:[NSString stringWithFormat:@"%@",self.topSetArray[indexPath.row]] forState:UIControlStateNormal];
+            
+        }
+        
+        switch (indexPath.row) {
+            case 0:
+                _topSetString = @"0";
+                break;
+            case 1:
+                _topSetString = @"1";
+                break;
+            case 2:
+                _topSetString = @"3";
+                break;
+            case 3:
+                _topSetString = @"7";
+                break;
+            case 4:
+                _topSetString = @"15";
+                break;
+            default:
+                _topSetString = @"30";
+                break;
+        }
+    }
+}
+
+-(void)refreshUI:(RoomData *)roomInfo
+{
+    
+    NSLog(@"id  %@,marks %@,pricef %@,pricet %@,priceu %@,price %@,trade %@",roomInfo.roomPropertyId,roomInfo.roomHouseMarks,roomInfo.roomPriceFrom,roomInfo.roomPriceTo,roomInfo.roomPriceUnit,roomInfo.roomPRICE,roomInfo.roomTrade);
+
+}
+
+
+-(void)loadView:(CGRect)fram
+{
+    
+    
+}
+-(void)addSelfOnAView:(UIView *)view
+{
+
+    
+    [view.window addSubview:self];
+    self.backgroundColor = [[UIColor grayColor]colorWithAlphaComponent:0.6];
+
+    
+    [self bringSubviewToFront:view.window];
+    [self fadeIn];
+}
+- (IBAction)clickdecorationButton:(UIButton *)sender {
+    
+    for (UIView *item in self.decorationView.subviews) {
+        if ([item isKindOfClass:[UIButton class]]) {
+            [((UIButton *)item) setImage:[UIImage imageNamed:@"deselectgray"] forState:UIControlStateNormal];
+        }
+    }
+    switch (sender.tag) {
+        case 10010:
+            _decorationString = @"精装";
+            [sender setImage:[UIImage imageNamed:@"select"] forState:UIControlStateNormal];
+            break;
+        case 10011:
+            _decorationString = @"精装";
+            [sender setImage:[UIImage imageNamed:@"select"] forState:UIControlStateNormal];
+            break;
+        case 10012:
+            _decorationString = @"豪装";
+            [sender setImage:[UIImage imageNamed:@"select"] forState:UIControlStateNormal];
+            break;
+        case 10013:
+            _decorationString = @"简装";
+            [sender setImage:[UIImage imageNamed:@"select"] forState:UIControlStateNormal];
+            break;
+        case 10014:
+            _decorationString = @"中装";
+            [sender setImage:[UIImage imageNamed:@"select"] forState:UIControlStateNormal];
+            break;
+        default:
+            _decorationString = @"毛坯";
+            [sender setImage:[UIImage imageNamed:@"select"] forState:UIControlStateNormal];
+            break;
+            break;
+    }
+    
+}
+
+
+
+
+- (IBAction)clickSenderButton:(UIButton *)sender {
+}
+- (IBAction)clickClearButton:(UIButton *)sender {
+}
+
+- (void)fadeIn
+{
+    self.transform = CGAffineTransformMakeScale(1.4, 1.4);
+    self.alpha = 0;
+    [UIView animateWithDuration:0.25 animations:^{
+        self.alpha = 1;
+        self.transform = CGAffineTransformMakeScale(1, 1);
+    }];
+}
+- (void)fadeOut
+{
+    [UIView animateWithDuration:.25 animations:^{
+        self.transform = CGAffineTransformMakeScale(1.4, 1.4);
+        self.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        if (finished) {
+            [self removeFromSuperview];
+        }
+    }];
+}
+- (IBAction)butCustom:(UIButton *)sender {
+    isEq = YES;
+    if (isEq == YES) {
+        if (!sender.selected ) {
+            //      _topSetTableView = [[UITableView alloc]initWithFrame:CGRectMake(sender.frame.origin.x - 40, sender.frame.origin.y+sender.frame.size.height, 100, 120)];
+            _topSetTableView = [[UITableView alloc]initWithFrame:CGRectMake(sender.frame.origin.x, sender.frame.origin.y+sender.frame.size.height, 100, 220) style:UITableViewStylePlain];
+            
+            
+            [sender.superview addSubview:_topSetTableView];
+            _topSetTableView.delegate = self;
+            _topSetTableView.dataSource = self;
+            _topSetTableView.layer.backgroundColor = [[UIColor lightGrayColor]colorWithAlphaComponent:1.0].CGColor ;
+            sender.selected = YES;
+            
+        }
+        else
+        {
+            [_topSetTableView removeFromSuperview];
+            sender.selected = NO;
+        }
+    }
+}
+
+
+#pragma mark ---判断领导与业务员
+-(void)isBoss{
+    
+    if ([_roomdutycode isEqualToString:@"E"]) {
+        flagSubs =@"0";
+        _dutyCode  = _roomdutycode;
+    }else
+    {
+        flagSubs = @"1";
+    }
+    
+    
+}
+//- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+//{
+//    [self clearTel:nil];
+//}
+//- (void)clearTel:(UIGestureRecognizer *)tap
+//{
+//    [self fadeOut];
+//}
+
+
+/*
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect {
+    // Drawing code
+}
+*/
+
+@end

@@ -1,0 +1,570 @@
+//
+//  WebViewController.m
+//  BYFCApp
+//
+//  Created by zzs on 15/1/20.
+//  Copyright (c) 2015年 PengLee. All rights reserved.
+//
+
+#import "WebViewController.h"
+#import "PL_Header.h"
+#import "WebCustomCell.h"
+
+static UIButton *selectBtn;
+@interface WebViewController ()
+
+@end
+
+@implementation WebViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+   self.title=@"端口申请";
+    self.navigationController.navigationBarHidden=NO;
+    UIButton * backItemBnt = [UIButton buttonWithType:UIButtonTypeCustom];
+    backItemBnt.frame = CGRectMake(20, 10, 10, 20);
+    [backItemBnt setBackgroundImage:[UIImage imageNamed:@"返回.png"] forState:UIControlStateNormal];
+    [backItemBnt addTarget:self action:@selector(returnClick) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem * leftBtn = [[UIBarButtonItem alloc]initWithCustomView:backItemBnt];
+    self.navigationItem.leftBarButtonItem = leftBtn;
+    
+    _button=[[UIButton alloc]initWithFrame:CGRectMake(100, 70, PL_WIDTH-200, 30)];
+    //_button.backgroundColor=[UIColor redColor];
+    if ([_string isEqualToString:@"上海安居客"]) {
+        [_button setImage:[UIImage imageNamed:@"anjuke_SH33.png"] forState:UIControlStateNormal];
+    }
+    else if ([_string isEqualToString:@"昆山安居客"])
+    {
+        [_button setImage:[UIImage imageNamed:@"anjuke_ks33.png"] forState:UIControlStateNormal];
+    }
+    else if ([_string isEqualToString:@"新浪网"])
+    {
+        [_button setImage:[UIImage imageNamed:@"sinaLOGO33.png"] forState:UIControlStateNormal];
+    }
+    else if ([_string isEqualToString:@"搜房网"])
+    {
+        [_button setImage:[UIImage imageNamed:@"搜房网logo33.png"] forState:UIControlStateNormal];
+        [table removeFromSuperview];
+        
+    }
+    else if ([_string isEqualToString:@"58同城网"])
+    {
+        [_button setImage:[UIImage imageNamed:@"58LOGO33.png"] forState:UIControlStateNormal];
+    }
+    else if ([_string isEqualToString:@"赶集网"])
+    {
+        [_button setImage:[UIImage imageNamed:@"GanJilogo33.png"] forState:UIControlStateNormal];
+    }
+    //[_button setImage:[UIImage imageNamed:@"anjuke_SH33.png"] forState:UIControlStateNormal];
+    [_button addTarget:self action:@selector(webClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_button];
+    
+    UIImageView *image=[[UIImageView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_button.frame)+5, PL_WIDTH, 1)];
+    image.image=[UIImage imageNamed:@"heng_hui_duan.png"];
+    [self.view addSubview:image];
+    
+    table=[[UITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(image.frame)+5, PL_WIDTH, PL_HEIGHT-114-50+5) style:UITableViewStylePlain];
+    table.delegate=self;
+    table.dataSource=self;
+    //table.rowHeight=80;
+    /*
+    WebCustomCell *cusCell=[[WebCustomCell alloc]init];
+    if (cusCell.lab33.hidden==NO) {
+        table.rowHeight=100;
+    }
+   else
+   {
+       table.rowHeight=80;
+   }
+*/
+    [self.view addSubview:table];
+    if ([table respondsToSelector:@selector(setSeparatorInset:)]) {
+        [table setSeparatorInset:UIEdgeInsetsZero];
+    }
+    if ([table respondsToSelector:@selector(setLayoutMargins:)]) {
+        [table setLayoutMargins:UIEdgeInsetsZero];
+    }
+    
+    UIView * view=[[UIView alloc]initWithFrame:CGRectMake(0, PL_HEIGHT-50, PL_WIDTH, 50)];
+    view.backgroundColor=[UIColor colorWithRed:237.0/255.0 green:237.0/255.0 blue:237.0/255.0 alpha:1];
+    [self.view addSubview:view];
+    
+    UIButton *sure=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, PL_WIDTH*2/3, 50)];
+    sure.backgroundColor=[UIColor colorWithRed:77.0/255.0 green:170.0/255.0 blue:37.0/255.0 alpha:1];
+    [sure setTitle:@"确定" forState:UIControlStateNormal];
+    [sure addTarget:self action:@selector(sureClick) forControlEvents:UIControlEventTouchUpInside];
+    [view addSubview:sure];
+    UIButton *cancle=[[UIButton alloc]initWithFrame:CGRectMake(PL_WIDTH*2/3, 0, PL_WIDTH/3, 50)];
+    cancle.backgroundColor=[UIColor colorWithRed:233.0/255.0 green:110.0/255.0 blue:10.0/255.0 alpha:1];
+     [cancle setTitle:@"重选" forState:UIControlStateNormal];
+    [cancle addTarget:self action:@selector(cancleClick) forControlEvents:UIControlEventTouchUpInside];
+    [view addSubview:cancle];
+    [self request];
+    
+    bgView=[[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_button.frame), PL_WIDTH, PL_HEIGHT)];
+    bgView.backgroundColor=[UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:109.0/255.0 alpha:0.9];
+    bgView.hidden=YES;
+    [self.view addSubview:bgView];
+    table2=[[UITableView alloc]initWithFrame:CGRectMake(CGRectGetMinX(_button.frame)-5, 0, _button.frame.size.width+10, _button.frame.size.height*9-5)];
+    table2.delegate=self;
+    table2.dataSource=self;
+    [bgView addSubview:table2];
+    
+    if ([table2 respondsToSelector:@selector(setSeparatorInset:)]) {
+        [table2 setSeparatorInset:UIEdgeInsetsZero];
+    }
+    if ([table2 respondsToSelector:@selector(setLayoutMargins:)]) {
+        [table2 setLayoutMargins:UIEdgeInsetsZero];
+    }
+}
+
+-(void)request
+{
+    [[MyRequest defaultsRequest]GetWebSiteList:^(NSMutableString *string) {
+        NSLog(@"string=====%@",string);
+        requeStr=string;
+        if ([string isEqualToString:@"[]"]) {
+            PL_ALERT_SHOW(@"暂不可用");
+        }
+        SBJSON *json=[[SBJSON alloc]init];
+        array=[json objectWithString:string error:nil];
+        NSLog(@"%dqqqqqqqqq",array.count);
+        [table reloadData];
+    } WebSiteMode:_string userid:[[NSUserDefaults standardUserDefaults]objectForKey:PL_USER_NAME] token:[[NSUserDefaults standardUserDefaults]objectForKey:PL_USER_TOKEN]];
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if(tableView==table)
+    {
+        return array.count;
+    }
+    else
+    {
+        return 6;
+    }
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView==table) {
+        if ([_string isEqualToString:@"上海安居客"]) {
+            return 80;
+        }
+        else if ([_string isEqualToString:@"昆山安居客"])
+        {
+            return 80;
+        }
+        else if ([_string isEqualToString:@"搜房"])
+        {
+            return 44;
+        }
+        else if ([_string isEqualToString:@"58同城"])
+        {
+            return 100;
+        }
+        else if ([_string isEqualToString:@"新浪"])
+        {
+            return 100;
+        }
+        else
+        {
+            return 100;
+        }
+    }
+    else
+    {
+        return 44;
+    }
+   
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView==table) {
+        static NSString *str=@"cell";
+        WebCustomCell *cell=[tableView dequeueReusableCellWithIdentifier:str];
+        if (!cell) {
+            cell=[[WebCustomCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:str];
+        }
+        NSDictionary *dic=[array objectAtIndex:indexPath.row];
+        
+        if ([_string isEqualToString:@"上海安居客"]) {
+            cell.lab1.text=@"";
+            cell.lab2.text=@"";
+            cell.lab3.text=@"";
+            cell.lab33.text=@"";
+            cell.lab4.text=@"";
+            cell.lab5.text=@"";
+            cell.lab6.text=@"";
+            cell.lab7.text=@"";
+            cell.lab1.hidden=NO;
+            cell.lab2.hidden=NO;
+            cell.lab3.hidden=NO;
+            cell.lab33.hidden=YES;
+            cell.lab4.hidden=NO;
+            cell.lab5.hidden=NO;
+            cell.lab6.hidden=NO;
+            cell.lab7.hidden=YES;
+            cell.button.hidden=NO;
+            
+            cell.lab1.text=[dic objectForKey:@"PackageID"];
+            cell.lab2.text=[NSString stringWithFormat:@"定价房源：%@",[dic objectForKey:@"HRDingJiaCount"]];
+            cell.lab3.text=[NSString stringWithFormat:@"充值要求：%@",[dic objectForKey:@"PayDemand"]];
+            cell.lab4.text=[NSString stringWithFormat:@"库存：%@",[dic objectForKey:@"HRCount"]];
+            cell.lab5.text=[NSString stringWithFormat:@"竞价房源：%@",[dic objectForKey:@"HRJingJiaCount"]];
+            cell.lab6.text=[NSString stringWithFormat:@"价格(元/月)：%@",[dic objectForKey:@"PackagePrice"]];
+            
+            
+        }
+        else if ([_string isEqualToString:@"昆山安居客"])
+        {
+            cell.lab1.text=@"";
+            cell.lab2.text=@"";
+            cell.lab3.text=@"";
+            cell.lab33.text=@"";
+            cell.lab4.text=@"";
+            cell.lab5.text=@"";
+            cell.lab6.text=@"";
+            cell.lab7.text=@"";
+            cell.lab1.hidden=NO;
+            cell.lab2.hidden=NO;
+            cell.lab3.hidden=NO;
+            cell.lab33.hidden=YES;
+            cell.lab4.hidden=NO;
+            cell.lab5.hidden=NO;
+            cell.lab6.hidden=YES;
+            cell.lab7.hidden=YES;
+            cell.button.hidden=NO;
+            
+            cell.lab1.text=[NSString stringWithFormat:@"编号：%@",[dic objectForKey:@"PackageID"]];
+            cell.lab2.text=[NSString stringWithFormat:@"出租房源(套)：%@",[dic objectForKey:@"HRZuCount"]];
+            cell.lab3.text=[NSString stringWithFormat:@"套餐描述：%@",[dic objectForKey:@"Remark"]];;
+            cell.lab4.text=[NSString stringWithFormat:@"出售房源(套)：%@",[dic objectForKey:@"HRShowCount"]];
+            cell.lab5.text=[NSString stringWithFormat:@"套餐价格(元/月)：%@",[dic objectForKey:@"PackagePrice"]];
+        }
+        else if([_string isEqualToString:@"搜房网"])
+        {
+            PL_ALERT_SHOW(@"暂不可用");
+            cell.lab1.text=@"";
+            cell.lab2.text=@"";
+            cell.lab3.text=@"";
+            cell.lab33.text=@"";
+            cell.lab4.text=@"";
+            cell.lab5.text=@"";
+            cell.lab6.text=@"";
+            cell.lab7.text=@"";
+            cell.button.hidden=YES;
+            
+            /*
+            cell.lab1.text=@"111";
+            cell.lab2.text=@"111";
+            cell.lab3.text=@"111";
+            cell.lab33.text=@"111";
+            
+            cell.lab4.text=@"111";
+            cell.lab5.text=@"111";
+            cell.lab6.text=@"111";
+            cell.lab7.text=@"111";
+            cell.lab33.hidden=NO;
+            cell.lab7.hidden=NO;
+             */
+        }
+        
+        else if ([_string isEqualToString:@"58同城网"])
+        {
+            cell.lab1.text=@"";
+            cell.lab2.text=@"";
+            cell.lab3.text=@"";
+            cell.lab33.text=@"";
+            cell.lab4.text=@"";
+            cell.lab5.text=@"";
+            cell.lab6.text=@"";
+            cell.lab7.text=@"";
+            cell.lab1.hidden=NO;
+            cell.lab2.hidden=NO;
+            cell.lab3.hidden=NO;
+            cell.lab33.hidden=NO;
+            cell.lab4.hidden=YES;
+            cell.lab5.hidden=NO;
+            cell.lab6.hidden=NO;
+            cell.lab7.hidden=YES;
+            cell.button.hidden=NO;
+            
+            cell.lab1.text=[NSString stringWithFormat:@"%@",[dic objectForKey:@"PackageID"]];
+            cell.lab2.text=[NSString stringWithFormat:@"刷新次数(次/天)：%@",[dic objectForKey:@"HRRefreshCount"]];
+            cell.lab3.text=[NSString stringWithFormat:@"套餐价格(元/月)：%@",[dic objectForKey:@"PackagePrice"]];;
+            cell.lab5.text=[NSString stringWithFormat:@"房源量：%@",[dic objectForKey:@"HRCount"]];
+            cell.lab6.text=[NSString stringWithFormat:@"赠送推广价格(元)：%@",[dic objectForKey:@"PackagePresent"]];
+            cell.lab33.text=[NSString stringWithFormat:@"服务内容描述：%@",[dic objectForKey:@"PackageRemark"]];
+            
+        }
+        
+        else if ([_string isEqualToString:@"新浪网"])
+        {
+            cell.lab1.text=@"";
+            cell.lab2.text=@"";
+            cell.lab3.text=@"";
+            cell.lab33.text=@"";
+            cell.lab4.text=@"";
+            cell.lab5.text=@"";
+            cell.lab6.text=@"";
+            cell.lab7.text=@"";
+            cell.lab1.hidden=NO;
+            cell.lab2.hidden=NO;
+            cell.lab3.hidden=NO;
+            cell.lab33.hidden=NO;
+            cell.lab4.hidden=NO;
+            cell.lab5.hidden=YES;
+            cell.lab6.hidden=NO;
+            cell.lab7.hidden=NO;
+            cell.button.hidden=NO;
+            
+            cell.lab1.text=[NSString stringWithFormat:@"%@",[dic objectForKey:@"PackageID"]];
+            cell.lab2.text=[NSString stringWithFormat:@"认证房：%@",[dic objectForKey:@"HRRenZhengCount"]];
+            cell.lab3.text=[NSString stringWithFormat:@"急售标签：%@",[dic objectForKey:@"HRJiShouCount"]];
+            cell.lab4.text=[NSString stringWithFormat:@"上架房源数：%@",[dic objectForKey:@"HRCount"]];
+           
+            cell.lab6.text=[NSString stringWithFormat:@"新推标签：%@",[dic objectForKey:@"HRXinTuiCount"]];
+            cell.lab33.text=[NSString stringWithFormat:@"套餐价格(元/月)：%@",[dic objectForKey:@"PackagePrice"]];
+             cell.lab7.text=[NSString stringWithFormat:@"刷新次数(次/天)：%@",[dic objectForKey:@"HRRefreshCount"]];
+            
+        }
+        
+        else if ([_string isEqualToString:@"赶集网"])
+        {
+            cell.lab1.text=@"";
+            cell.lab2.text=@"";
+            cell.lab3.text=@"";
+            cell.lab33.text=@"";
+            cell.lab4.text=@"";
+            cell.lab5.text=@"";
+            cell.lab6.text=@"";
+            cell.lab7.text=@"";
+            cell.lab1.hidden=NO;
+            cell.lab2.hidden=NO;
+            cell.lab3.hidden=NO;
+            cell.lab33.hidden=NO;
+            cell.lab4.hidden=NO;
+            cell.lab5.hidden=YES;
+            cell.lab6.hidden=YES;
+            cell.lab7.hidden=YES;
+            cell.button.hidden=NO;
+            
+            cell.lab1.text=[NSString stringWithFormat:@"%@",[dic objectForKey:@"PackageID"]];
+            cell.lab2.text=[NSString stringWithFormat:@"赠送竞价币：%@",[dic objectForKey:@"PackagePresent"]];
+            cell.lab3.text=[NSString stringWithFormat:@"刷新次数(次/天)：%@",[dic objectForKey:@"HRRefreshCount"]];
+            cell.lab4.text=[NSString stringWithFormat:@"房源量：%@",[dic objectForKey:@"HRCount"]];
+            
+            cell.lab5.text=[NSString stringWithFormat:@"套餐价格(元/月)：%@",[dic objectForKey:@"PackagePrice"]];
+            
+            cell.lab33.text=[NSString stringWithFormat:@"服务内容描述：%@",[dic objectForKey:@"PackageRemark"]];
+            
+            
+        }
+        
+        [cell.button addTarget:self action:@selector(selectClick:) forControlEvents:UIControlEventTouchUpInside];
+        cell.button.tag=indexPath.row;
+        [cell addSubview:cell.button];
+        
+        cell.selectionStyle=UITableViewCellSelectionStyleNone;
+        return cell;
+    }
+    else
+    {
+        static NSString *str=@"cell2";
+        UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:str];
+        if (!cell) {
+            cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:str];
+        }
+        NSArray *imageArr=[NSArray arrayWithObjects:[UIImage imageNamed:@"搜房网logo33.png"],[UIImage imageNamed:@"sinaLOGO33.png"],[UIImage imageNamed:@"anjuke_SH33.png"],[UIImage imageNamed:@"anjuke_ks33.png"],[UIImage imageNamed:@"58LOGO33.png"],[UIImage imageNamed:@"GanJilogo33.png"], nil];
+        UIImageView *imageView=[[UIImageView alloc]initWithFrame:CGRectMake(5, 5, _button.frame.size.width, _button.frame.size.height)];
+        imageView.image=imageArr[indexPath.row];
+        [cell addSubview:imageView];
+        
+        cell.selectionStyle=UITableViewCellSelectionStyleNone;
+        return cell;
+    }
+    
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView==table2) {
+        bgView.hidden=YES;
+        selectBtn.selected=NO;
+        if (indexPath.row==0) {
+            _string=@"搜房网";
+            
+            [_button setImage:[UIImage imageNamed:@"搜房网logo33.png"] forState:UIControlStateNormal];
+            //[self request];
+            [table reloadData];
+        }
+        else if (indexPath.row==1)
+        {
+            PL_ALERT_SHOW(@"数据异常");
+            //_string=@"新浪网";
+           
+           // [_button setImage:[UIImage imageNamed:@"sinaLOGO33.png"] forState:UIControlStateNormal];
+            
+            //[self request];
+        }
+        else if (indexPath.row==2)
+        {
+            _string=@"上海安居客";
+           
+            [_button setImage:[UIImage imageNamed:@"anjuke_SH33.png"] forState:UIControlStateNormal];
+            [self request];
+        }
+        else if (indexPath.row==3)
+        {
+            _string=@"昆山安居客";
+           
+            [_button setImage:[UIImage imageNamed:@"anjuke_ks33.png"] forState:UIControlStateNormal];
+            [self request];
+        }
+        else if (indexPath.row==4)
+        {
+            _string=@"58同城网";
+            
+            [_button setImage:[UIImage imageNamed:@"58LOGO33.png"] forState:UIControlStateNormal];
+            [self request];
+        }
+        else if (indexPath.row==5)
+        {
+            _string=@"赶集网";
+            
+            [_button setImage:[UIImage imageNamed:@"GanJilogo33.png"] forState:UIControlStateNormal];
+            [self request];
+        }
+    }
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+        [cell setSeparatorInset:UIEdgeInsetsZero];
+    }
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        [cell setLayoutMargins:UIEdgeInsetsZero];
+    }
+}
+
+-(void)webClick:(UIButton *)sender
+{
+    bgView.hidden=NO;
+
+}
+
+-(void)selectClick:(UIButton *)sender
+{
+   
+    
+    if (sender!=selectBtn) {
+        selectBtn.selected=NO;
+        selectBtn=sender;
+    }
+    selectBtn.selected=YES;
+    
+    NSLog(@"%d",selectBtn.tag);
+    
+}
+
+-(void)sureClick
+{
+    if (selectBtn.selected) {
+        NSLog(@"%@",_string);
+        if ([_string isEqualToString:@"上海安居客"]) {
+            //NSDictionary *dic=[array objectAtIndex:selectBtn.tag];
+            //[[NSNotificationCenter defaultCenter]postNotificationName:@"tongzhi2222222222" object:nil userInfo:dic];
+            
+           // UIStoryboard * story =[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+          //  UIViewController * view = [story instantiateViewControllerWithIdentifier:@"page"];
+            
+            PackageViewController *SH=[[PackageViewController alloc]init];
+            SH.dict=[array objectAtIndex:selectBtn.tag];
+            [self.navigationController pushViewController:SH animated:YES];
+        }
+        else if ([_string isEqualToString:@"昆山安居客"])
+        {
+            KunShanWebViewController *kun=[[KunShanWebViewController alloc]init];
+            NSLog(@"array11111=====%d",array.count);
+            kun.dict=[array objectAtIndex:selectBtn.tag];
+            [self.navigationController pushViewController:kun animated:YES];
+            
+        }
+        else if ([_string isEqualToString:@"新浪网"])
+        {
+            sinaViewController *sina=[[sinaViewController alloc]init];
+            sina.dict=[array objectAtIndex:selectBtn.tag];
+            [self.navigationController pushViewController:sina animated:YES];
+            //[_button setImage:[UIImage imageNamed:@"sinaLOGO33.png"] forState:UIControlStateNormal];
+        }
+        else if ([_string isEqualToString:@"搜房网"])
+        {
+            [_button setImage:[UIImage imageNamed:@"搜房网logo33.png"] forState:UIControlStateNormal];
+            [table removeFromSuperview];
+            
+        }
+        else if ([_string isEqualToString:@"58同城网"])
+        {
+            TongChengViewController *tongcheng=[[TongChengViewController alloc]init];
+            tongcheng.dict=[array objectAtIndex:selectBtn.tag];
+            [self.navigationController pushViewController:tongcheng animated:YES];
+            
+        }
+        else if ([_string isEqualToString:@"赶集网"])
+        {
+            GanJiViewController *ganji=[[GanJiViewController alloc]init];
+            ganji.dict=[array objectAtIndex:selectBtn.tag];
+            [self.navigationController pushViewController:ganji animated:YES];
+        }
+    }
+    else
+    {
+        PL_ALERT_SHOW(@"请选择一种套餐");
+    }
+   
+    
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    NSLog(@"Segue Identifier = %@", [segue identifier]); 
+    NSDictionary *dic=[array objectAtIndex:selectBtn.tag];
+    id page=segue.destinationViewController;
+    [page setValue:dic forKey:@"dict"];
+}
+
+-(void)cancleClick
+{
+    selectBtn.selected=NO;
+}
+
+-(void)returnClick
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    bgView.hidden=YES;
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

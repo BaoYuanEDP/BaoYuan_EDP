@@ -1,0 +1,25 @@
+//
+//  GestureMenuViewController.h
+//  BYFCApp
+//
+//  Created by PengLee on 15/4/13.
+//  Copyright (c) 2015年 PengLee. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+@protocol GestureMenuViewControllerDelegate<NSObject>
+-(void)dismiss;
+@end
+
+
+@interface GestureMenuViewController : UIViewController
+{
+    NSArray * viewContrs ;
+}
+@property(weak,nonatomic) id<GestureMenuViewControllerDelegate>delegate;
+@property(copy,nonatomic) void (^dicBlock)(NSMutableDictionary *);
+-(void)getAStringByBlock:(void(^)(NSMutableDictionary *dic))block;
+@property (nonatomic, strong) NSString *str12;
+@property (nonatomic, strong) NSMutableDictionary *dic;
+
+@end

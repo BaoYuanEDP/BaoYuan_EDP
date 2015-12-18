@@ -1,0 +1,269 @@
+//
+//  AllFollowRoomViewController.m
+//  BYFCApp
+//
+//  Created by PengLee on 15/9/24.
+//  Copyright (c) 2015年 PengLee. All rights reserved.
+//
+
+#import "AllFollowRoomViewController.h"
+#import "PL_Header.h"
+@interface AllFollowRoomViewController ()
+
+@end
+
+@implementation AllFollowRoomViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title=@"跟进列表";
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.navigationController.navigationBarHidden=NO;
+    UIButton * backItemBnt = [UIButton buttonWithType:UIButtonTypeCustom];
+    backItemBnt.frame = CGRectMake(10, 10, 10, 20);
+    [backItemBnt setBackgroundImage:[UIImage imageNamed:@"返回.png"] forState:UIControlStateNormal];
+    [backItemBnt addTarget:self action:@selector(returnClick) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem * leftBtn = [[UIBarButtonItem alloc]initWithCustomView:backItemBnt];
+    self.navigationItem.leftBarButtonItem = leftBtn;
+    
+    UILabel *genR=[[UILabel alloc]initWithFrame:CGRectMake(15, 64, 0.17*PL_WIDTH, 40)];
+    genR.textColor=[UIColor redColor];
+    genR.text=@"跟进人";
+    genR.font=[UIFont systemFontOfSize:13];
+    [self.view addSubview:genR];
+    UILabel *genF=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(genR.frame)-5, 64, 0.17*PL_WIDTH, 40)];
+    genF.textColor=[UIColor redColor];
+    genF.text=@"跟进方式";
+    genF.font=[UIFont systemFontOfSize:13];
+    [self.view addSubview:genF];
+    UILabel *genS=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(genF.frame)+10, 64, 0.17*PL_WIDTH, 40)];
+    genS.textColor=[UIColor redColor];
+    genS.text=@"跟进类型";
+    genS.font=[UIFont systemFontOfSize:13];
+    [self.view addSubview:genS];
+    UILabel *genT=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(genS.frame)+10,64, 0.17*PL_WIDTH, 40)];
+    genT.textColor=[UIColor redColor];
+    genT.text=@"客户反馈";
+    genT.font=[UIFont systemFontOfSize:13];
+    [self.view addSubview:genT];
+    UILabel *genD=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(genT.frame)+10,64, 0.17*PL_WIDTH, 40)];
+    genD.textColor=[UIColor redColor];
+    genD.text=@"跟进时间";
+    genD.font=[UIFont systemFontOfSize:13];
+    [self.view addSubview:genD];
+    
+    UIImageView *heng=[[UIImageView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(genR.frame), PL_WIDTH, 1)];
+    heng.image=[UIImage imageNamed:@"hengxian.png"];
+    [self.view addSubview:heng];
+    
+    table=[[UITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(heng.frame), PL_WIDTH, PL_HEIGHT) style:UITableViewStylePlain];
+    table.dataSource=self;
+    table.delegate=self;
+    table.separatorStyle=UITableViewCellSeparatorStyleNone;
+    [self.view addSubview:table];
+    [self request];
+    [self setupRefresh];
+}
+
+-(void)request
+{
+    //    [[MyRequest defaultsRequest]afGetCustFollowCustID:[[NSUserDefaults standardUserDefaults]objectForKey:@"custID"] StartIndex:@"1" PageSize:@"20" userid:[PL_USER_STORAGE objectForKey:PL_USER_NAME] userToken:[PL_USER_STORAGE objectForKey:PL_USER_TOKEN] completBack:^(id obj) {
+    //        NSLog(@"%@",obj);
+    //        SBJSON *json=[[SBJSON alloc]init];
+    //        array=[json objectWithString:obj error:nil];
+    //        [table reloadData];
+    //
+    //    }];
+    NSLog(@" -%@ -%@ -%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"PropertyId"] ,[[NSUserDefaults standardUserDefaults]objectForKey:@"userName" ],[[NSUserDefaults standardUserDefaults]objectForKey:PL_USER_TOKEN]);
+    [[MyRequest defaultsRequest] GetPropertyContactListPropertyId:[[NSUserDefaults standardUserDefaults]objectForKey:@"PropertyId"] userid:[PL_USER_STORAGE objectForKey:PL_USER_NAME] token:[[NSUserDefaults standardUserDefaults]objectForKey:PL_USER_TOKEN] string:^(NSMutableString *string) {
+        if ([string isEqualToString:PL_NO_LOGIN_])
+        {
+            ViewController *login=[[ViewController alloc]init];
+            [self.navigationController popToViewController:login animated:YES];
+            return ;
+            
+        }
+        else if ([string isEqualToString:@"[]"])
+        {
+            // PL_ALERT_SHOWNOT_OKAND_YES(@"此账号暂无跟进信息");
+        }
+        else if ([string isEqualToString:@"expection"])
+        {
+            PL_ALERT_SHOWNOT_OKAND_YES(string);
+            
+        }
+        else if(string.length)
+        {
+            SBJSON *json=[[SBJSON alloc]init];
+            array=[json objectWithString:string error:nil];
+            NSLog(@"%ld",(unsigned long)array.count);
+            [table reloadData];
+            
+        }
+
+    }];
+//    [[MyRequest defaultsRequest]GetPropertyContactList:^(NSMutableString *string) {
+//        NSLog(@"%@",string);
+//        if ([string isEqualToString:PL_NO_LOGIN_])
+//        {
+//            ViewController *login=[[ViewController alloc]init];
+//            [self.navigationController popToViewController:login animated:YES];
+//            return ;
+//            
+//        }
+//        else if ([string isEqualToString:@"[]"])
+//        {
+//            // PL_ALERT_SHOWNOT_OKAND_YES(@"此账号暂无跟进信息");
+//        }
+//        else if ([string isEqualToString:@"expection"])
+//        {
+//            PL_ALERT_SHOWNOT_OKAND_YES(string);
+//            
+//        }
+//        else if(string.length)
+//        {
+//            SBJSON *json=[[SBJSON alloc]init];
+//            array=[json objectWithString:string error:nil];
+//            NSLog(@"%ld",(unsigned long)array.count);
+//            [table reloadData];
+//            
+//        }
+//        
+//        
+//        
+//    } PropertyId:[[NSUserDefaults standardUserDefaults]objectForKey:@"PropertyId"] userid:[PL_USER_STORAGE objectForKey:PL_USER_NAME] token:[[NSUserDefaults standardUserDefaults]objectForKey:PL_USER_TOKEN]];
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return array.count;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *str=@"string";
+    UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:str];
+    if (!cell) {
+        cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:str];
+        UILabel *lab1=[[UILabel alloc]initWithFrame:CGRectMake(7/320.00*PL_WIDTH, 20, 0.17*PL_WIDTH, 20)];
+        lab1.textAlignment=NSTextAlignmentCenter;
+        lab1.font=[UIFont systemFontOfSize:13];
+        lab1.tag=11;
+        [cell addSubview:lab1];
+        UILabel *lab2=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(lab1.frame), 20, 0.17*PL_WIDTH, 20)];
+        lab2.tag=12;
+        lab2.textAlignment=NSTextAlignmentCenter;
+        lab2.font=[UIFont systemFontOfSize:13];
+        [cell addSubview:lab2];
+        UILabel *lab3=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(lab2.frame)+10, 20, 0.17*PL_WIDTH, 20)];
+        lab3.tag=13;
+        lab3.font=[UIFont systemFontOfSize:13];
+        lab3.textAlignment=NSTextAlignmentCenter;
+        [cell addSubview:lab3];
+        UILabel *lab4=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(lab3.frame)+13, 20, 0.17*PL_WIDTH, 20)];
+        lab4.tag=14;
+        lab4.font=[UIFont systemFontOfSize:13];
+        lab4.textAlignment=NSTextAlignmentLeft;
+        [cell addSubview:lab4];
+        UILabel *lab5=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(lab4.frame), 20, 0.17*PL_WIDTH+20, 20)];
+        lab5.tag=15;
+        
+        lab5.font=[UIFont systemFontOfSize:13];
+        lab5.textAlignment=NSTextAlignmentLeft;
+        [cell addSubview:lab5];
+        
+    }
+    NSDictionary *dic=[array objectAtIndex:indexPath.row];
+    UILabel *lab11=(UILabel *)[cell viewWithTag:11];
+    lab11.text=[dic objectForKey:@"UserName"];
+    
+    UILabel *lab22=(UILabel *)[cell viewWithTag:12];
+    lab22.text=[dic objectForKey:@"FollowWay"];
+    UILabel *lab33=(UILabel *)[cell viewWithTag:13];
+    lab33.text=[dic objectForKey:@"FollowType"];
+    UILabel *lab44=(UILabel *)[cell viewWithTag:14];
+    lab44.text=[dic objectForKey:@"Content"];
+    UILabel *lab55=(UILabel *)[cell viewWithTag:15];
+    NSString *str5=[dic objectForKey:@"FollowDate"];
+    NSString *newStr5=[str5 substringToIndex:10];
+    
+    lab55.text=newStr5;
+    cell.selectionStyle=UITableViewCellSelectionStyleNone;
+    return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSDictionary *dictionary1=[array objectAtIndex:indexPath.row];
+    GenjinView * genjin = [[GenjinView alloc]initWithUser_Name:[dictionary1 objectForKey:@"EmpName"] writeFs:[dictionary1 objectForKey:@"FollowWay"] writeLX:[dictionary1 objectForKey:@"FollowType"] contentString:[dictionary1 objectForKey:@"Content"] writeDate:[dictionary1 objectForKey:@"FollowDate"]];
+    
+    [genjin showInView:self.view.window animation:YES];
+}
+
+- (void)setupRefresh
+{
+    // 1.下拉刷新(进入刷新状态就会调用self的headerRereshing)
+    //    [self.tableView addHeaderWithTarget:self action:@selector(headerRereshing)];
+    // dateKey用于存储刷新时间，可以保证不同界面拥有不同的刷新时间
+    // [table addHeaderWithTarget:self action:@selector(headerRereshing) dateKey:@"table"];
+    [table addHeaderWithTarget:self action:@selector(headerRereshingAF)];
+    //#warning 自动刷新(一进入程序就下拉刷新)
+    //    [self.tableView headerBeginRefreshing];
+    
+    // 2.上拉加载更多(进入刷新状态就会调用self的footerRereshing)
+    [table addFooterWithTarget:self action:@selector(footerRereshingAF)];
+    
+    // 设置文字(也可以不设置,默认的文字在MJRefreshConst中修改)
+    table.headerPullToRefreshText = @"下拉刷新";
+    table.headerReleaseToRefreshText = @"松开刷新";
+    table.headerRefreshingText = @"正在刷新中";
+    
+    table.footerPullToRefreshText = @"上拉加载更多数据";
+    table.footerReleaseToRefreshText = @"松开加载更多数据";
+    table.footerRefreshingText = @"正在加载中";
+}
+
+- (void)headerRereshingAF
+{
+    [[MyRequest defaultsRequest]afGetCustFollowCustID:[[NSUserDefaults standardUserDefaults]objectForKey:@"custID"] StartIndex:@"" PageSize:@"20" userid:[PL_USER_STORAGE objectForKey:PL_USER_NAME] userToken:[PL_USER_STORAGE objectForKey:PL_USER_TOKEN] completBack:^(id obj) {
+        NSLog(@"%@",obj);
+        SBJSON *json=[[SBJSON alloc]init];
+        array=[json objectWithString:obj error:nil];
+        [table reloadData];
+        [table headerEndRefreshing];
+    }];
+}
+
+static NSInteger count=0;
+- (void)footerRereshingAF
+{
+    count++;
+    [[MyRequest defaultsRequest]afGetCustFollowCustID:[[NSUserDefaults standardUserDefaults]objectForKey:@"custID"] StartIndex:[NSString stringWithFormat:@"%lu",(unsigned long)count+1] PageSize:@"20" userid:[PL_USER_STORAGE objectForKey:PL_USER_NAME] userToken:[PL_USER_STORAGE objectForKey:PL_USER_TOKEN] completBack:^(id obj) {
+        SBJSON *json=[[SBJSON alloc]init];
+        array=[json objectWithString:obj error:nil];
+        [table reloadData];
+        [table footerEndRefreshing];
+    }];
+    
+}
+
+-(void)returnClick
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

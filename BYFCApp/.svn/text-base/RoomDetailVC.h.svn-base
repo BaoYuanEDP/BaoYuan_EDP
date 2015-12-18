@@ -1,0 +1,83 @@
+//
+//  RoomDetailVC.h
+//  BYFCApp
+//
+//  Created by PengLee on 14/12/16.
+//  Copyright (c) 2014年 PengLee. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "PL_Header.h"
+#import "Comon.h"
+#import "BMKMapView.h"
+#import "CycleScrollView.h"
+
+
+
+@interface RoomDetailVC : UIViewController<UITextViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,BMKMapViewDelegate>
+{
+   
+    CGFloat _keyboardHeight;
+    CGFloat heightForRow;
+    
+    
+//    UILabel * titleLable;
+//    UILabel * titleLable1;
+    UITableView * _tableView;
+    NSDictionary *loupanDic;
+    UIView *phonebg;
+    UITableView *phoneTable;
+    NSArray *phoneArr;
+    UIButton * rightBtn;
+    UILabel *placeholder;
+    
+    NSArray *imageArray;
+    UIButton *fangshiBtn;
+    UIButton *styleBtn;
+    BMKMapView * _mapView;
+    NSMutableArray * imageArrayContent;
+    
+    NSDictionary *detailDic;
+    UIButton * button11;
+    UIButton * button22;
+    
+    UIButton * button2;
+    UIView *view2;
+    
+    
+    
+    NSString * filePathImage;
+     long  int               imageCurrentID;
+    NSInteger           _currentNum;
+    
+    NSString * _photoCacheType;
+    CycleScrollView * cycle;
+    
+}
+//xiangqing
+@property(nonatomic,strong)NSArray *detailArray;
+@property(nonatomic,strong)NSDictionary * dictionary;
+@property(nonatomic,strong)NSArray *genjinArray;
+//楼盘数组
+@property(nonatomic,strong)NSArray *loupanArray;
+@property(nonatomic,strong)NSArray *countArray;
+@property(strong,nonatomic)NSString *  roomProID;
+
+@property(strong,nonatomic) NSString * propertyID;;
+
+//方式
+@property(strong,nonatomic)NSString *fangshiS;
+@property(strong,nonatomic)NSString *styleS;
+
+@property(strong,nonatomic)UIButton * button1;
+@property(strong,nonatomic)UIButton * button2;
+
+@property(strong,nonatomic)UILabel * titleLable;
+@property(strong,nonatomic)UILabel * titleLable1;
+
+@property(strong,nonatomic)RoomData * aRoomData;
+
+//客源ID
+@property(nonatomic,strong)NSString *RoomDetailCustID;
+
+@end

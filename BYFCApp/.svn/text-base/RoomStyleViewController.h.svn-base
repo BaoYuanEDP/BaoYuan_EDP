@@ -1,0 +1,31 @@
+//
+//  RoomStyleViewController.h
+//  BYFCApp
+//
+//  Created by PengLee on 15/4/13.
+//  Copyright (c) 2015年 PengLee. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@protocol StyleDelegate;
+
+@interface RoomStyleViewController : UIViewController
+{
+    UITextField * textfield;
+    UITextField * textfield1;
+}
+@property (assign,nonatomic)BOOL isShowSection;
+
+@property (strong,nonatomic)NSString * text1String;
+@property (strong,nonatomic)NSString * text2String;
+@property (strong,nonatomic)NSString * propertyStyle;
+@property (weak,nonatomic)id < StyleDelegate>roomdelegate;
+@end
+@protocol StyleDelegate <NSObject>
+
+@optional
+
+- (void)sendSelfText1:(NSString *)text1 selfText2:(NSString *)text2 styleString:(NSString *)string;
+
+@end

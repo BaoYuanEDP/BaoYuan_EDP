@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LookKeyManagerController">
+            <connections>
+                <outlet property="CyscrollView" destination="YHT-bt-qiA" id="yrE-H1-RGV"/>
+                <outlet property="MaintTabeleView" destination="wXr-wH-6AL" id="Af7-Wy-9c8"/>
+                <outlet property="ScroolViewBackGround" destination="mhB-g8-eRC" id="BPU-cd-PQk"/>
+                <outlet property="view" destination="iN0-l3-epB" id="Ozy-Bu-6EU"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="wXr-wH-6AL">
+                    <rect key="frame" x="0.0" y="30" width="320" height="486"/>
+                    <animations/>
+                    <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="separatorColor" red="1" green="0.38846431149999999" blue="0.2394300838" alpha="1" colorSpace="calibratedRGB"/>
+                </tableView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wOI-RK-hXc">
+                    <rect key="frame" x="108" y="522" width="105" height="38"/>
+                    <animations/>
+                    <color key="backgroundColor" red="0.099867159550000001" green="0.82775098979999995" blue="0.96403488010000005" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="105" id="FTH-Pd-Li9"/>
+                        <constraint firstAttribute="height" constant="38" id="dYm-6u-hcz"/>
+                    </constraints>
+                    <state key="normal" title="退出">
+                        <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="ExitSelfView:" destination="-1" eventType="touchUpInside" id="oYZ-Il-pUb"/>
+                    </connections>
+                </button>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="wOI-RK-hXc" secondAttribute="bottom" constant="8" id="6jl-WQ-KBe"/>
+                <constraint firstItem="wXr-wH-6AL" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="IR6-xJ-fst"/>
+                <constraint firstAttribute="bottom" secondItem="wXr-wH-6AL" secondAttribute="bottom" constant="52" id="Ocr-1S-Fyz"/>
+                <constraint firstAttribute="trailing" secondItem="wXr-wH-6AL" secondAttribute="trailing" id="gfw-3l-INn"/>
+                <constraint firstItem="wOI-RK-hXc" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="kgO-5v-IjE"/>
+                <constraint firstItem="wXr-wH-6AL" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="30" id="lSm-En-Gkx"/>
+                <constraint firstItem="wOI-RK-hXc" firstAttribute="top" secondItem="wXr-wH-6AL" secondAttribute="bottom" constant="6" id="txl-Cz-RUh"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <point key="canvasLocation" x="164" y="353"/>
+        </view>
+        <view contentMode="scaleToFill" id="mhB-g8-eRC">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="229"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YHT-bt-qiA">
+                    <rect key="frame" x="8" y="0.0" width="304" height="229"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="229" id="460-H6-hLu"/>
+                        <constraint firstAttribute="width" secondItem="YHT-bt-qiA" secondAttribute="height" multiplier="304:229" id="NbX-E5-hy2"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <animations/>
+            <constraints>
+                <constraint firstItem="YHT-bt-qiA" firstAttribute="leading" secondItem="mhB-g8-eRC" secondAttribute="leading" constant="8" id="Nuh-e1-cFC"/>
+                <constraint firstAttribute="bottom" secondItem="YHT-bt-qiA" secondAttribute="bottom" id="UCH-po-zg7"/>
+                <constraint firstItem="YHT-bt-qiA" firstAttribute="centerX" secondItem="mhB-g8-eRC" secondAttribute="centerX" id="dd3-yN-n7Z"/>
+                <constraint firstItem="YHT-bt-qiA" firstAttribute="top" secondItem="mhB-g8-eRC" secondAttribute="top" id="gha-fl-kFX"/>
+                <constraint firstAttribute="trailing" secondItem="YHT-bt-qiA" secondAttribute="trailing" constant="8" id="gpU-DZ-Hhn"/>
+                <constraint firstItem="YHT-bt-qiA" firstAttribute="centerY" secondItem="mhB-g8-eRC" secondAttribute="centerY" id="mb5-I7-XVe"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="51" y="-10.5"/>
+        </view>
+    </objects>
+</document>

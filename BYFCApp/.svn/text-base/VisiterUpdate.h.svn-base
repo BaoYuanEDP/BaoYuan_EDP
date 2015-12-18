@@ -1,0 +1,28 @@
+//
+//  VisiterUpdate.h
+//  BYFCApp
+//
+//  Created by zzs on 15/5/20.
+//  Copyright (c) 2015年 PengLee. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface VisiterUpdate : NSObject
+
+@property(nonatomic,strong)NSString *CustID;
+@property(nonatomic,strong)NSString *DistrictName;
+@property(nonatomic,strong)NSString *AreaID;
+@property(nonatomic,strong)NSString *CountF;
+@property(nonatomic,strong)NSString *CountT;
+@property(nonatomic,strong)NSString *SquareMin;
+@property(nonatomic,strong)NSString *SquareMax;
+@property(nonatomic,strong)NSString *PriceMin;
+@property(nonatomic,strong)NSString *PriceMax;
+@property(nonatomic,strong)NSString *RentalMin;
+@property(nonatomic,strong)NSString *RentalMax;
+@property(nonatomic,strong)NSString *FromPort;
+@property(nonatomic,strong)NSString *userid;
+@property(nonatomic,strong)NSString *token;
+
+@end

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="MyCustomCellForSix">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="小灰星星.png" translatesAutoresizingMaskIntoConstraints="NO" id="uwC-lX-a2M">
+                        <rect key="frame" x="281" y="20" width="15" height="14"/>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M3O-WB-ppD">
+                        <rect key="frame" x="96" y="48" width="70" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <state key="normal">
+                            <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="pianqu:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="FGC-na-Gmo"/>
+                        </connections>
+                    </button>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="小灰星星.png" translatesAutoresizingMaskIntoConstraints="NO" id="4zL-JL-g5M">
+                        <rect key="frame" x="299" y="20" width="15" height="14"/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="xuequfang_hui.png" translatesAutoresizingMaskIntoConstraints="NO" id="xhd-fn-WcY">
+                        <rect key="frame" x="126" y="74" width="40" height="17"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zQS-Q1-u6M">
+                        <rect key="frame" x="183" y="47" width="119" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CVc-hI-gxh">
+                        <rect key="frame" x="324" y="9" width="43" height="36"/>
+                        <state key="normal" image="写跟进1.png">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="genjinBtn:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="toQ-ad-4hq"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="意向度：" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fSD-Vb-kbh">
+                        <rect key="frame" x="181" y="18" width="48" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="小灰星星.png" translatesAutoresizingMaskIntoConstraints="NO" id="Auj-Mi-XmY">
+                        <rect key="frame" x="223" y="20" width="15" height="14"/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="gou_hui.png" translatesAutoresizingMaskIntoConstraints="NO" id="wQC-N1-wNa">
+                        <rect key="frame" x="8" y="18" width="17" height="18"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="意向:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lhf-pC-q13">
+                        <rect key="frame" x="31" y="47" width="41" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="小灰星星.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZCm-Z7-NIs">
+                        <rect key="frame" x="242" y="20" width="15" height="14"/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="急需_hui.png" translatesAutoresizingMaskIntoConstraints="NO" id="dOm-xo-3vY">
+                        <rect key="frame" x="77" y="74" width="39" height="17"/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="小灰星星.png" translatesAutoresizingMaskIntoConstraints="NO" id="0hZ-3H-Pgu">
+                        <rect key="frame" x="263" y="20" width="15" height="14"/>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="voK-3o-bqf">
+                        <rect key="frame" x="54" y="48" width="51" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <state key="normal">
+                            <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="xiaoqu:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="HQn-Nb-d7w"/>
+                        </connections>
+                    </button>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="zu_hui.png" translatesAutoresizingMaskIntoConstraints="NO" id="UrV-w7-auq">
+                        <rect key="frame" x="8" y="43" width="17" height="18"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bmZ-dW-vQM">
+                        <rect key="frame" x="32" y="15" width="116" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cWn-LR-3pG">
+                        <rect key="frame" x="179" y="75" width="147" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="jinglituijian_hui.png" translatesAutoresizingMaskIntoConstraints="NO" id="8wp-HZ-tIR">
+                        <rect key="frame" x="28" y="74" width="37" height="17"/>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7w3-Y0-rv7">
+                        <rect key="frame" x="324" y="53" width="43" height="42"/>
+                        <state key="normal" image="打电话1.png">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="phoneBtn:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="6Jd-L7-Ess"/>
+                        </connections>
+                    </button>
+                </subviews>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="XX1" destination="Auj-Mi-XmY" id="suL-zZ-lO5"/>
+                <outlet property="XX2" destination="ZCm-Z7-NIs" id="IPI-F5-v35"/>
+                <outlet property="XX3" destination="0hZ-3H-Pgu" id="ALm-2N-b5z"/>
+                <outlet property="XX4" destination="uwC-lX-a2M" id="dId-mH-o7a"/>
+                <outlet property="XX5" destination="4zL-JL-g5M" id="9bZ-2Q-X1Z"/>
+                <outlet property="genjin" destination="CVc-hI-gxh" id="7nb-Oj-GUY"/>
+                <outlet property="gou" destination="wQC-N1-wNa" id="FIU-tC-GFt"/>
+                <outlet property="jinglituijian" destination="8wp-HZ-tIR" id="QJa-7W-lj6"/>
+                <outlet property="jixu" destination="dOm-xo-3vY" id="NfT-k0-IjG"/>
+                <outlet property="name" destination="bmZ-dW-vQM" id="iHz-Ql-H52"/>
+                <outlet property="phoneBtn" destination="7w3-Y0-rv7" id="cMa-XZ-Xgn"/>
+                <outlet property="pianqu" destination="M3O-WB-ppD" id="ekd-PR-dtZ"/>
+                <outlet property="roomInfo" destination="zQS-Q1-u6M" id="f5a-eT-Lw0"/>
+                <outlet property="xiaoqu" destination="voK-3o-bqf" id="GiJ-zG-KEf"/>
+                <outlet property="xuequfang" destination="xhd-fn-WcY" id="Xsr-2q-j8I"/>
+                <outlet property="yixiang" destination="lhf-pC-q13" id="aBj-VZ-wrb"/>
+                <outlet property="yixiangPrice" destination="cWn-LR-3pG" id="vmN-3T-2gt"/>
+                <outlet property="yixiangdu" destination="fSD-Vb-kbh" id="Msd-dr-eba"/>
+                <outlet property="zu" destination="UrV-w7-auq" id="qRs-Ut-12S"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="gou_hui.png" width="35" height="35"/>
+        <image name="jinglituijian_hui.png" width="79" height="28"/>
+        <image name="xuequfang_hui.png" width="79" height="28"/>
+        <image name="zu_hui.png" width="35" height="35"/>
+        <image name="写跟进1.png" width="90" height="90"/>
+        <image name="小灰星星.png" width="471" height="466"/>
+        <image name="急需_hui.png" width="79" height="28"/>
+        <image name="打电话1.png" width="90" height="90"/>
+    </resources>
+</document>

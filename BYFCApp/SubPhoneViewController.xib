@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SubPhoneViewController">
+            <connections>
+                <outlet property="TimeSelesctView" destination="Oqi-4Y-apr" id="pwg-I0-GYD"/>
+                <outlet property="but1" destination="wJT-4P-Jue" id="jIl-m6-UuF"/>
+                <outlet property="but2" destination="y8a-pv-S2S" id="vxs-Kj-M72"/>
+                <outlet property="but3" destination="ooN-Ih-6Mz" id="0lU-0a-PKv"/>
+                <outlet property="but4" destination="sn4-35-Bg7" id="aAo-7h-RAs"/>
+                <outlet property="filterLabel" destination="frN-h1-dZ8" id="JTk-bu-TNk"/>
+                <outlet property="scrollView" destination="KBW-WL-6aX" id="uuy-AN-ACC"/>
+                <outlet property="view" destination="L2Y-uX-CMF" id="4lv-bR-eZ1"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="L2Y-uX-CMF">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SRC-gM-8zw">
+                    <rect key="frame" x="0.0" y="64" width="320" height="40"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z96-NB-AQA">
+                            <rect key="frame" x="8" y="0.0" width="30" height="40"/>
+                            <animations/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="30" id="csG-Q6-eZj"/>
+                                <constraint firstAttribute="height" constant="40" id="xg3-G5-Rzv"/>
+                            </constraints>
+                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <state key="normal" title="筛选">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="clickFilterButton:" destination="-1" eventType="touchUpInside" id="uX6-Rn-pjc"/>
+                            </connections>
+                        </button>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="filter.png" translatesAutoresizingMaskIntoConstraints="NO" id="iM0-i0-NT0">
+                            <rect key="frame" x="44" y="11" width="22" height="18"/>
+                            <animations/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="22" id="KmL-jE-OyP"/>
+                                <constraint firstAttribute="height" constant="18" id="NIG-6X-9ud"/>
+                            </constraints>
+                        </imageView>
+                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" bounces="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KBW-WL-6aX">
+                            <rect key="frame" x="68" y="0.0" width="205" height="40"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="frN-h1-dZ8">
+                                    <rect key="frame" x="0.0" y="0.0" width="303" height="40"/>
+                                    <animations/>
+                                    <color key="backgroundColor" red="0.91459517045454541" green="0.91459517045454541" blue="0.91459517045454541" alpha="1" colorSpace="calibratedRGB"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <animations/>
+                            <color key="backgroundColor" red="0.84836647727272729" green="0.84836647727272729" blue="0.84836647727272729" alpha="1" colorSpace="calibratedRGB"/>
+                            <variation key="heightClass=regular-widthClass=regular" ambiguous="YES">
+                                <rect key="frame" x="81" y="0.0" width="649" height="40"/>
+                            </variation>
+                        </scrollView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nsn-R5-H0V" userLabel="搜索">
+                            <rect key="frame" x="286" y="8" width="25" height="25"/>
+                            <animations/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="25" id="RZm-yG-JzE"/>
+                                <constraint firstAttribute="width" constant="25" id="XmC-kS-OW5"/>
+                            </constraints>
+                            <state key="normal" image="search.png">
+                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="clickSearchButton:" destination="-1" eventType="touchUpInside" id="u7A-wS-Hoe"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" red="0.84824810610000001" green="0.84824810610000001" blue="0.84824810610000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="KBW-WL-6aX" firstAttribute="top" secondItem="SRC-gM-8zw" secondAttribute="top" id="983-wl-gTq"/>
+                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="iM0-i0-NT0" secondAttribute="bottom" constant="11" id="M4a-cf-etw"/>
+                        <constraint firstItem="iM0-i0-NT0" firstAttribute="top" secondItem="SRC-gM-8zw" secondAttribute="top" constant="11" id="Q3z-wQ-ej3"/>
+                        <constraint firstAttribute="height" constant="40" id="RiV-He-Nud"/>
+                        <constraint firstAttribute="trailing" secondItem="Nsn-R5-H0V" secondAttribute="trailing" constant="9" id="Tjk-kU-Qdy"/>
+                        <constraint firstAttribute="bottom" secondItem="KBW-WL-6aX" secondAttribute="bottom" id="Z0N-iE-pss"/>
+                        <constraint firstItem="Nsn-R5-H0V" firstAttribute="top" secondItem="SRC-gM-8zw" secondAttribute="top" constant="8" id="aEf-0h-Xyz"/>
+                        <constraint firstItem="Nsn-R5-H0V" firstAttribute="leading" secondItem="KBW-WL-6aX" secondAttribute="trailing" constant="13" id="ccB-0p-6GP"/>
+                        <constraint firstItem="iM0-i0-NT0" firstAttribute="leading" secondItem="z96-NB-AQA" secondAttribute="trailing" constant="6" id="dsz-es-Ifw"/>
+                        <constraint firstItem="KBW-WL-6aX" firstAttribute="leading" secondItem="iM0-i0-NT0" secondAttribute="trailing" constant="2" id="fUR-eH-Zjy"/>
+                        <constraint firstAttribute="bottom" secondItem="iM0-i0-NT0" secondAttribute="bottom" constant="11" id="n0L-UH-4Xe"/>
+                        <constraint firstItem="iM0-i0-NT0" firstAttribute="leading" secondItem="z96-NB-AQA" secondAttribute="trailing" constant="6" id="nQ5-Po-6Ip"/>
+                        <constraint firstItem="iM0-i0-NT0" firstAttribute="leading" secondItem="z96-NB-AQA" secondAttribute="trailing" constant="6" id="t3s-5K-tY6"/>
+                        <constraint firstItem="iM0-i0-NT0" firstAttribute="top" relation="greaterThanOrEqual" secondItem="SRC-gM-8zw" secondAttribute="top" constant="11" id="t7d-Bt-AhM"/>
+                        <constraint firstItem="z96-NB-AQA" firstAttribute="leading" secondItem="SRC-gM-8zw" secondAttribute="leading" constant="8" id="uIq-L2-G1W"/>
+                        <constraint firstItem="z96-NB-AQA" firstAttribute="top" secondItem="SRC-gM-8zw" secondAttribute="top" id="yMe-OF-ZtL"/>
+                        <constraint firstAttribute="bottom" secondItem="z96-NB-AQA" secondAttribute="bottom" id="z6q-EK-b2b"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oqi-4Y-apr">
+                    <rect key="frame" x="0.0" y="104" width="320" height="40"/>
+                    <subviews>
+                        <button opaque="NO" tag="331" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wJT-4P-Jue">
+                            <rect key="frame" x="10" y="7" width="61" height="25"/>
+                            <animations/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="61" id="8pg-RW-7bR"/>
+                                <constraint firstAttribute="height" constant="25" id="Rpb-Jf-K7O"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <state key="normal" title="当天" image="chechkboxhover.png">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="selected" image="BlueIosCheCkBox.png"/>
+                            <connections>
+                                <action selector="SelestChenBox:" destination="-1" eventType="touchUpInside" id="aHC-ro-tA5"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="332" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y8a-pv-S2S">
+                            <rect key="frame" x="84" y="7" width="72" height="25"/>
+                            <animations/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="25" id="3a8-0S-vtC"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <state key="normal" title="7天以内" image="chechkboxhover.png">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="selected" image="BlueIosCheCkBox.png"/>
+                            <connections>
+                                <action selector="SelestChenBox:" destination="-1" eventType="touchUpInside" id="2h5-qP-3GB"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="333" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ooN-Ih-6Mz">
+                            <rect key="frame" x="167" y="7" width="66" height="25"/>
+                            <animations/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="25" id="eeA-aq-vyn"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <state key="normal" title="7-30天" image="chechkboxhover.png">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="selected" image="BlueIosCheCkBox.png"/>
+                            <connections>
+                                <action selector="SelestChenBox:" destination="-1" eventType="touchUpInside" id="aOT-IS-tC9"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="334" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sn4-35-Bg7">
+                            <rect key="frame" x="242" y="7" width="74" height="25"/>
+                            <animations/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="25" id="iVo-jJ-NfP"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <state key="normal" title="30-90天" image="chechkboxhover.png">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="selected" image="BlueIosCheCkBox.png"/>
+                            <connections>
+                                <action selector="SelestChenBox:" destination="-1" eventType="touchUpInside" id="aPq-he-Hks"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <animations/>
+                    <constraints>
+                        <constraint firstItem="ooN-Ih-6Mz" firstAttribute="top" secondItem="Oqi-4Y-apr" secondAttribute="top" constant="7" id="AKZ-VX-8Id"/>
+                        <constraint firstItem="sn4-35-Bg7" firstAttribute="top" secondItem="Oqi-4Y-apr" secondAttribute="top" constant="7" id="CfV-K4-io1"/>
+                        <constraint firstAttribute="centerX" secondItem="sn4-35-Bg7" secondAttribute="centerX" multiplier="4:7" id="DcW-7t-JQa"/>
+                        <constraint firstItem="wJT-4P-Jue" firstAttribute="top" secondItem="Oqi-4Y-apr" secondAttribute="top" constant="7" id="F4R-Hz-cfw"/>
+                        <constraint firstAttribute="centerX" secondItem="y8a-pv-S2S" secondAttribute="centerX" multiplier="4:3" id="Hyh-A7-g5I"/>
+                        <constraint firstAttribute="bottom" secondItem="ooN-Ih-6Mz" secondAttribute="bottom" constant="8" id="X3e-y6-1nC"/>
+                        <constraint firstAttribute="centerX" secondItem="wJT-4P-Jue" secondAttribute="centerX" multiplier="4:1" id="YCe-Ut-Nm5"/>
+                        <constraint firstItem="y8a-pv-S2S" firstAttribute="top" secondItem="Oqi-4Y-apr" secondAttribute="top" constant="7" id="bBR-zG-inK"/>
+                        <constraint firstAttribute="bottom" secondItem="y8a-pv-S2S" secondAttribute="bottom" constant="8" id="crW-WV-QYl"/>
+                        <constraint firstAttribute="bottom" secondItem="sn4-35-Bg7" secondAttribute="bottom" constant="8" id="d7C-jJ-Moy"/>
+                        <constraint firstAttribute="height" constant="40" id="dKX-Bh-il5"/>
+                        <constraint firstAttribute="centerX" secondItem="ooN-Ih-6Mz" secondAttribute="centerX" multiplier="4:5" id="fmn-kT-Y1e"/>
+                        <constraint firstAttribute="bottom" secondItem="wJT-4P-Jue" secondAttribute="bottom" constant="8" id="n1B-P2-eSy"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <animations/>
+            <constraints>
+                <constraint firstItem="SRC-gM-8zw" firstAttribute="top" secondItem="L2Y-uX-CMF" secondAttribute="top" constant="64" id="3mM-fW-gFn"/>
+                <constraint firstAttribute="centerX" secondItem="Oqi-4Y-apr" secondAttribute="centerX" id="A2G-Nt-CYY"/>
+                <constraint firstItem="Oqi-4Y-apr" firstAttribute="top" secondItem="SRC-gM-8zw" secondAttribute="bottom" id="Cf8-2P-3m1"/>
+                <constraint firstAttribute="trailing" secondItem="SRC-gM-8zw" secondAttribute="trailing" id="Ey2-Ca-SWy"/>
+                <constraint firstItem="SRC-gM-8zw" firstAttribute="leading" secondItem="L2Y-uX-CMF" secondAttribute="leading" id="GJe-HK-eif"/>
+                <constraint firstAttribute="centerX" secondItem="Oqi-4Y-apr" secondAttribute="centerX" id="Mqu-K6-NP3"/>
+                <constraint firstAttribute="centerX" secondItem="Oqi-4Y-apr" secondAttribute="centerX" id="mSk-Ug-Mu8"/>
+                <constraint firstAttribute="trailing" secondItem="Oqi-4Y-apr" secondAttribute="trailing" id="nv3-sm-2gO"/>
+                <constraint firstAttribute="centerX" secondItem="Oqi-4Y-apr" secondAttribute="centerX" id="vnY-xc-Lmj"/>
+                <constraint firstItem="Oqi-4Y-apr" firstAttribute="leading" secondItem="L2Y-uX-CMF" secondAttribute="leading" id="zq0-na-SE5"/>
+            </constraints>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <point key="canvasLocation" x="369" y="198"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="BlueIosCheCkBox.png" width="24" height="25"/>
+        <image name="chechkboxhover.png" width="25" height="25"/>
+        <image name="filter.png" width="128" height="128"/>
+        <image name="search.png" width="40" height="40"/>
+    </resources>
+</document>

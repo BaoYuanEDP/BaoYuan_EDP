@@ -1,0 +1,266 @@
+//
+//  GoOutApplyViewController.m
+//  BYFCApp
+//
+//  Created by heaven on 15-7-2.
+//  Copyright (c) 2015年 PengLee. All rights reserved.
+//
+
+#import "GoOutApplyViewController.h"
+#import "PL_Header.h"
+#import "GoOutApplyListViewController.h"
+@interface GoOutApplyViewController ()
+
+@end
+
+@implementation GoOutApplyViewController
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+//    [self.navigationController setNavigationBarHidden:NO animated:NO];
+//    self.navigationController.navigationBar.translucent = NO;
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+}
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @"外出申请";
+    UIButton * backItemBnt = [UIButton buttonWithType:UIButtonTypeCustom];
+    backItemBnt.frame = CGRectMake(20, 10, 10, 20);
+    // backItemBnt.backgroundColor=[UIColor redColor];
+    [backItemBnt setBackgroundImage:[UIImage imageNamed:@"返回.png"] forState:UIControlStateNormal];
+    [backItemBnt addTarget:self action:@selector(returnClick) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem * leftBtn = [[UIBarButtonItem alloc]initWithCustomView:backItemBnt];
+    self.navigationItem.leftBarButtonItem = leftBtn;
+    
+    UIButton * lookItemBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    lookItemBtn.frame = CGRectMake(PL_WIDTH-44, 10, 44, 44);
+    [lookItemBtn setTitle:@"查看" forState:UIControlStateNormal];
+    [lookItemBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [lookItemBtn addTarget:self action:@selector(lookClick) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem * rightBtn = [[UIBarButtonItem alloc]initWithCustomView:lookItemBtn];
+    self.navigationItem.rightBarButtonItem = rightBtn;
+    
+    [self initBut];
+    [self initUI];
+    // Do any additional setup after loading the view from its nib.
+}
+#pragma mark -----自定义返回按钮方法
+-(void)returnClick
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+-(void)lookClick
+{
+    GoOutApplyListViewController *vc = [[GoOutApplyListViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+- (void)initUI
+{
+    _but01.hidden = YES;
+    _but02.hidden = YES;
+    [_but01 addTarget:self action:@selector(butAction01) forControlEvents:UIControlEventTouchUpInside];
+    [_but02 addTarget:self action:@selector(butAction02) forControlEvents:UIControlEventTouchUpInside];
+    _staffName.text = [PL_USER_STORAGE objectForKey:PL_USER_TRUE_NAME];
+    _staffNum.text = [PL_USER_STORAGE objectForKey:PL_USER_code];
+    _staffName.userInteractionEnabled = NO;
+    _staffNum.userInteractionEnabled = NO;
+    _Data.tag = 1013;
+    _timeBuck.tag = 1014;
+    _goToSite.delegate = self;
+    _remark.delegate = self;
+    self.datePicker = [[UIDatePicker alloc] init];
+    self.datePicker.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width, 216);
+    self.datePicker.datePickerMode = UIDatePickerModeDate;
+    self.datePicker.minuteInterval = 30;
+    [self.datePicker setAccessibilityLanguage:@"Chinese"];
+    [self.datePicker addTarget:self action:@selector(chooseDate:) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:self.datePicker];
+    _timeViewH.constant = 0.0f;
+}
+- (void)initBut
+{
+    [_shangwuG setTitle:@"" forState:UIControlStateNormal];
+    [_xiawuG setTitle:@"" forState:UIControlStateNormal];
+    [_quantianG setTitle:@"" forState:UIControlStateNormal];
+    [_peixunG setTitle:@"" forState:UIControlStateNormal];
+}
+- (void)butAction01
+{
+    self.datePicker.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width, 216);
+    _but01.hidden = YES;
+    _butIn_s.hidden = NO;
+}
+- (void)butAction02
+{
+    _but02.hidden = YES;
+    _butIn_s.hidden = NO;
+    _timeViewH.constant = 0.0f;
+    [self initBut];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+- (IBAction)putIn:(UIButton *)sender {
+    NSString *strTime = [NSString string];
+    NSLog(@"%@",_staffName.text);
+    NSLog(@"%@",_staffNum.text);
+    NSLog(@"%@",_Data.text);
+    NSLog(@"%@",_timeBuck.text);
+    NSLog(@"%@",_goToSite.text);
+    NSLog(@"%@",_remark.text);
+    if ([_timeBuck.text isEqualToString:@"上午外出"]) {
+        strTime = @"4";
+    }else if ([_timeBuck.text isEqualToString:@"下午外出"]){
+        strTime = @"5";
+    }else if ([_timeBuck.text isEqualToString:@"全天外出"]){
+        strTime = @"6";
+        }else
+        {
+            strTime = @"7";
+        }
+    NSString *strNill = @"";
+    PL_PROGRESS_SHOW;
+    [[MyRequest defaultsRequest] getSelectForgetDate:_Data.text type:strTime OutoPlace:_goToSite.text Reason:_remark.text Summary:strNill userid:[PL_USER_STORAGE objectForKey:PL_USER_NAME] token:[PL_USER_STORAGE objectForKey:PL_USER_TOKEN] completeBack:^(id obj) {
+        NSString *str=obj;
+        if ([str isEqualToString:@"OK"]) {
+             PL_ALERT_SHOW(@"申请成功请等待审核");
+            _goToSite.text = @"";
+            _remark.text = @"";
+        }else if([str isEqualToString:@"1"]  ){
+           PL_ALERT_SHOW(@"员工号不能为空");
+            _goToSite.text = @"";
+            _remark.text = @"";
+        }else if([str isEqualToString:@"2"]  ){
+            PL_ALERT_SHOW(@"员工姓名不能为空");
+            _goToSite.text = @"";
+            _remark.text = @"";
+        }else if([str isEqualToString:@"3"]  ){
+            PL_ALERT_SHOW(@"申请日期不能为空");
+            _goToSite.text = @"";
+            _remark.text = @"";
+        }else if([str isEqualToString:@"4"]  ){
+            PL_ALERT_SHOW(@"申请日期格式有误");
+            _goToSite.text = @"";
+            _remark.text = @"";
+        }else if([str isEqualToString:@"5"]  ){
+            PL_ALERT_SHOW(@"申请日期输入有误");
+            _goToSite.text = @"";
+            _remark.text = @"";
+        }else if([str isEqualToString:@"6"]  ){
+            PL_ALERT_SHOW(@"申请日期不能选择7天以前的日期");
+            _goToSite.text = @"";
+            _remark.text = @"";
+        }else if([str isEqualToString:@"7"]  ){
+            PL_ALERT_SHOW(@"申请日期不能选择7天以后的日期");
+            _goToSite.text = @"";
+            _remark.text = @"";
+        }else if([str isEqualToString:@"8"]  ){
+            PL_ALERT_SHOW(@"外出地点不能为空");
+            _goToSite.text = @"";
+            _remark.text = @"";
+        }else if([str isEqualToString:@"9"]  ){
+            PL_ALERT_SHOW(@"备注不能为空");
+            _goToSite.text = @"";
+            _remark.text = @"";
+        }else if([str isEqualToString:@"10"]  ){
+            PL_ALERT_SHOW(@"保存数据失败");
+            _goToSite.text = @"";
+            _remark.text = @"";
+        }else if([str isEqualToString:@"11"]  ){
+            PL_ALERT_SHOW(@"保存数据出错");
+            _goToSite.text = @"";
+            _remark.text = @"";
+        }else if([str isEqualToString:@"12"]  ){
+            PL_ALERT_SHOW(@"流程发起失败");
+            _goToSite.text = @"";
+            _remark.text = @"";
+        }else if([str isEqualToString:@"14"]  ){
+            PL_ALERT_SHOW(@"数据更新失败，请联系IT部");
+            _goToSite.text = @"";
+            _remark.text = @"";
+        }else {
+            PL_ALERT_SHOW(@"已经有此条信息，不能重复申请");
+            _goToSite.text = @"";
+            _remark.text = @"";
+        }
+        PL_PROGRESS_DISMISS;
+    }];
+}
+- (IBAction)dataBtn:(UIButton *)sender {
+    [self initBut];
+    _but01.hidden = NO;
+    _but02.hidden = YES;
+    _butIn_s.hidden = YES;
+    _timeViewH.constant = 0.0f;
+    [UIView setAnimationDuration:0.3f];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+    self.datePicker.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height -216 , [UIScreen mainScreen].bounds.size.width, 216);
+    [UIView commitAnimations];
+}
+- (IBAction)timeBut:(UIButton *)sender {
+    [self initBut];
+    _but01.hidden = YES;
+    _but02.hidden = NO;
+    _butIn_s.hidden = YES;
+    [_shangwuG setTitle:@"上午外出" forState:UIControlStateNormal];
+    [_xiawuG setTitle:@"下午外出" forState:UIControlStateNormal];
+    [_quantianG setTitle:@"全天外出" forState:UIControlStateNormal];
+    [_peixunG setTitle:@"培训日" forState:UIControlStateNormal];
+    self.datePicker.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width, 216);
+    _timeViewH.constant = 123.0f;
+
+}
+- (void)chooseDate:(UIDatePicker *)sender {
+    NSDate *selectedDate = sender.date;
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    //@"yyyy-MM-dd HH:mm"
+    formatter.dateFormat = @"yyyy-MM-dd";
+    NSString *dateString = [formatter stringFromDate:selectedDate];
+    self.Data.text = dateString;
+}
+- (void)chooseDate01:(UIDatePicker *)sender {
+    
+}
+//时间段
+- (IBAction)shangwu:(UIButton *)sender {
+    self.timeBuck.text = @"上午外出";
+}
+
+- (IBAction)xiawu:(UIButton *)sender {
+    self.timeBuck.text = @"下午外出";
+}
+
+- (IBAction)quantian:(UIButton *)sender {
+    self.timeBuck.text = @"全天外出";
+}
+
+- (IBAction)peixun:(UIButton *)sender {
+    self.timeBuck.text = @"培训日";
+}
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    self.view.frame = CGRectMake(0, -60, self.view.frame.size.width, self.view.frame.size.height);
+    return YES;
+}
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    self.view.frame = CGRectMake(0, +60, self.view.frame.size.width, self.view.frame.size.height);
+
+    [_goToSite resignFirstResponder];
+    [_remark resignFirstResponder];
+}
+@end

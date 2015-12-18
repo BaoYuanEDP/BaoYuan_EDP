@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "733B4168AB755EA4D73BC4DE1C79FDCA8526EC28",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "733B4168AB755EA4D73BC4DE1C79FDCA8526EC28" : 0,
+    "F1A53F2D7F3A8836AA06DE3B26DE7D989CCE3DCC" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "BA520BA6-B9B5-429D-852C-5187F11AF5D2",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "733B4168AB755EA4D73BC4DE1C79FDCA8526EC28" : "neiDJX\/",
+    "F1A53F2D7F3A8836AA06DE3B26DE7D989CCE3DCC" : "BY4"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "BYFCApp",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "byzh_shc\/BYFCApp.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/git.oschina.net\/wankang\/neiEDP.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "733B4168AB755EA4D73BC4DE1C79FDCA8526EC28"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/git.oschina.net\/bypro\/EDP.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "F1A53F2D7F3A8836AA06DE3B26DE7D989CCE3DCC"
+    }
+  ]
+}

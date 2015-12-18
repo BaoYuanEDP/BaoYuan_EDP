@@ -1,0 +1,526 @@
+//
+//  VisitersRequest.m
+//  BYFCApp
+//
+//  Created by zzs on 14/12/3.
+//  Copyright (c) 2014年 PengLee. All rights reserved.
+//
+
+#import "VisitersRequest.h"
+#import "JSON.h"
+@implementation VisitersRequest
+static  VisitersRequest * __defaultRequest=nil;
+@synthesize delegate;
+
++(instancetype)allocWithZone:(struct _NSZone *)zone
+{
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        __defaultRequest =   [super allocWithZone:zone];
+        
+    });
+    return __defaultRequest;
+    
+    
+}
++(instancetype)defaultsRequest
+{
+    
+    
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        __defaultRequest = [[[self class]alloc]init];
+        
+    });
+    return __defaultRequest;
+    //    @synchronized(self){
+    //        __defaultRequest = [[MyRequest alloc]init];
+    //
+    //    }
+    //    return __defaultRequest;
+    
+}
+-(void)postuserID:(NSString *)userID XZText:(NSString *)XZText PText:(NSString *)PText  TradeTF:(NSString *)TradeTF PriceLow:(NSString *)PriceLow PriceHigh:(NSString *)PriceHigh PepleTF:(NSString *)PepleTF TOken:(NSString *)TOken
+{
+    //self.block = block;
+    [connection cancel];
+    
+    NSString *soapMsg=[NSString stringWithFormat:@"<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><GetCustomersList xmlns=\"http://tempuri.org/\"><userid>%@</userid><DistrictName>%@</DistrictName><AreaName>%@</AreaName><Trade>%@</Trade><PriceMin>%@</PriceMin><PriceMax>%@</PriceMax><FlagPrivate>%@</FlagPrivate><token>%@</token></GetCustomersList></soap:Body></soap:Envelope>",@"AA14012",@"",@"",@"",@"",@"",@"",[[NSUserDefaults standardUserDefaults]objectForKey:@"Token"]];
+    NSURL *url=[NSURL URLWithString:PL_USER_PRICE_LOE_HEIGHT_URL];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
+    NSString *msgLength=[NSString stringWithFormat:@"%lu",(unsigned long)[soapMsg length]];
+    [request addValue:@"text/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"http://tempuri.org/GetCustomersList" forHTTPHeaderField:@"SOAPAction"];
+    [request addValue:msgLength forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:[soapMsg dataUsingEncoding:NSUTF8StringEncoding]];
+   connection=[NSURLConnection connectionWithRequest:request delegate:self];
+    
+    //如果连接已经建好，则初始化data
+    if( connection )
+    {
+        
+        
+    }
+    else
+    {
+        NSLog(@"theConnection is NULL");
+    }
+    
+    
+}
+//请求区域行政区列表，以及片区列表
+-(void)requestAreaInfoMessage:(NSString *)areaKind  roomDistrictId:(NSString *)districtId roomDisName:(NSString *)districetName  userName:(NSString *)userid userTokne:(NSString * )token  backInfoMessage:(void (^)(NSMutableArray * array))block string:(void (^)(NSString *))block1
+{
+    self.blockPianquArray = block;
+    self.block = block1;
+    [connection cancel];
+    
+    NSString * soapMessage = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?><soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><GetArea xmlns=\"http://tempuri.org/\"><AreaKind>%@</AreaKind><DistrictId>%@</DistrictId><DistrictName>%@</DistrictName><mode>%@</mode><userid>%@</userid><token>%@</token></GetArea></soap:Body></soap:Envelope>",areaKind,districtId,districetName,@"1",userid,token];
+    NSURL *url=[NSURL URLWithString:PL_USER_ROOMLIST];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
+    NSString *msgLength=[NSString stringWithFormat:@"%lu",(unsigned long)[soapMessage length]];
+    [request addValue:@"text/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"http://tempuri.org/GetArea" forHTTPHeaderField:@"SOAPAction"];
+    [request addValue:msgLength forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:[soapMessage dataUsingEncoding:NSUTF8StringEncoding]];
+    connection=[NSURLConnection connectionWithRequest:request delegate:self];
+    [connection start];
+
+}
+//房源列表
+-(void)getRoomInfoEasterList:(RoomData *)roomInfo   backInfoMessage:(void (^)(NSMutableString * string))block
+{
+    self.block = block;
+    
+    NSString * soapMessage = [NSString stringWithFormat:@"<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><GetPropertyList xmlns=\"http://tempuri.org/\"><DistrictName>%@</DistrictName><AreaName>%@</AreaName><EstateName>%@</EstateName><Trade>%@</Trade><PriceFrom>%@</PriceFrom><PriceTo>%@</PriceTo><RentPriceFrom>%@</RentPriceFrom><RentPriceTo>%@</RentPriceTo><CountF>%@</CountF><SquareFrom>%@</SquareFrom><SquareTo>%@</SquareTo><StartIndex>%@</StartIndex><PageSize>%@</PageSize><Mode>%@</Mode><PropertyId>%@</PropertyId><userid>%@</userid><token>%@</token></GetPropertyList></soap:Body></soap:Envelope>",roomInfo.roomDistrictName,roomInfo.roomAreaName,roomInfo.roomEasterName,roomInfo.roomTrade,roomInfo.roomPriceFrom,roomInfo.roomPriceTo,roomInfo.roomRentPriceFrom,roomInfo.roomRentPriceTo,roomInfo.roomCountF,roomInfo.roomSquareFrom,roomInfo.roomSquareTo,roomInfo.roomStartIndex,roomInfo.roomPageSize,roomInfo.roomMode,roomInfo.roomPropertyId,roomInfo.roomUserID,roomInfo.roomToken];
+    NSURL * url = [NSURL URLWithString:PL_USER_ROOMLIST];
+    NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:url];
+    NSInteger  msgLength =soapMessage.length;
+    [request addValue:@"text/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"http://tempuri.org/GetPropertyList" forHTTPHeaderField:@"SOAPAction"];
+    [request addValue:[NSString stringWithFormat:@"%ld",(long)msgLength] forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:[soapMessage dataUsingEncoding:NSUTF8StringEncoding ]];
+    NSURLConnection *  connection100 = [NSURLConnection connectionWithRequest:request delegate:self];
+    [connection100 start];
+    
+    
+}
+//客源列表
+-(void)getCustomList:(VisiterData *)customInfo   backInfoMessage:(void (^)(NSMutableString * string))block
+{
+    self.block=block;
+    
+    NSString *soapMsg=[NSString stringWithFormat:@"<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><GetCustomList xmlns=\"http://tempuri.org/\"><userid>%@</userid><CustLevel>%@</CustLevel><DistrictName>%@</DistrictName><AreaId>%@</AreaId><Trade>%@</Trade><PriceMin>%@</PriceMin><PriceMax>%@</PriceMax><FlagPrivate>%@</FlagPrivate><FlagRecommand>%@</FlagRecommand><FlagNeed>%@</FlagNeed><FlagSchool>%@</FlagSchool><Phone>%@</Phone><StartIndex>%@</StartIndex><FlagSubs>%@</FlagSubs><SubUserCode>%@</SubUserCode><PubType>%@</PubType><Status>%@</Status><token>%@</token></GetCustomList></soap:Body></soap:Envelope>",customInfo.userid,customInfo.CustLevel,customInfo.DistrictName,customInfo.AreaId,customInfo.Trade,customInfo.PriceMin,customInfo.PriceMax,customInfo.FlagPrivate,customInfo.FlagRecommand,customInfo.FlagNeed,customInfo.FlagSchool,customInfo.telephoneNumberString,customInfo.StartIndex,customInfo.flagSubs,customInfo.subUserCode,customInfo.pubTypeString,customInfo.jiaoYiString,customInfo.token];
+    NSLog(@"token=======%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"Token"]);
+    NSURL *url=[NSURL URLWithString:PL_USER_KEYUAN_LIST];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
+    NSString *msgLength=[NSString stringWithFormat:@"%lu",(unsigned long)[soapMsg length]];
+    [request addValue:@"text/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"http://tempuri.org/GetCustomList" forHTTPHeaderField:@"SOAPAction"];
+    [request addValue:msgLength forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:[soapMsg dataUsingEncoding:NSUTF8StringEncoding]];
+    NSURLConnection *customListconnection=[NSURLConnection connectionWithRequest:request delegate:self];
+    [customListconnection start];
+}
+
+
+//客源跟进列表
+-(void)GetCustFollow:(CustFollowListData *)followList   backInfoMessage:(void (^)(NSMutableString * string))block
+{
+    self.block = block;
+    NSString *soapMsg=[NSString stringWithFormat:@"<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><GetCustFollow xmlns=\"http://tempuri.org/\"><CustID>%@</CustID><userid>%@</userid><token>%@</token></GetCustFollow></soap:Body></soap:Envelope>",followList.CustID,followList.userid,followList.token];
+    NSURL *url=[NSURL URLWithString:PL_USER_KEYUAN_LIST];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
+    NSString *msgLength=[NSString stringWithFormat:@"%lu",(unsigned long)[soapMsg length]];
+    [request addValue:@"text/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"http://tempuri.org/GetCustFollow" forHTTPHeaderField:@"SOAPAction"];
+    [request addValue:msgLength forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:[soapMsg dataUsingEncoding:NSUTF8StringEncoding]];
+    NSURLConnection *CustomDetailConnection=[NSURLConnection connectionWithRequest:request delegate:self];
+    [CustomDetailConnection start];
+}
+#pragma mark 客源写跟进
+-(void)getAddCustomersFollow:(CustomersFollowData *)follow   backInfoMessage:(void (^)(NSMutableString * string))block
+{
+    self.block = block;
+    NSString * soapMessage = [NSString stringWithFormat:@"<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><GetAddCustomersFollow xmlns=\"http://tempuri.org/\"><CustID>%@</CustID><FollowType>%@</FollowType><Content>%@</Content><FollowWay>%@</FollowWay><userid>%@</userid><token>%@</token></GetAddCustomersFollow></soap:Body></soap:Envelope>",follow.CustID,follow.FollowType,follow.Content,follow.FollowWay,follow.userid,follow.token];
+    NSURL *url=[NSURL URLWithString:PL_USER_KEYUAN_LIST];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
+    NSString *msgLength=[NSString stringWithFormat:@"%lu",(unsigned long)[soapMessage length]];
+    [request addValue:@"text/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"http://tempuri.org/GetAddCustomersFollow" forHTTPHeaderField:@"SOAPAction"];
+    [request addValue:msgLength forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:[soapMessage dataUsingEncoding:NSUTF8StringEncoding]];
+    connection=[NSURLConnection connectionWithRequest:request delegate:self];
+    [connection start];
+}
+#pragma mark 房源跟进列表
+
+-(void)GetPropertyContactList:(void (^)(NSMutableString * string))block PropertyId:(NSString *)PropertyId userid:(NSString *)userid token:(NSString *)token
+{
+    self.allTypeBlock = block;
+    NSString * soapMessage = [NSString stringWithFormat:@"<soap12:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap12=\"http://www.w3.org/2003/05/soap-envelope\"><soap12:Body><GetPropertyContactList xmlns=\"http://tempuri.org/\"><PropertyId>%@</PropertyId><userid>%@</userid><token>%@</token></GetPropertyContactList></soap12:Body></soap12:Envelope>",PropertyId,userid,token];
+       AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [[AFHTTPResponseSerializer alloc] init];
+    [manager.requestSerializer setValue:@"text/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"%ld",(long)soapMessage.length] forHTTPHeaderField:@"Content-Length"];
+    [manager.requestSerializer setQueryStringSerializationWithBlock:^NSString *(NSURLRequest *request, NSDictionary *parameters, NSError *__autoreleasing *error) {
+        return soapMessage;
+    }];
+    [manager POST:PL_USER_ROOMLIST parameters:soapMessage success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *response = [[NSString alloc] initWithData:(NSData *)responseObject encoding:NSUTF8StringEncoding];
+        NSLog(@"%@,123++++++++ %@", operation.responseString, response);
+        GDataXMLDocument * doc = [[GDataXMLDocument alloc]initWithXMLString:operation.responseString options:0 error:nil];
+        GDataXMLElement * xml = [doc rootElement ];
+        NSArray * array = [xml children];
+        for (int i=0; i<array.count; i++)
+        {
+            //根据标签名判断
+            GDataXMLElement * element = array[i];
+            if ([[element name] isEqualToString:@"GetHisSinTimeResult"]) {
+                NSLog(@"+++++%@",[element stringValue]);
+                
+            }
+            else
+            {
+                
+                NSArray * signArray = [[element stringValue] JSONValue];
+                NSString * string = [element stringValue];
+                
+                self.allTypeBlock(string);
+                
+                
+                NSLog(@"+++++%@",signArray);
+                
+            }
+        }
+        
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        // NSString *response = [[NSString alloc] initWithData:(NSData *)[operation responseObject] encoding:NSUTF8StringEncoding];
+        PL_ALERT_SHOW(@"数据加载失败，请检查网络");
+        
+        
+        
+    }];
+
+}
+# pragma mark --房源详情---
+-(void)GetPropertyDetail:(void (^)(NSMutableString * string))block PropertyId:(NSString *)PropertyId userid:(NSString *)userid token:(NSString *)token
+{
+    self.block = block;
+    NSString * soapMessage = [NSString stringWithFormat:@"<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><GetPropertyDetail xmlns=\"http://tempuri.org/\"><PropertyId>%@</PropertyId><userid>%@</userid><token>%@</token></GetPropertyDetail></soap:Body></soap:Envelope>",PropertyId,userid,token];
+    NSURL *url=[NSURL URLWithString:PL_USER_ROOMLIST];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
+    NSString *msgLength=[NSString stringWithFormat:@"%lu",(unsigned long)[soapMessage length]];
+    [request addValue:@"text/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"http://tempuri.org/GetPropertyDetail" forHTTPHeaderField:@"SOAPAction"];
+    [request addValue:msgLength forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:[soapMessage dataUsingEncoding:NSUTF8StringEncoding]];
+    connection=[NSURLConnection connectionWithRequest:request delegate:self];
+    [connection start];
+}
+#pragma mark  楼盘详情
+-(void)GetEstateDetail:(void (^)(NSMutableString * string))block EstateID:(NSString *)EstateID userid:(NSString *)userid token:(NSString *)token{
+    self.block = block;
+    NSString * soapMessage = [NSString stringWithFormat:@"<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><GetEstateDetail xmlns=\"http://tempuri.org/\"><PropertyId>%@</PropertyId><userid>%@</userid><token>%@</token></GetEstateDetail></soap:Body></soap:Envelope>",EstateID,userid,token];
+    NSURL *url=[NSURL URLWithString:PL_USER_ROOMLIST];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
+    NSString *msgLength=[NSString stringWithFormat:@"%lu",(unsigned long)[soapMessage length]];
+    [request addValue:@"text/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"http://tempuri.org/GetEstateDetail" forHTTPHeaderField:@"SOAPAction"];
+    [request addValue:msgLength forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:[soapMessage dataUsingEncoding:NSUTF8StringEncoding]];
+    connection=[NSURLConnection connectionWithRequest:request delegate:self];
+    [connection start];
+}
+#pragma mark  有效房源数量
+-(void)GetLegelProperties:(void (^)(NSMutableString * string))block EstateID:(NSString *)EstateID userid:(NSString *)userid token:(NSString *)token{
+    self.block = block;
+    NSString * soapMessage = [NSString stringWithFormat:@"<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><GetLegelProperties xmlns=\"http://tempuri.org/\"><EstateID>%@</EstateID><userid>%@</userid><token>%@</token></GetLegelProperties></soap:Body></soap:Envelope>",EstateID,userid,token];
+    NSURL *url=[NSURL URLWithString:PL_USER_ROOMLIST];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
+    NSString *msgLength=[NSString stringWithFormat:@"%lu",(unsigned long)[soapMessage length]];
+    [request addValue:@"text/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"http://tempuri.org/GetLegelProperties" forHTTPHeaderField:@"SOAPAction"];
+    [request addValue:msgLength forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:[soapMessage dataUsingEncoding:NSUTF8StringEncoding]];
+    connection=[NSURLConnection connectionWithRequest:request delegate:self];
+    [connection start];
+}
+
+
+-(void)disConnect
+{
+    [connection cancel];
+    
+}
+//
+#pragma mark NSURLConnection DataDelegate
+-(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    _resultData = [NSMutableData data];
+    [_resultData setLength:0];
+    
+}
+-(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    [_resultData appendData:data];
+    
+}
+-(void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    NSString *theXML = [[NSString alloc] initWithBytes: [_resultData mutableBytes] length:[_resultData length] encoding:NSUTF8StringEncoding];
+    NSLog(@"====%@",theXML);
+    _xmlParser = [[NSXMLParser alloc]initWithData:_resultData];
+    [_xmlParser setDelegate:self];
+    [_xmlParser setShouldResolveExternalEntities:YES];
+    [_xmlParser parse];
+    _resultData  = nil;
+    //[self disConnect];
+    
+}
+-(void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict{
+    if ([elementName isEqualToString:@"LoginResult"])
+    {
+        if (!_soapResults)
+        {
+            _soapResults  = [[NSMutableString alloc]init];
+            
+        }
+        recordResults  = YES;
+        
+        
+    }
+    else if ([elementName isEqualToString:@"GetAreaResult"])
+    {
+        if (!_soapResults)
+        {
+            _soapResults  = [[NSMutableString alloc]init];
+            
+        }
+        recordResults  = YES;
+    }
+    //客源列表
+    else if([elementName isEqualToString:@"GetCustomListResult"])
+    {
+        if (!_soapResults)
+        {
+            _soapResults  = [[NSMutableString alloc]init];
+            
+        }
+        recordResults  = YES;
+    }
+
+    //客源跟进列表
+    else if ([elementName isEqualToString:@"GetCustFollowResult"])
+    {
+        if (!_soapResults)
+        {
+            _soapResults  = [[NSMutableString alloc]init];
+            
+        }
+        recordResults  = YES;
+    }
+    //客源写跟进
+    else if ([elementName isEqualToString:@"GetAddCustomersFollowResult"])
+    {
+        if (!_soapResults)
+        {
+            _soapResults  = [[NSMutableString alloc]init];
+            
+        }
+        recordResults  = YES;
+    }
+    //房源跟进列表
+    else if ([elementName isEqualToString:@"GetPropertyContactListResult"])
+    {
+        if (!_soapResults)
+        {
+            _soapResults  = [[NSMutableString alloc]init];
+            
+            
+        }
+        recordResults  = YES;
+    }
+    //房源楼盘详情
+    else if ([elementName isEqualToString:@"GetEstateDetailResult"])
+    {
+        if (!_soapResults)
+        {
+            _soapResults  = [[NSMutableString alloc]init];
+            
+            
+        }
+        recordResults  = YES;
+    }
+    
+#pragma  mark  有效房源数量
+    else if([elementName isEqualToString:@"GetLegelPropertiesResult"])
+    {
+        if (!_soapResults)
+        {
+            _soapResults  = [[NSMutableString alloc]init];
+            
+        }
+        recordResults  = YES;
+    }
+
+}
+-(void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
+{
+    if (recordResults)
+    {
+        [_soapResults appendString:string];
+        
+    }
+}
+-(void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
+{
+    if ([elementName isEqualToString:@"LoginResult"])
+    {
+        recordResults = FALSE;
+        _string  = _soapResults;
+        //_string  = _soapResults;
+        SBJSON *json=[[SBJSON alloc]init];
+        NSDictionary *soapDic=[json objectWithString:_soapResults error:nil];
+        if ([self.delegate respondsToSelector:@selector(compareResults: dict:)])
+        {
+            [self.delegate compareResults:_soapResults dict:soapDic ];
+            
+            
+        }
+        self.block(soapDic);
+        
+        //    }
+        _soapResults = nil;
+        
+    }
+    else if ([elementName isEqualToString:@"GetAreaResult"])
+    {
+        recordResults = NO;
+        //self.block(_soapResults);
+        NSData * data = [_soapResults dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        NSMutableArray  * array1 = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        //NSMutableArray * diction = [NSMutableArray array];
+       
+        self.blockPianquArray(array1);
+        
+        
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            SBJSON * json = [[SBJSON alloc]init];
+//            NSArray * array = [json objectWithString:_soapResults error:nil];
+//            
+//            NSMutableArray * array1 = [NSMutableArray array];
+//            for (NSDictionary * dict in array)
+//            {
+//                roomPianQuPlace *pianquPlace = [[roomPianQuPlace alloc]init];
+//                pianquPlace.areaAreaID = [dict objectForKey:@"AreaID"];
+//                pianquPlace.areaAreaName = [dict objectForKey:@"AreaName"];
+//                [array1 addObject:pianquPlace];
+//                
+//            }
+//            
+//            self.blockPianquArray(array1);
+//        });
+        self.block(_soapResults);
+        
+        _soapResults = nil;
+        
+        
+        
+//        if (delegate && [delegate respondsToSelector:@selector(returnBackArray:)])
+//        {
+//            [delegate retuPianquarray:array1];
+//        }
+        
+
+
+    }
+    //客源列表
+    else if ([elementName isEqualToString:@"GetCustomListResult"])
+    {
+        recordResults = NO;
+        NSLog(@"soap==%@",_soapResults);
+        self.block(_soapResults);
+        _soapResults = nil;
+        self.block=nil;
+    }
+
+    //客源跟进
+    else if ([elementName isEqualToString:@"GetCustFollowResult"])
+    {
+        recordResults = NO;
+        NSLog(@"soap==%@",_soapResults);
+        self.block(_soapResults);
+        _soapResults = nil;
+        self.block = nil;
+    }
+    //客源xie跟进
+    else if ([elementName isEqualToString:@"GetAddCustomersFollowResult"])
+    {
+        recordResults = NO;
+        NSLog(@"soap==%@",_soapResults);
+        self.block(_soapResults);
+        _soapResults = nil;
+        self.block = nil;
+    }
+    //房源跟进列表
+    else if ([elementName isEqualToString:@"GetPropertyContactListResult"])
+    {
+        recordResults = NO;
+        NSLog(@"soap==%@",_soapResults);
+        self.block(_soapResults);
+        _soapResults = nil;
+        self.block = nil;
+        
+    }
+    //房源楼盘详情
+    else if ([elementName isEqualToString:@"GetEstateDetailResult"])
+    {
+        recordResults = NO;
+        NSLog(@"soap==%@",_soapResults);
+        self.block(_soapResults);
+        _soapResults = nil;
+        self.block = nil;
+        
+    }
+    
+#pragma mark  有效房源数量
+    else if ([elementName isEqualToString:@"GetLegelPropertiesResult"])
+    {
+        recordResults = NO;
+        NSLog(@"soap==%@",_soapResults);
+        self.block(_soapResults);
+        _soapResults = nil;
+        self.block = nil;
+        
+    }
+    
+}
+-(BOOL)isLoginCheckTokenExist
+{
+    if (PL_USER_TOKEN && [PL_USER_STORAGE objectForKey:PL_USER_TOKEN] )
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
+        
+    }
+}
+
+@end

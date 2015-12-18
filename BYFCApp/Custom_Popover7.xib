@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="Custom_Popover7">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7f9-EM-rRm" userLabel="BackgroundView">
+                    <rect key="frame" x="17" y="40" width="285" height="400"/>
+                    <subviews>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="ETI-ao-EA5">
+                            <rect key="frame" x="0.0" y="42" width="285" height="358"/>
+                            <animations/>
+                            <color key="backgroundColor" red="0.099867159550000001" green="0.82775098979999995" blue="0.96403488010000005" alpha="1" colorSpace="calibratedRGB"/>
+                        </tableView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lxa-Zy-3g0" userLabel="HeaderView">
+                            <rect key="frame" x="0.0" y="0.0" width="285" height="42"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="上传房源钥匙信息附件" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YEK-wi-8VR">
+                                    <rect key="frame" x="8" y="10" width="140" height="21"/>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="140" id="3ra-BD-evY"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O4z-nF-Jt3" userLabel="XXXButoon">
+                                    <rect key="frame" x="249" y="8" width="23" height="23"/>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="23" id="hms-rd-JNR"/>
+                                    </constraints>
+                                    <state key="normal" backgroundImage="取消1.png"/>
+                                </button>
+                            </subviews>
+                            <animations/>
+                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="O4z-nF-Jt3" firstAttribute="firstBaseline" secondItem="YEK-wi-8VR" secondAttribute="firstBaseline" id="C4g-FC-zdX"/>
+                                <constraint firstItem="YEK-wi-8VR" firstAttribute="centerY" secondItem="Lxa-Zy-3g0" secondAttribute="centerY" id="ITb-N8-u2p"/>
+                                <constraint firstItem="YEK-wi-8VR" firstAttribute="bottom" secondItem="O4z-nF-Jt3" secondAttribute="bottom" id="TYU-aQ-xdc"/>
+                                <constraint firstAttribute="height" constant="42" id="ddW-q8-dVv"/>
+                                <constraint firstItem="YEK-wi-8VR" firstAttribute="top" secondItem="Lxa-Zy-3g0" secondAttribute="top" constant="10" id="gZR-dM-Tir"/>
+                                <constraint firstAttribute="trailing" secondItem="O4z-nF-Jt3" secondAttribute="trailing" constant="13" id="hiI-yu-YZ5"/>
+                                <constraint firstItem="O4z-nF-Jt3" firstAttribute="top" secondItem="Lxa-Zy-3g0" secondAttribute="topMargin" id="qZ3-pd-3uA"/>
+                                <constraint firstItem="YEK-wi-8VR" firstAttribute="leading" secondItem="Lxa-Zy-3g0" secondAttribute="leadingMargin" id="s4W-je-pFX"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="Lxa-Zy-3g0" firstAttribute="leading" secondItem="7f9-EM-rRm" secondAttribute="leading" id="1UQ-DL-OVt"/>
+                        <constraint firstAttribute="trailing" secondItem="Lxa-Zy-3g0" secondAttribute="trailing" id="7aK-Ba-icm"/>
+                        <constraint firstItem="Lxa-Zy-3g0" firstAttribute="top" secondItem="7f9-EM-rRm" secondAttribute="top" id="HwK-X4-pSw"/>
+                        <constraint firstItem="Lxa-Zy-3g0" firstAttribute="top" secondItem="7f9-EM-rRm" secondAttribute="top" id="PrW-Xe-Vqz"/>
+                        <constraint firstItem="Lxa-Zy-3g0" firstAttribute="leading" secondItem="7f9-EM-rRm" secondAttribute="leading" id="QyR-sN-k83"/>
+                        <constraint firstAttribute="trailing" secondItem="ETI-ao-EA5" secondAttribute="trailing" id="aW1-Ei-DD5"/>
+                        <constraint firstAttribute="bottom" secondItem="ETI-ao-EA5" secondAttribute="bottom" id="jM3-Yc-zRg"/>
+                        <constraint firstItem="ETI-ao-EA5" firstAttribute="leading" secondItem="7f9-EM-rRm" secondAttribute="leading" id="nME-oi-MJh"/>
+                        <constraint firstItem="ETI-ao-EA5" firstAttribute="top" secondItem="Lxa-Zy-3g0" secondAttribute="bottom" id="sB6-Zs-8Cr"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <animations/>
+            <constraints>
+                <constraint firstItem="7f9-EM-rRm" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="17" id="34T-Z2-FDw"/>
+                <constraint firstAttribute="bottom" secondItem="7f9-EM-rRm" secondAttribute="bottom" constant="128" id="FF4-U3-geg"/>
+                <constraint firstItem="7f9-EM-rRm" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="40" id="pha-3L-yXw"/>
+                <constraint firstItem="7f9-EM-rRm" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="qHN-Hi-xUo"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <connections>
+                <outlet property="BackgrounView" destination="7f9-EM-rRm" id="BYa-Vw-SeK"/>
+                <outlet property="MainTableView" destination="ETI-ao-EA5" id="zIN-Aj-EO2"/>
+                <outlet property="XXButoon" destination="O4z-nF-Jt3" id="3Gv-gc-M4U"/>
+            </connections>
+        </view>
+    </objects>
+    <resources>
+        <image name="取消1.png" width="20" height="20"/>
+    </resources>
+</document>

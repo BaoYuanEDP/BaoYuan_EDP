@@ -1,0 +1,525 @@
+//
+//  HolidayViewController.m
+//  BYFCApp
+//
+//  Created by zzs on 15/3/12.
+//  Copyright (c) 2015年 PengLee. All rights reserved.
+//
+
+#import "HolidayViewController.h"
+
+#import "PL_Header.h"
+@interface HolidayViewController ()<PMCalendarControllerDelegate,PopOverDelegate>
+{
+     TSPopoverController * _popoverController1;
+   
+    
+}
+@property (nonatomic, strong) PMCalendarController *pmCC;
+@property (nonatomic, strong) PMCalendarController *pmCC1;
+@end
+
+@implementation HolidayViewController
+@synthesize pmCC,pmCC1;
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title=@"请假申请";
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(ksyWillAnimation:) name:UIKeyboardDidChangeFrameNotification object:nil];
+
+    self.navigationController.navigationBarHidden=NO;
+    UIButton * backItemBnt = [UIButton buttonWithType:UIButtonTypeCustom];
+    backItemBnt.frame = CGRectMake(20, 10, 10, 20);
+    [backItemBnt setBackgroundImage:[UIImage imageNamed:@"返回.png"] forState:UIControlStateNormal];
+    [backItemBnt addTarget:self action:@selector(returnClick) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem * leftBtn = [[UIBarButtonItem alloc]initWithCustomView:backItemBnt];
+    self.navigationItem.leftBarButtonItem = leftBtn;
+    
+    UIBarButtonItem *right=[[UIBarButtonItem alloc]initWithTitle:@"查看" style:UIBarButtonItemStylePlain target:self action:@selector(rightClick)];
+    right.tintColor=[UIColor blackColor];
+    self.navigationItem.rightBarButtonItem=right;
+    [self initView];
+    timeArr1=@[@"09",@"14"];
+    timeArr2=@[@"14",@"18"];
+   // _array = [NSArray arrayWithObject:@"456"];
+    
+    
+    if (_array && [_array isKindOfClass:[NSArray class]]) {
+        NSMutableArray *tempArr=[NSMutableArray array];
+        for (NSDictionary * dict in _array)
+        {
+            if (dict && [dict isKindOfClass:[NSDictionary class]])
+            {
+                NSString *str=[dict objectForKey:@"Character01"];
+                if ((NSNull *)str!=[NSNull null]) {
+                    [tempArr addObject:str];
+                }
+                else
+                {
+                    NSLog(@"数据为空%@",str);
+                }
+            }
+           
+            
+        }
+         styleArr=[[NSMutableArray alloc]initWithArray:tempArr];
+        NSLog(@"%lu",(unsigned long)styleArr.count);
+    }
+    else
+    {
+        NSLog(@"暂无数据");
+        
+    }
+    
+    
+   
+    
+}
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing:YES];
+    
+}
+-(void)initView
+{
+    UIImageView *heng=[[UIImageView alloc]initWithFrame:CGRectMake(0, 64, PL_WIDTH, 1)];
+    heng.image=[UIImage imageNamed:@"heng_hong.png"];
+    [self.view addSubview:heng];
+    UIImageView *hengBG=[[UIImageView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(heng.frame)+20, PL_WIDTH*2/3+20, 35)];
+    hengBG.image=[UIImage imageNamed:@"hengtiaobeijing.png"];
+    [self.view addSubview:hengBG];
+    
+    UILabel *name=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, PL_WIDTH*2/3+20, 35)];
+    name.font=[UIFont systemFontOfSize:20];
+    name.text=[NSString stringWithFormat:@"%@   编号：%@",[PL_USER_STORAGE objectForKey:@"UserName"],[PL_USER_STORAGE objectForKey:PL_USER_code]];
+    //name.text=@"郑九义   编号：AA14682";
+    name.textAlignment=NSTextAlignmentCenter;
+    [hengBG addSubview:name];
+    
+    UILabel *jieyu=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(hengBG.frame), CGRectGetMaxY(heng.frame)+30, PL_WIDTH/3-20, 35)];
+    jieyu.text=@"结余";
+    jieyu.font=[UIFont systemFontOfSize:15];
+    jieyu.textAlignment=NSTextAlignmentCenter;
+    jieyu.textColor=[UIColor redColor];
+//    [self.view addSubview:jieyu];
+    
+    _holiday=[[UILabel alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(hengBG.frame)+10, PL_WIDTH, 20)];
+    _holiday.textColor=[UIColor redColor];
+    _holiday.textAlignment=NSTextAlignmentCenter;
+    if (_array && _array.count>0 && [_array isKindOfClass:[NSArray class]])
+    {
+         NSDictionary *moren=[_array firstObject];
+        _holiday.text=[moren objectForKey:@"LeaveInfo"];
+    }
+    else
+    {
+        _holiday.text=@"";
+    }
+   
+    
+    //holiday.text=@"有薪病假：0小时    调休：12小时    年假：0小时";
+    _holiday.font=[UIFont systemFontOfSize:13];
+    _holiday.hidden = YES;
+    [self.view addSubview:_holiday];
+    
+    UILabel *style=[[UILabel alloc]initWithFrame:CGRectMake(20, CGRectGetMaxY(_holiday.frame)+10, 100, 30)];
+    //style.backgroundColor=[UIColor redColor];
+    style.text=@"请假类型：";
+    style.font=[UIFont systemFontOfSize:20];
+    [self.view addSubview:style];
+    select=[[UITextField alloc]initWithFrame:CGRectMake(CGRectGetMaxX(style.frame)-5, CGRectGetMaxY(_holiday.frame)+15, 80, 20)];
+    select.font=[UIFont systemFontOfSize:14];
+    select.placeholder=@"请选择";
+    //select.backgroundColor=[UIColor redColor];
+    //select.textAlignment=NSTextAlignmentCenter;
+    select.enabled=NO;
+    [self.view addSubview:select];
+    
+    UIButton *sanjiao=[[UIButton alloc]initWithFrame:CGRectMake(CGRectGetMaxX(select.frame)-25, CGRectGetMaxY(_holiday.frame)+18, 15, 15)];
+    [sanjiao setImage:[UIImage imageNamed:@"下拉三角.png"] forState:UIControlStateNormal];
+    [sanjiao addTarget:self action:@selector(drop1:forEvent:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:sanjiao];
+    
+    UIImageView *styleHeng=[[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMinX(select.frame)-5,CGRectGetMaxY(select.frame)-2, 80, 1)];
+    styleHeng.image=[UIImage imageNamed:@"heng_hui_duan.png"];
+    [self.view addSubview:styleHeng];
+    
+    UILabel *startTime=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(style.frame), CGRectGetMaxY(style.frame)+5, 80, 30)];
+    startTime.text=@"开始时间:";
+    startTime.font=[UIFont systemFontOfSize:17];
+    [self.view addSubview:startTime];
+    
+    timeDay=[[UITextField alloc]initWithFrame:CGRectMake(CGRectGetMaxX(startTime.frame), CGRectGetMaxY(styleHeng.frame)+15, 80, 20)];
+    timeDay.font=[UIFont systemFontOfSize:14];
+    timeDay.enabled=NO;
+    timeDay.text=@"";
+    [self.view addSubview:timeDay];
+    UIImageView *startImg=[[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(startTime.frame)-2, CGRectGetMaxY(timeDay.frame),100, 1)];
+    startImg.image=[UIImage imageNamed:@"heng_hui_duan.png"];
+    [self.view addSubview:startImg];
+    UIButton *riliBtn=[[UIButton alloc]initWithFrame:CGRectMake(CGRectGetMaxX(timeDay.frame), CGRectGetMaxY(styleHeng.frame)+13, 20, 20)];
+    [riliBtn setImage:[UIImage imageNamed:@"日历.png"] forState:UIControlStateNormal];
+    [riliBtn addTarget:self action:@selector(riliClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:riliBtn];
+    startHour=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(startImg.frame)+15,  CGRectGetMaxY(styleHeng.frame)+15, 20, 20)];
+    startHour.text=@"09";
+    startHour.font=[UIFont systemFontOfSize:14];
+    [self.view addSubview:startHour];
+    UIButton *startDown=[[UIButton alloc]initWithFrame:CGRectMake(CGRectGetMaxX(startHour.frame), CGRectGetMaxY(styleHeng.frame)+18, 15, 15)];
+    [startDown setImage:[UIImage imageNamed:@"下拉三角.png"] forState:UIControlStateNormal];
+    [startDown addTarget:self action:@selector(drop2:forEvent:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:startDown];
+    UILabel *shi=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(startDown.frame)+5,CGRectGetMaxY(styleHeng.frame)+15, 20, 20)];
+    shi.text=@"时";
+    shi.font=[UIFont systemFontOfSize:14];
+    [self.view addSubview:shi];
+    UIImageView *startImg2=[[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(startImg.frame)+10, CGRectGetMaxY(shi.frame),80, 1)];
+    startImg2.image=[UIImage imageNamed:@"heng_hui_duan.png"];
+    [self.view addSubview:startImg2];
+    //结束时间
+    UILabel *endTime=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(style.frame), CGRectGetMaxY(startTime.frame)+5, 80, 30)];
+    endTime.text=@"结束时间:";
+    endTime.font=[UIFont systemFontOfSize:17];
+    [self.view addSubview:endTime];
+    
+    timeDay2=[[UITextField alloc]initWithFrame:CGRectMake(CGRectGetMaxX(endTime.frame), CGRectGetMaxY(startImg.frame)+15, 80, 20)];
+    timeDay2.font=[UIFont systemFontOfSize:14];
+    timeDay2.enabled=NO;
+    timeDay2.text=@"";
+    [self.view addSubview:timeDay2];
+    UIImageView *endImg=[[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(endTime.frame)-2, CGRectGetMaxY(timeDay2.frame),100, 1)];
+    endImg.image=[UIImage imageNamed:@"heng_hui_duan.png"];
+    [self.view addSubview:endImg];
+    UIButton *riliBtn2=[[UIButton alloc]initWithFrame:CGRectMake(CGRectGetMaxX(timeDay2.frame), CGRectGetMaxY(startImg.frame)+13, 20, 20)];
+    [riliBtn2 setImage:[UIImage imageNamed:@"日历.png"] forState:UIControlStateNormal];
+    [riliBtn2 addTarget:self action:@selector(riliClick2:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:riliBtn2];
+    endHour=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(endImg.frame)+15,  CGRectGetMaxY(startImg2.frame)+15, 20, 20)];
+    endHour.text=@"14";
+    endHour.font=[UIFont systemFontOfSize:14];
+    [self.view addSubview:endHour];
+    UIButton *endDown=[[UIButton alloc]initWithFrame:CGRectMake(CGRectGetMaxX(endHour.frame), CGRectGetMaxY(startImg2.frame)+18, 15, 15)];
+    [endDown setImage:[UIImage imageNamed:@"下拉三角.png"] forState:UIControlStateNormal];
+    [endDown addTarget:self action:@selector(drop3:forEvent:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:endDown];
+    UILabel *shi2=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(endDown.frame)+5,CGRectGetMaxY(startImg2.frame)+15, 20, 20)];
+    shi2.text=@"时";
+    shi2.font=[UIFont systemFontOfSize:14];
+    [self.view addSubview:shi2];
+    UIImageView *endImg2=[[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(endImg.frame)+10, CGRectGetMaxY(shi2.frame),80, 1)];
+    endImg2.image=[UIImage imageNamed:@"heng_hui_duan.png"];
+    [self.view addSubview:endImg2];
+    
+    UILabel *reason=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(endTime.frame), CGRectGetMaxY(endTime.frame)+5, 100, 30)];
+    reason.text=@"请假事由:";
+    [self.view addSubview:reason];
+    textView=[[UITextView alloc]initWithFrame:CGRectMake(CGRectGetMinX(reason.frame), CGRectGetMaxY(reason.frame)+5, PL_WIDTH-40, 100)];
+    textView.layer.borderWidth=1;
+    textView.layer.borderColor = [UIColor grayColor].CGColor;
+    [self.view addSubview:textView];
+    
+    UIButton *commit=[[UIButton alloc]initWithFrame:CGRectMake(CGRectGetMaxX(textView.frame)-75, CGRectGetMaxY(textView.frame)+10,75, 40)];
+    [commit setBackgroundImage:[[UIImage imageNamed:@"提交按钮.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal ] forState:UIControlStateNormal];
+    commit.contentMode=UIViewContentModeScaleAspectFill | UIViewContentModeScaleAspectFit;
+    [commit addTarget:self action:@selector(commitClick) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:commit];
+    [self riliClick:nil];
+    [self riliClick2:nil];
+    
+}
+-(void)commitClick
+{
+    
+    if (select.text.length&&textView.text.length) {
+        NSString *start=[NSString stringWithFormat:@"%@ %@:00:00",timeDay.text,startHour.text];
+        NSString *end=[NSString stringWithFormat:@"%@ %@:00:00",timeDay2.text,endHour.text];
+        PL_PROGRESS_SHOW;
+        [[MyRequest defaultsRequest]afGetLeaveLeaveType:select.text StartDate:start EndDate:end Reason:textView.text userid:[PL_USER_STORAGE objectForKey:PL_USER_NAME] token:[PL_USER_STORAGE objectForKey:PL_USER_TOKEN] completeBack:^(id obj) {
+            NSLog(@"%@",obj);
+            PL_PROGRESS_DISMISS;
+            NSString *string=obj;
+            if ([string isEqualToString:@"OK"]) {
+                PL_ALERT_SHOW(@"申请成功");
+                textView.text = @"";
+                
+            }
+            else if ([string isEqualToString:@"exception"]) {
+                PL_ALERT_SHOW(@"服务器异常");
+            }
+            else  if ([string isEqualToString:@"NOLOGIN"]) {
+                ViewController *login=[[ViewController alloc]init];
+                [self.navigationController pushViewController:login animated:YES];
+            }
+            else if ([string isEqualToString:@"[]"])
+            {
+                PL_ALERT_SHOW(@"暂无数据");
+            }
+            else if ([string isEqualToString:@"STISHOLIDAY"])
+            {
+                PL_ALERT_SHOW(@"请假开始日期不能为节假日");
+            }
+            else if ([string isEqualToString:@"ETISHOLIDAY"])
+            {
+                PL_ALERT_SHOW(@"请假结束日期不能为节假日");
+            }
+            else if ([string isEqualToString:@"ISHASTHESAMELEAVE"])
+            {
+                PL_ALERT_SHOW(@"已经存在此条请假信息");
+            }
+            else if ([string isEqualToString:@"NotEnoughAnnualleave"])
+            {
+                PL_ALERT_SHOW(@"没有足够的年假");
+            }
+            else if ([string isEqualToString:@"NotEnoughPaidsickleave"])
+            {
+                PL_ALERT_SHOW(@"没有足够的有薪年假");
+            }
+            else if ([string isEqualToString:@"NotEnoughOffleave"])
+            {
+                PL_ALERT_SHOW(@"没有足够的调休");
+            }
+            else
+            {
+                PL_ALERT_SHOW(@"有错误发生");
+            }
+        }];
+    }
+    else
+    {
+        PL_ALERT_SHOW(@"请完善您的请假信息");
+    }
+    
+}
+
+-(void)riliClick:(id)sender
+{
+    NSLog(@"日历1");
+    
+        self.pmCC = [[PMCalendarController alloc] init];
+        pmCC.delegate = self;
+        
+        pmCC.mondayFirstDayOfWeek = YES;
+        
+        [pmCC presentCalendarFromView:sender
+             permittedArrowDirections:PMCalendarArrowDirectionAny
+                             animated:YES];
+        /*    [pmCC presentCalendarFromRect:[sender frame]
+         inView:[sender superview]
+         permittedArrowDirections:PMCalendarArrowDirectionAny
+         animated:YES];*/
+        //[self calendarController:pmCC didChangePeriod:pmCC.period];
+        timeDay.text = [NSString stringWithFormat:@"%@"
+                        , [pmCC.period.startDate dateStringWithFormat:@"yyyy-MM-dd"]];
+        temp1 = [NSString stringWithFormat:@"%@"
+                 , [pmCC.period.startDate dateStringWithFormat:@"yyyy.MM.dd"]];
+    
+    
+    
+}
+- (void)calendarController:(PMCalendarController *)calendarController didChangePeriod:(PMPeriod *)newPeriod
+{
+    if (calendarController ==pmCC)
+    {
+        timeDay.text = [NSString stringWithFormat:@"%@"
+                        , [newPeriod.startDate dateStringWithFormat:@"yyyy-MM-dd"]];
+        temp1 = [NSString stringWithFormat:@"%@"
+                 , [pmCC.period.startDate dateStringWithFormat:@"yyyy.MM.dd"]];
+    }
+    else
+    {
+        timeDay2.text = [NSString stringWithFormat:@"%@"
+                        , [newPeriod.endDate dateStringWithFormat:@"yyyy-MM-dd"]];
+        temp2 = [NSString stringWithFormat:@"%@"
+                 , [pmCC1.period.endDate dateStringWithFormat:@"yyyy.MM.dd"]];
+    }
+    [calendarController dismissCalendarAnimated:YES];
+    
+    
+}
+- (BOOL)calendarControllerShouldDismissCalendar:(PMCalendarController *)calendarController
+{
+    return YES;
+}
+-(void)riliClick2:(id)sender
+{
+    NSLog(@"日历2");
+    self.pmCC1 = [[PMCalendarController alloc] init];
+    pmCC1.delegate = self;
+    
+    pmCC1.mondayFirstDayOfWeek = YES;
+    
+    [pmCC1 presentCalendarFromView:sender
+         permittedArrowDirections:PMCalendarArrowDirectionAny
+                         animated:YES];
+    
+    timeDay2.text = [NSString stringWithFormat:@"%@"
+                     , [pmCC1.period.endDate dateStringWithFormat:@"yyyy-MM-dd"]];
+    temp2 = [NSString stringWithFormat:@"%@"
+             , [pmCC1.period.endDate dateStringWithFormat:@"yyyy.MM.dd"]];
+    // [self calendarController:pmCC didChangePeriod:pmCC.period];
+}
+- (void)didSelectPopOverRowIndex:(NSIndexPath *)indexpath cellTitleText:(NSString *)title
+{
+   
+   
+    if (_popoverController1.view.tag==2541)
+    {
+         NSLog(@"%@",title);
+        select.text=title;
+        
+        NSDictionary *dict=[_array objectAtIndex:indexpath.row];
+        _holiday.text=@"";
+        //holiday.text=[NSString stringWithFormat:@"%ld",(long)indexpath.row];
+        _holiday.text=[dict objectForKey:@"LeaveInfo"];
+    }
+    else if (_popoverController1.view.tag==2542)
+    {
+        startHour.text=@"";
+        startHour.text=title;
+         NSLog(@"%@",title);
+        
+    }
+    else if(_popoverController1.view.tag==2543)
+    {
+        endHour.text=@"";
+        endHour.text=title;
+         NSLog(@"%@",title);
+        
+    }
+     [_popoverController1 dismissPopoverAnimatd:YES];
+    _holiday.hidden = NO;
+   
+    
+    
+    
+}
+- (void)clickPopoverEvent:(UIEvent *)event reloadData:(NSArray *)accept_array viewWithTag:(NSInteger)viewtag
+{
+    //[_popoverController1 dismissPopoverAnimatd:YES];
+    
+    
+    RoomTableViewController *tableViewController = [[RoomTableViewController alloc] initWithStyle:UITableViewStylePlain];
+    tableViewController.delegate = self;
+        
+    // [tableViewController loadWithData:titleArrayCount];
+    if (viewtag ==2541)
+    {
+        tableViewController.view.frame = CGRectMake(0,0, 90, 190);
+    }
+    else
+        
+    {
+        tableViewController.view.frame = CGRectMake(0,0, 50, 80);
+    }
+    
+    
+    _popoverController1 = [[TSPopoverController alloc] initWithContentViewController:tableViewController];
+    
+    _popoverController1.view.tag = viewtag;
+    
+    _popoverController1.cornerRadius = 0;
+    
+    // popoverController.titleText = @"change order";
+    _popoverController1.popoverBaseColor = PL_CUSTOM_COLOR(48, 48, 48, 1);
+    _popoverController1.popoverGradient= NO;
+    
+    [_popoverController1 showPopoverWithTouch:event];
+    [tableViewController loadWithData:accept_array];
+    [tableViewController.tableView reloadData];
+}
+-(void)drop1:(UIButton *)sender forEvent:(UIEvent *)event
+{
+    if (styleArr.count>0)
+    {
+        [self clickPopoverEvent:event reloadData:styleArr viewWithTag:2541];
+    
+    NSLog(@"style");
+  }
+  else
+  {
+    PL_ALERT_SHOWNOT_OKAND_YES(@"暂时还没有数据哦！");
+   }
+    
+    
+    
+}
+-(void)drop2:(UIButton *)sender forEvent:(UIEvent *)event
+{
+    NSLog(@"drop2");
+    [self clickPopoverEvent:event reloadData:timeArr1 viewWithTag:2542];
+    
+
+}
+-(void)drop3:(UIButton *)sender forEvent:(UIEvent *)event
+{
+    NSLog(@"drop3");
+   [self clickPopoverEvent:event reloadData:timeArr2 viewWithTag:2543];
+
+}
+
+-(void)returnClick
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+-(void)rightClick
+{
+    XJViewController *xj=[[XJViewController alloc]init];
+    [self.navigationController pushViewController:xj animated:YES];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+- (void)ksyWillAnimation:(NSNotification *)note
+{
+    UIView * fview = [self.view firstResponder];
+    
+    CGFloat fy = CGRectGetMaxY(fview.frame);
+    NSDictionary * dict = note.userInfo;
+    CGRect endFrame = [[dict objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    CGFloat delta = endFrame.origin.y - fy-40;
+   
+    if (delta <0)
+    {
+         CGAffineTransform pTransform = CGAffineTransformMakeTranslation(0, delta);
+        [UIView animateWithDuration:0.25 animations:^{
+//            self.view.center = CGPointMake(self.view.center.x, self.view.center.y+delta);
+            self.view.transform = pTransform;
+            
+            
+        }];
+        
+        
+        
+    }
+    else
+    {
+         CGAffineTransform pTransform = CGAffineTransformMakeTranslation(0, 0);
+        [UIView animateWithDuration:0.25 animations:^{
+//            self.view.center = CGPointMake(self.view.center.x, self.view.bounds.size.height/2);
+            self.view.transform = pTransform;
+            
+        }];
+        
+        
+    }
+    
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

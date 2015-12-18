@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="PhoneNumberTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="341" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="341" height="59"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JZC-Kq-WvE">
+                        <rect key="frame" x="8" y="9" width="44" height="44"/>
+                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="44" id="Bxz-xM-DTo"/>
+                            <constraint firstAttribute="height" constant="44" id="qMm-u8-Leb"/>
+                        </constraints>
+                    </imageView>
+                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入电话号码" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="5Dd-ju-20z">
+                        <rect key="frame" x="60" y="11" width="213" height="42"/>
+                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="42" id="9aW-AX-52V"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                        <connections>
+                            <outlet property="delegate" destination="KGk-i7-Jjw" id="zak-tt-l8Q"/>
+                        </connections>
+                    </textField>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yz0-qX-9mG" userLabel="修改">
+                        <rect key="frame" x="281" y="11" width="44" height="42"/>
+                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="44" id="75p-fb-YkC"/>
+                            <constraint firstAttribute="height" constant="42" id="lMl-Vt-aZX"/>
+                        </constraints>
+                        <state key="normal" image="sun">
+                            <color key="titleShadowColor" red="0.98447357469999996" green="1" blue="0.98622235150000004" alpha="1" colorSpace="calibratedRGB"/>
+                        </state>
+                        <connections>
+                            <action selector="clickEditButton:andEvent:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="kDP-xi-JJn"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <animations/>
+                <constraints>
+                    <constraint firstItem="Yz0-qX-9mG" firstAttribute="leading" secondItem="5Dd-ju-20z" secondAttribute="trailing" constant="8" id="BJx-Fr-dKp"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Yz0-qX-9mG" secondAttribute="trailing" constant="8" id="WYz-1O-qan"/>
+                    <constraint firstItem="5Dd-ju-20z" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="3" id="avk-pX-4Ie"/>
+                    <constraint firstItem="Yz0-qX-9mG" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="3" id="f2u-0L-D0z"/>
+                    <constraint firstItem="JZC-Kq-WvE" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="ghN-q3-TyV"/>
+                    <constraint firstItem="5Dd-ju-20z" firstAttribute="leading" secondItem="JZC-Kq-WvE" secondAttribute="trailing" constant="8" id="rif-b9-4wa"/>
+                    <constraint firstItem="JZC-Kq-WvE" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="1" id="u6g-mP-Qjx"/>
+                </constraints>
+            </tableViewCellContentView>
+            <animations/>
+            <connections>
+                <outlet property="PhoneTypeImageView" destination="JZC-Kq-WvE" id="iGe-gl-yjy"/>
+                <outlet property="editButton" destination="Yz0-qX-9mG" id="47l-rU-1pI"/>
+                <outlet property="phoneNumTextfield" destination="5Dd-ju-20z" id="fSd-uX-7IA"/>
+            </connections>
+            <point key="canvasLocation" x="171.5" y="182"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="sun" width="36" height="42"/>
+    </resources>
+</document>

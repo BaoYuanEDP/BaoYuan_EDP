@@ -1,0 +1,56 @@
+//
+//  HolidayCustomCell.m
+//  BYFCApp
+//
+//  Created by zzs on 15/3/27.
+//  Copyright (c) 2015年 PengLee. All rights reserved.
+//
+
+#import "HolidayCustomCell.h"
+#import "PL_Header.h"
+
+@implementation HolidayCustomCell
+
+-(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self=[super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        
+        [self initView];
+    }
+    return self;
+}
+
+-(void)initView
+{
+    _image=[[UIImageView alloc]initWithFrame:CGRectMake(20/320.00*PL_WIDTH, 10, 50, 25)];
+    _image.image=[UIImage imageNamed:@"nianjia.png"];
+    [self addSubview:_image];
+    _name=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(_image.frame)+30/320.00*PL_WIDTH, 13, 50, 20)];
+    //_name.text=@"郑九义";
+    _name.font=[UIFont systemFontOfSize:15];
+    [self addSubview:_name];
+    _bianhao=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(_name.frame)+30/320.00*PL_WIDTH, 13, 70, 20)];
+    //_bianhao.text=@"AA14682";
+    _bianhao.font=[UIFont systemFontOfSize:15];
+    [self addSubview:_bianhao];
+    _date=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(_image.frame), CGRectGetMaxY(_image.frame)+12, PL_WIDTH, 20)];
+    //_date.text=@"2015-03-12 9:00  到  2015-03-12 9:00 (10小时)";
+    _date.font=[UIFont systemFontOfSize:13];
+    [self addSubview:_date];
+    _reason=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(_date.frame), CGRectGetMaxY(_date.frame)+10, PL_WIDTH, 20)];
+    //_reason.text=@"家中有事，需请假一天望批准";
+    _reason.font=[UIFont systemFontOfSize:15];
+    [self addSubview:_reason];
+}
+- (void)awakeFromNib {
+    // Initialization code
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

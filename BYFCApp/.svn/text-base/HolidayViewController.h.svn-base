@@ -1,0 +1,29 @@
+//
+//  HolidayViewController.h
+//  BYFCApp
+//
+//  Created by zzs on 15/3/12.
+//  Copyright (c) 2015年 PengLee. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface HolidayViewController : UIViewController
+{
+    UITextField *timeDay;
+    UITextField *timeDay2;
+    NSArray *timeArr1;
+    NSArray *timeArr2;
+    NSMutableArray *styleArr;
+    UITextField *select;
+    UILabel *startHour;
+    UILabel *endHour;
+   
+    UITextView *textView;
+    NSString *temp1;
+    NSString *temp2;
+}
+@property(nonatomic,strong)NSArray *array;
+@property(nonatomic,strong) UILabel *holiday;
+
+@end

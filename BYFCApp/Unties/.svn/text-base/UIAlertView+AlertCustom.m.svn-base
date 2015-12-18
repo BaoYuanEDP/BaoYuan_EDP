@@ -1,0 +1,22 @@
+//
+//  UIAlertView+AlertCustom.m
+//  BYFCApp
+//
+//  Created by PengLee on 15/1/23.
+//  Copyright (c) 2015年 PengLee. All rights reserved.
+//
+
+#import "UIAlertView+AlertCustom.h"
+
+@implementation UIAlertView (AlertCustom)
++ (void)showAlertViewWithMessage:(NSString *)message
+{
+    [self showAlertWithTitle:nil message:message duration:1.5];
+}
++ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message duration:(NSTimeInterval)time
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:nil otherButtonTitles: nil];
+    [alert show];
+    [alert performSelector:@selector(dismissAnimated:) withObject:@YES afterDelay:time];
+}
+@end

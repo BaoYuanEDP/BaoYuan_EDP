@@ -1,0 +1,385 @@
+//
+//  LookAboutAddView.m
+//  BYFCApp
+//
+//  Created by zzs on 15/5/28.
+//  Copyright (c) 2015年 PengLee. All rights reserved.
+//
+
+#import "LookAboutAddView.h"
+#import "PL_Header.h"
+
+@interface LookAboutAddView()
+{
+
+    //保存页数
+    NSInteger pageCount;
+    //保存楼盘名称
+    NSString *_estateNameStr;
+    //保存楼栋号
+    NSString *_buildingNameStr;
+    //保存房号
+    NSString *_roomNoStr;
+    //房源ID
+    NSString *_propertyID;
+    
+}
+
+@property (strong, nonatomic) NSMutableArray *dataSourcesArray;
+@property (nonatomic,strong) AutocompletionTableView *autoCompleter;
+@property (nonatomic,strong) NSMutableArray *spellArray;
+
+@end
+
+
+@implementation LookAboutAddView
+-(NSMutableArray *)spellArray
+{
+    if (!_spellArray) {
+        _spellArray = [[NSMutableArray alloc]init];
+    }
+    return _spellArray;
+}
+
+-(NSMutableArray *)dataSourcesArray{
+
+    if (_dataSourcesArray ==nil) {
+        _dataSourcesArray = [[NSMutableArray alloc]init];
+    }
+    return _dataSourcesArray;
+}
+
+-(instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        self =  [[NSBundle mainBundle]loadNibNamed:@"LookAboutAddView" owner:self options:nil].lastObject;
+        self.frame = frame;
+        self.backgroundColor = [[UIColor grayColor]colorWithAlphaComponent:0.7];
+        LookRoomListTableView.delegate = self;
+        LookRoomListTableView.dataSource = self;
+        pageCount = 0;
+        [EstateNameTextField addTarget:self.autoCompleter action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
+        [self setupRefresh];
+    }
+    return self;
+}
+- (AutocompletionTableView *)autoCompleter
+{
+    NSLog(@"%s",__FUNCTION__);
+    if (!_autoCompleter)
+    {
+        NSMutableDictionary *options = [NSMutableDictionary dictionaryWithCapacity:1];
+        [options setValue:[NSNumber numberWithBool:YES] forKey:ACOCaseSensitive];
+        [options setValue:nil forKey:ACOUseSourceFont];
+        
+        _autoCompleter = [[AutocompletionTableView alloc]initWithTextField:EstateNameTextField inView:self withOptions:options];
+        
+//        _autoCompleter = [[AutocompletionTableView alloc] initWithTextField:EstateNameTextField inViewController:nil withOptions:options];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[MyRequest defaultsRequest] afCompleteLink_user:[PL_USER_STORAGE objectForKey:PL_USER_NAME] user_Token:[PL_USER_STORAGE objectForKey:PL_USER_TOKEN] completeBack:^(NSString *  obj) {
+                
+                NSLog(@"+++++++++++==========%@",obj);
+                NSString * completeString = obj;
+                if (completeString &&  completeString.length && [completeString isKindOfClass:[NSString class]])
+                {
+                    NSData * datas = [completeString dataUsingEncoding:NSUTF8StringEncoding];
+                    NSArray * arra = [NSJSONSerialization JSONObjectWithData:datas options:NSJSONReadingMutableContainers error:nil];
+                    
+                    if (arra.count>0)
+                    {
+                        for (NSDictionary * dict  in arra)
+                        {
+                            
+                            NSString * easterName = dict[@"EstateName"];
+                            
+                            [self.spellArray addObject:easterName];
+                            
+                            
+                            
+                        }
+                        _autoCompleter.suggestionsDictionary = self.spellArray;
+                        
+                        
+                        
+                    }
+                }
+                
+                
+                //                for (NSString *item in spellArray) {
+                //                    NSLog(@"%@",item);
+                //                }
+                
+            }];
+            
+        });
+        
+        
+    }
+    return _autoCompleter;
+}
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+
+    return _dataSourcesArray.count;
+    
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    //static NSString *flag = @"cell";
+    //UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:flag];
+    [tableView registerNib:[UINib nibWithNibName:@"LookAboutRoomTableViewCell" bundle:nil] forCellReuseIdentifier:@"flag"];
+    
+    LookAboutRoomTableViewCell *lookCell = [tableView dequeueReusableCellWithIdentifier:@"flag"];
+    
+    NSDictionary *dict = [_dataSourcesArray objectAtIndex:indexPath.row];
+    
+    lookCell.EstateName.text = [dict objectForKey:@"EstateName"];
+    
+    lookCell.BuildingName.text = [NSString stringWithFormat:@"%@栋%@室",[dict objectForKey:@"BuildingName"],[dict objectForKey:@"RoomNo"]];
+    lookCell.SQUARE.text =[NSString stringWithFormat:@"%@㎡" ,[dict objectForKey:@"SQUARE"]];
+    
+    return lookCell;
+    
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    NSDictionary *dict = [_dataSourcesArray objectAtIndex:indexPath.row];
+    _propertyID = dict[@"PROPERTYID"];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:[NSString stringWithFormat:@"是否带看:%@ %@栋%@室",dict[@"EstateName"],dict[@"BuildingName"],dict[@"RoomNo"]]delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alert show];
+
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1)
+    {
+        PL_PROGRESS_SHOW;
+        [[MyRequest defaultsRequest]afSetGoSee:_propertyID CustID:_CustID Source:@"ios" userID:[PL_USER_STORAGE objectForKey:PL_USER_USERID] userToken:[PL_USER_STORAGE objectForKey:PL_USER_TOKEN] completeBack:^(NSString *str) {
+            PL_PROGRESS_DISMISS;
+            NSLog(@"str:%@",str);
+            
+            if ([str isEqualToString:@"OK"])
+            {
+                PL_ALERT_SHOW(@"添加带看成功");
+                [self fadeOut];
+            }
+            else if ([str isEqualToString:@"ERR"])
+            {
+                
+                PL_ALERTVIEW_SHOW(@"添加带看失败");
+            }else{
+                
+                PL_ALERTVIEW_SHOW(@"房源ID或客源ID不存在");
+            }
+            
+        }];
+        
+    }
+}
+
+
+-(void)isTextField{
+
+    if (EstateNameTextField.text ==nil) {
+        EstateNameTextField.text = @"";
+        _estateNameStr = EstateNameTextField.text;
+    }
+    else
+    {
+        _estateNameStr = EstateNameTextField.text;
+    }
+    
+    if (BuildingNameTextField.text ==nil) {
+        BuildingNameTextField.text = @"";
+        _buildingNameStr = BuildingNameTextField.text;
+    }
+    else
+    {
+        _buildingNameStr = BuildingNameTextField.text;
+    }
+    
+    if (RoomNoTextField.text ==nil) {
+        RoomNoTextField.text = @"";
+        _roomNoStr = RoomNoTextField.text;
+    }
+    else
+    {
+        _roomNoStr = RoomNoTextField.text;
+    }
+    
+
+}
+
+-(void) postFirst{
+    
+  // [self isTextField];
+    _roomNoStr = @"";
+     pageCount = 2;
+    [[MyRequest defaultsRequest]afGetGoSeePropertyListEstateName:_estateNameStr BuildingName:_buildingNameStr RoomNo:_roomNoStr StartIndex:[NSString stringWithFormat:@"%ld",(long)pageCount] completeBack:^(NSString *str) {
+        
+        NSLog(@"wocanima");
+        
+        SBJSON *json = [[SBJSON alloc]init];
+      //  self.dataSourcesArray = [json objectWithString:str error:nil];
+        [self.dataSourcesArray addObjectsFromArray:[json objectWithString:str error:nil]];
+        [LookRoomListTableView  reloadData];
+        
+       // [LookRoomListTableView headerEndRefreshing];
+    }];
+    
+}
+
+-(void)postRoomLookList
+{
+    
+      [self isTextField];
+    NSLog(@"%@",_roomNoStr);
+    
+    NSLog(@"%@",_buildingNameStr);
+    NSLog(@">>>>>>>%@",_estateNameStr);
+
+    PL_PROGRESS_SHOW;
+    [[MyRequest defaultsRequest]afGetGoSeePropertyListEstateName:_estateNameStr BuildingName:_buildingNameStr RoomNo:_roomNoStr StartIndex:[NSString stringWithFormat:@"%ld",(long)pageCount] completeBack:^(NSString *str) {
+
+        
+        NSLog(@"%@",_estateNameStr);
+        
+        NSLog(@"%@",_buildingNameStr);
+        
+        NSLog(@"%@",_roomNoStr);
+        
+        NSLog(@"%@",[NSString stringWithFormat:@"%ld",(long)pageCount]);
+
+
+        
+        
+        
+        
+        NSLog(@"%@",str);
+        if ([str isEqualToString:@"NOLOGIN"])
+        {
+            ViewController *login=[[ViewController alloc]init];
+           // [self.navigationController pushViewController:login animated:YES];
+        }
+        else if ([str isEqualToString:@"[]"] )
+        {
+            
+            PL_ALERT_SHOW(@"暂无数据");
+           // [self.dataSourcesArray removeAllObjects];
+        }
+        else if ([str isEqualToString:@"exception"])
+        {
+            PL_ALERT_SHOW(@"服务器异常");
+            [self.dataSourcesArray removeAllObjects];
+        }
+        else
+        {
+            SBJSON *json = [[SBJSON alloc]init];
+            //self.dataSourcesArray = [json objectWithString:str error:nil];
+            [self.dataSourcesArray addObjectsFromArray:[json objectWithString:str error:nil]];
+            [LookRoomListTableView  reloadData];
+        }
+ 
+        PL_PROGRESS_DISMISS;
+    }];
+    
+}
+- (IBAction)searchButton:(UIButton *)sender {
+
+    [_dataSourcesArray removeAllObjects];
+    pageCount = 1;
+    [self postRoomLookList];
+
+}
+
+
+
+-(void)addSelfInAView:(UIView *)sup
+{
+    [sup.window addSubview:self];
+    [self bringSubviewToFront:sup.window];
+     [self postFirst];
+    [self fadeIn];
+    
+   
+}
+- (void)fadeIn
+{
+    self.transform = CGAffineTransformMakeScale(1.4, 1.4);
+    self.alpha = 0;
+    [UIView animateWithDuration:0.25 animations:^{
+        self.alpha = 1;
+        self.transform = CGAffineTransformMakeScale(1, 1);
+    }];
+}
+- (void)fadeOut
+{
+    [UIView animateWithDuration:.25 animations:^{
+        self.transform = CGAffineTransformMakeScale(1.4, 1.4);
+        self.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        if (finished) {
+            [self removeFromSuperview];
+        }
+    }];
+}
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self clearTel:nil];
+}
+- (void)clearTel:(UIGestureRecognizer *)tap
+{
+    [self fadeOut];
+}
+
+
+#pragma mark --上啦下拉刷新
+- (void)setupRefresh
+{
+    // 1.下拉刷新(进入刷新状态就会调用self的headerRereshing)
+    //    [self.tableView addHeaderWithTarget:self action:@selector(headerRereshing)];
+    // dateKey用于存储刷新时间，可以保证不同界面拥有不同的刷新时间
+    // [table addHeaderWithTarget:self action:@selector(headerRereshing) dateKey:@"table"];
+    [LookRoomListTableView addHeaderWithTarget:self action:@selector(headerRereshingLA)];
+    //#warning 自动刷新(一进入程序就下拉刷新)
+        //[LookRoomListTableView headerBeginRefreshing];
+    
+    // 2.上拉加载更多(进入刷新状态就会调用self的footerRereshing)
+    [LookRoomListTableView addFooterWithTarget:self action:@selector(footerRereshingLA)];
+    
+    // 设置文字(也可以不设置,默认的文字在MJRefreshConst中修改)
+    LookRoomListTableView.headerPullToRefreshText = @"下拉刷新";
+    LookRoomListTableView.headerReleaseToRefreshText = @"松开刷新";
+    LookRoomListTableView.headerRefreshingText = @"客源正在刷新中";
+    
+    LookRoomListTableView.footerPullToRefreshText = @"上拉加载更多数据";
+    LookRoomListTableView.footerReleaseToRefreshText = @"松开加载更多数据";
+    LookRoomListTableView.footerRefreshingText = @"客源正在加载中";
+}
+
+#pragma mark 开始进入刷新状态
+- (void)headerRereshingLA
+{
+    pageCount ++;
+    [self postRoomLookList];
+    [LookRoomListTableView headerEndRefreshing];
+}
+
+- (void)footerRereshingLA
+{
+    pageCount ++ ;
+    [self postRoomLookList];
+    [LookRoomListTableView footerEndRefreshing];
+    
+}
+
+
+
+
+
+@end

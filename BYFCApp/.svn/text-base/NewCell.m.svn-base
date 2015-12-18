@@ -1,0 +1,29 @@
+//
+//  NewCell.m
+//  BYFCApp
+//
+//  Created by PengLee on 15/7/21.
+//  Copyright (c) 2015年 PengLee. All rights reserved.
+//
+
+#import "NewCell.h"
+
+@implementation NewCell
+- (void)cellModelData:(RHSignTimeData *)model
+{
+    NSString *astring = @"T";
+    _signTime.text = [model.sTime stringByReplacingOccurrencesOfString:@"T" withString:@" " ];
+    _coordinateLength.text = [NSString stringWithFormat:@"%@m",model.cLength];
+    
+}
+- (void)awakeFromNib {
+    // Initialization code
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

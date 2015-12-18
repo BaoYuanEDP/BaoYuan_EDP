@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="UpCommit_Footer">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K1G-fV-wsU">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b7Z-Pu-qTW">
+                            <rect key="frame" x="97" y="30" width="141" height="30"/>
+                            <animations/>
+                            <color key="backgroundColor" red="0.80891927080000003" green="0.48332134249999997" blue="0.16695692440000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="P7G-jG-KOo"/>
+                                <constraint firstAttribute="width" constant="141" id="fIf-Ll-1CA"/>
+                            </constraints>
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <state key="normal" title="上传提交">
+                                <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" red="1" green="0.72137391539999995" blue="0.56924728189999996" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="b7Z-Pu-qTW" firstAttribute="centerX" secondItem="K1G-fV-wsU" secondAttribute="centerX" constant="7.5" id="Ick-Xr-yyA"/>
+                        <constraint firstItem="b7Z-Pu-qTW" firstAttribute="centerY" secondItem="K1G-fV-wsU" secondAttribute="centerY" id="QWZ-Jp-CiW"/>
+                        <constraint firstAttribute="width" secondItem="K1G-fV-wsU" secondAttribute="height" multiplier="56:15" constant="-16" id="SGy-8q-H4y"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="K1G-fV-wsU" secondAttribute="bottom" id="8Rd-Zj-BIF"/>
+                <constraint firstAttribute="trailing" secondItem="K1G-fV-wsU" secondAttribute="trailing" id="JBS-VK-iLz"/>
+                <constraint firstItem="K1G-fV-wsU" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="V0T-Jd-UwT"/>
+                <constraint firstItem="K1G-fV-wsU" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="wm0-rm-V7z"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="CommitIUp" destination="b7Z-Pu-qTW" id="KJa-gC-2sv"/>
+            </connections>
+        </view>
+    </objects>
+</document>

@@ -1,0 +1,17 @@
+//
+//  HolidayCustomCell.h
+//  BYFCApp
+//
+//  Created by zzs on 15/3/27.
+//  Copyright (c) 2015年 PengLee. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface HolidayCustomCell : UITableViewCell
+@property(nonatomic,strong)UIImageView *image;
+@property(nonatomic,strong)UILabel *name;
+@property(nonatomic,strong)UILabel *bianhao;
+@property(nonatomic,strong)UILabel *date;
+@property(nonatomic,strong)UILabel *reason;
+@end

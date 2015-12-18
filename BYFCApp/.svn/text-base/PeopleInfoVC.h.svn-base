@@ -1,0 +1,83 @@
+//
+//  PeopleInfoVC.h
+//  BYFCApp
+//
+//  Created by PengLee on 14/12/9.
+//  Copyright (c) 2014年 PengLee. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "WXApiObject.h"
+#import "WXApi.h"
+#import "PL_Header.h"
+#import "KeychainItemWrapper.h"
+#import "UMSocial.h"
+#import "HIstoryCell.h"
+#import "NewCell.h"
+#import "BMKLocationComponent.h"
+#import "BMKMapComponent.h"
+
+//@protocol sendMsgToWeChatViewDelegate <NSObject>
+//
+//- (void)shareWeixinBnt ;
+//
+//
+//
+//@end;
+//@protocol RespForWeChatViewDelegate <NSObject>
+//
+//
+//- (void) RespImageContent;
+//@end
+
+@interface PeopleInfoVC : UIViewController<UIAlertViewDelegate,BMKLocationServiceDelegate,BMKMapViewDelegate>
+{
+    BMKLocationService * _locService ;
+    CLLocationCoordinate2D coordinates;
+    double baiduX ,baiduY;//baiduX  纬度 baiduY  经度
+    CLLocationDistance distance;
+    NSString *  distanceFlag;
+    NSMutableArray  * _signArray;
+    NSString * buttonEnable;
+    UIButton * zhuxiaoBnt ;
+    
+}
+
+@property (nonatomic,strong)NSString *ronghanL;
+@property (weak, nonatomic) IBOutlet UIButton *ronghanBut;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *lineRH;
+@property (weak, nonatomic) IBOutlet UIButton *kaoqingBut;
+
+
+@property (nonatomic, strong)NSMutableArray *arrayData;
+@property (nonatomic, strong)NSMutableArray *modelArray;
+@property (weak, nonatomic) IBOutlet UILabel *name;
+@property (weak, nonatomic) IBOutlet UILabel *bianhao;
+@property (weak, nonatomic) IBOutlet UILabel *yuzhan;
+@property (weak, nonatomic) IBOutlet UILabel *main;
+@property (weak, nonatomic) IBOutlet UILabel *bumen;
+@property (weak, nonatomic) IBOutlet UILabel *zhiwei;
+@property (weak, nonatomic) IBOutlet UILabel *share;
+@property (strong, nonatomic) IBOutlet UIView *hong;
+@property (weak, nonatomic) IBOutlet UIImageView *hen;
+@property (weak, nonatomic) IBOutlet UIImageView *shanghong;
+@property (weak, nonatomic) IBOutlet UITableView *historyTable;
+
+@property (weak, nonatomic) IBOutlet UILabel *ohnmm;
+@property (weak, nonatomic) IBOutlet UILabel *onLble;
+@property (weak, nonatomic) IBOutlet UILabel *offLbale;
+@property (weak, nonatomic) IBOutlet UILabel *dateLable;
+@property (weak, nonatomic) IBOutlet UILabel *onTimeLbale;
+@property (weak, nonatomic) IBOutlet UILabel *offTimeLable;
+@property NSString * strcode;
+- (IBAction)ronghan:(UIButton *)sender;
+
+@property(nonatomic,assign) BOOL isEqueToOne;
+//@property(nonatomic,assign)id<sendMsgToWeChatViewDelegate,NSObject>delegate;
+//@property(nonatomic,assign)id<RespForWeChatViewDelegate,NSObject>delegate2;
+
+
+
+
+
+@end

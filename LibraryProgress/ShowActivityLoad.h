@@ -1,0 +1,27 @@
+
+#import <Foundation/Foundation.h>
+#import "KVNProgress.h"
+@interface ShowActivityLoad : NSObject
++ (instancetype)shareDefault;
+- (instancetype)init;
++ (instancetype)allocWithZone:(struct _NSZone *)zone;
+- (void)setBaseProgressUI;
+- (void)setCustoomProgressUI;
+
+// 显示正常的加载提示
+
+- (void)showNormalProgress;
+- (void)showStatusAndSolidbg;
+- (void)showStatusAndDeterminnaterProgress;
+- (void)showSuccessAndStatus;
+- (void)showErrorAndStatus;
+- (void)showCompletHUD;
+- (void)showProgress;
+
+- (void)updateProgress;
+
+
+//是否需要全屏显示
+- (BOOL)isCallFullScreen;//default
+- (BOOL)isNotFullScreen;//
+@end

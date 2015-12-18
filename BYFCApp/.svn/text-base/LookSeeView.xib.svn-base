@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="LookSeeView">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3lX-zj-9Ao">
+                    <rect key="frame" x="0.0" y="79" width="600" height="59"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="客户姓名" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3c5-jd-fWi">
+                            <rect key="frame" x="20" y="19" width="68" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="请输入客户姓名查询" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="rf5-ZZ-RlS">
+                            <rect key="frame" x="96" y="15" width="442" height="30"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZBq-Ll-3Eg">
+                            <rect key="frame" x="546" y="7" width="46" height="46"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="46" id="MV5-at-2nA"/>
+                            </constraints>
+                            <state key="normal" backgroundImage="search.png">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="clickSearchButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="aqJ-TF-uaj"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="3c5-jd-fWi" firstAttribute="top" secondItem="3lX-zj-9Ao" secondAttribute="top" constant="19" id="3vN-ta-frk"/>
+                        <constraint firstItem="3c5-jd-fWi" firstAttribute="centerY" secondItem="3lX-zj-9Ao" secondAttribute="centerY" id="6F9-JD-AaY"/>
+                        <constraint firstItem="ZBq-Ll-3Eg" firstAttribute="trailing" secondItem="3lX-zj-9Ao" secondAttribute="trailingMargin" id="Ghv-NV-aaq"/>
+                        <constraint firstItem="ZBq-Ll-3Eg" firstAttribute="top" secondItem="3lX-zj-9Ao" secondAttribute="top" constant="7" id="MU7-OW-Swt"/>
+                        <constraint firstItem="rf5-ZZ-RlS" firstAttribute="leading" secondItem="3c5-jd-fWi" secondAttribute="trailing" constant="8" symbolic="YES" id="PY1-Pq-ICr"/>
+                        <constraint firstItem="ZBq-Ll-3Eg" firstAttribute="centerY" secondItem="rf5-ZZ-RlS" secondAttribute="centerY" id="UYw-SM-IQE"/>
+                        <constraint firstItem="ZBq-Ll-3Eg" firstAttribute="leading" secondItem="rf5-ZZ-RlS" secondAttribute="trailing" constant="8" symbolic="YES" id="gu5-k8-fD8"/>
+                        <constraint firstItem="3c5-jd-fWi" firstAttribute="leading" secondItem="3lX-zj-9Ao" secondAttribute="leading" constant="20" symbolic="YES" id="jgX-Gl-Xg1"/>
+                        <constraint firstItem="rf5-ZZ-RlS" firstAttribute="top" secondItem="3lX-zj-9Ao" secondAttribute="top" constant="15" id="kO6-8C-Vzk"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="o0t-YE-Pna">
+                    <rect key="frame" x="0.0" y="138" width="600" height="454"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="zgH-9e-QmD"/>
+                        <outlet property="delegate" destination="-1" id="8ru-dQ-dM1"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="o0t-YE-Pna" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottomMargin" id="41V-kq-oOV"/>
+                <constraint firstItem="o0t-YE-Pna" firstAttribute="top" secondItem="3lX-zj-9Ao" secondAttribute="bottom" id="6Dl-Zc-8XY"/>
+                <constraint firstItem="o0t-YE-Pna" firstAttribute="leading" secondItem="3lX-zj-9Ao" secondAttribute="leading" id="S2J-iw-woy"/>
+                <constraint firstItem="3lX-zj-9Ao" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="79" id="UG5-EU-lGA"/>
+                <constraint firstItem="o0t-YE-Pna" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="qNd-2Z-koa"/>
+                <constraint firstAttribute="trailing" secondItem="3lX-zj-9Ao" secondAttribute="trailing" id="vfX-mb-NMR"/>
+                <constraint firstItem="o0t-YE-Pna" firstAttribute="trailing" secondItem="3lX-zj-9Ao" secondAttribute="trailing" id="zyY-gI-DAb"/>
+            </constraints>
+            <connections>
+                <outlet property="dataSourceTableView" destination="o0t-YE-Pna" id="H2f-m3-8iQ"/>
+                <outlet property="searchNameTextField" destination="rf5-ZZ-RlS" id="AJB-3a-ytF"/>
+            </connections>
+            <point key="canvasLocation" x="326" y="157"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="search.png" width="40" height="40"/>
+    </resources>
+</document>

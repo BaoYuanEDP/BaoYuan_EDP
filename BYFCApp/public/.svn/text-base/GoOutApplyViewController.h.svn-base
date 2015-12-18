@@ -1,0 +1,50 @@
+//
+//  GoOutApplyViewController.h
+//  BYFCApp
+//
+//  Created by heaven on 15-7-2.
+//  Copyright (c) 2015年 PengLee. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface GoOutApplyViewController : UIViewController<UITextFieldDelegate>
+//员工号
+@property (weak, nonatomic) IBOutlet UITextField *staffNum;
+//员工姓名
+@property (weak, nonatomic) IBOutlet UITextField *staffName;
+//日期
+@property (weak, nonatomic) IBOutlet UITextField *Data;
+- (IBAction)dataBtn:(UIButton *)sender;
+//时间段
+@property (weak, nonatomic) IBOutlet UITextField *timeBuck;
+- (IBAction)timeBut:(UIButton *)sender;
+//外出地点
+@property (weak, nonatomic) IBOutlet UITextField *goToSite;
+//备注
+@property (weak, nonatomic) IBOutlet UITextField *remark;
+//提交
+- (IBAction)putIn:(UIButton *)sender;
+@property (weak, nonatomic) IBOutlet UIButton *butIn_s;
+@property (nonatomic,strong) UIDatePicker *datePicker;
+//选定
+@property (weak, nonatomic) IBOutlet UIButton *but01;
+@property (weak, nonatomic) IBOutlet UIButton *but02;
+
+//时间段选择
+@property (strong, nonatomic) IBOutlet UIView *timeView;
+- (IBAction)shangwu:(UIButton *)sender;
+@property (weak, nonatomic) IBOutlet UIButton *shangwuG;
+- (IBAction)xiawu:(UIButton *)sender;
+@property (weak, nonatomic) IBOutlet UIButton *xiawuG;
+- (IBAction)quantian:(UIButton *)sender;
+@property (weak, nonatomic) IBOutlet UIButton *quantianG;
+- (IBAction)peixun:(UIButton *)sender;
+@property (weak, nonatomic) IBOutlet UIButton *peixunG;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *timeViewH;
+//提交据底部
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *layoutH;
+
+
+@end
