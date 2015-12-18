@@ -27,6 +27,8 @@
 //        [[UIDevice currentDevice] performSelector:@selector(setOrientation:) withObject:(__bridge id)((void *)UIInterfaceOrientationPortrait)];
 //        
 //    }
+    
+    
 }
 - (void)viewDidLayoutSubviews
 {
