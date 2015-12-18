@@ -909,6 +909,8 @@ const char *LoadMapViewQueue_GCD;
         {
             statesDateStr.text = [NSString stringWithFormat:@"激活时间:%@",[[houseDictionary objectForKey:@"StatusDate"] substringToIndex:10]];
 
+          
+            
             
         }
     }
