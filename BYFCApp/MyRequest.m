@@ -2839,7 +2839,7 @@ static  MyRequest * __defaultRequest=nil;
 -(void)addPropertyContact:(ADDPropertyContactData *)contact   backInfoMessage:(void (^)(NSMutableString * string))block
 {
     self.allTypeBlock = block;
-    NSString * soapMessage = [NSString stringWithFormat:@"<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ADDPropertyContact xmlns=\"http://tempuri.org/\"><PropertyId>%@</PropertyId><Content>%@</Content><FollowType>%@</FollowType><FollowWay>%@</FollowWay><userid>%@</userid><token>%@</token></ADDPropertyContact></soap:Body></soap:Envelope>",contact.PropertyId,contact.Content,contact.FollowType, contact.FollowWay,contact.userid,contact.token];
+    NSString * soapMessage = [NSString stringWithFormat:@"<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ADDPropertyContact xmlns=\"http://tempuri.org/\"><PropertyId>%@</PropertyId><Content>%@</Content><FollowType>%@</FollowType><FollowWay>%@</FollowWay><NewId>%@</NewId><userid>%@</userid><token>%@</token></ADDPropertyContact></soap:Body></soap:Envelope>",contact.PropertyId,contact.Content,contact.FollowType, contact.FollowWay,contact.followID,contact.userid,contact.token];
     NSURL *url=[NSURL URLWithString:PL_USER_ROOMLIST];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
     NSString *msgLength=[NSString stringWithFormat:@"%lu",(unsigned long)[soapMessage length]];

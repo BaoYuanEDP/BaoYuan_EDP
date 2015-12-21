@@ -110,7 +110,9 @@ const char*RoomDtailsQueue_GCD;
     iamgeSATORY = [NSMutableArray array];
     self.chcheImageRoom = [NSMutableDictionary dictionary];
    // [self loadTableData:nil];
-    
+    [bgView removeFromSuperview];
+    [bgHuiView removeFromSuperview];
+    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"ROOMFOLLOWID"];
 }
 
 -(AppDelegate *)AppDelegate
@@ -1495,7 +1497,7 @@ const char*RoomDtailsQueue_GCD;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-            if (tableView==_tableView1)
+    if (tableView==_tableView1)
     {
         UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"identifer" ];
         if (!cell)
@@ -3016,6 +3018,7 @@ self.cacheEstateName = cell.estateNameLable.text;
         follow.FollowType = style.text;
         follow.Content = textView.text;
         follow.FollowWay = fangshi.text;
+        follow.followID = [[NSUserDefaults standardUserDefaults]objectForKey:@"ROOMFOLLOWID"];
         follow.userid = [[NSUserDefaults standardUserDefaults] objectForKey:PL_USER_NAME];
         follow.token = [[NSUserDefaults standardUserDefaults]objectForKey:@"Token"];
          NSLog(@"%@  %@  %@  %@  %@  %@",follow.PropertyId,follow.FollowType,follow.Content,follow.FollowWay,follow.userid,follow.token);
@@ -3027,6 +3030,8 @@ self.cacheEstateName = cell.estateNameLable.text;
                 else if ([string isEqualToString:@"OK"])
                 {
                     PL_ALERT_SHOWNOT_OKAND_YES(@"提交成功");
+                    [bgView removeFromSuperview];
+
                 }
                 else if ([string isEqualToString:@"ERR"])
                 {
@@ -3036,10 +3041,10 @@ self.cacheEstateName = cell.estateNameLable.text;
                     PL_ALERT_SHOW(@"提交内容有敏感词汇!");
                 }
             }];
-            [bgView removeFromSuperview];
+            [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"ROOMFOLLOWID"];
             }
         
-    }
+}
 //    if ([fangshi.text isEqualToString:@"跟进方式"]||[style.text isEqualToString:@"跟进类型"]||[text.text isEqualToString:@""]) {
 //        PL_ALERT_SHOW(@"跟进内容或跟进内容或跟进类型不能为空");
 //    }else
@@ -4206,7 +4211,7 @@ self.cacheEstateName = cell.estateNameLable.text;
     {
         [bgView removeFromSuperview];
         [bgHuiView removeFromSuperview];
-
+        [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"ROOMFOLLOWID"];
     }
   
     _tableView1.hidden=YES;

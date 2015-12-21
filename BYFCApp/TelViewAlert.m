@@ -326,7 +326,7 @@
                              else
                              {
                                  NSString *str1 =[strIDC substringFromIndex:5];
-                                 [[NSUserDefaults standardUserDefaults] setObject:str1 forKey:@"FOLLOWID"];
+                                 [[NSUserDefaults standardUserDefaults] setObject:str1 forKey:@"ROOMFOLLOWID"];
                                  
                              }
                              [[NSNotificationCenter defaultCenter] postNotificationName:@"sunH" object:nil];

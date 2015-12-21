@@ -14,6 +14,7 @@
 @property(nonatomic,strong)NSString *Content;
 @property(nonatomic,strong)NSString *FollowType;
 @property(nonatomic,strong)NSString *FollowWay;
+@property(nonatomic,strong)NSString *followID;
 @property(nonatomic,strong)NSString *userid;
 @property(nonatomic,strong)NSString *token;
 @end

@@ -79,8 +79,30 @@ const char *LoadMapViewQueue_GCD;
     NSMutableArray*imageArr1;
     NSMutableArray*imageArr3;
     NSMutableArray*imageArr5;
-    
-   
+    //打电话跟进背景
+    UIView *bgViewGenjin;
+    //打电话跟进小背景
+    UIView *smallView1;
+    //打电话跟进跟进方式
+    UILabel *fangshiGenjin;
+    //打电话跟进跟进方式按钮
+    UIButton *fangshiGenjinBtn;
+    //打电话跟进跟进类型
+    UILabel *styleGenjin;
+    //打电话跟进跟进类型按钮
+    UIButton *styleGenjinBtn;
+    //打电话跟进view
+    UIView *colViewGenjin;
+    //
+    UIView *sousuoViewstyleGenjin;
+    //打电话跟进列表
+    UITableView *tableVeiwList;
+    //打电话跟进输入框
+    UITextView *textViewGenjin;
+    //
+    UILabel *placeholderGenjin;
+    //
+    UILabel * countGenjin;
 
 }
 @property(nonatomic,strong)NSMutableArray*ImageDataArray;
@@ -115,7 +137,9 @@ const char *LoadMapViewQueue_GCD;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addGenjin) name:@"sunH" object:nil];
+    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"ROOMFOLLOWID"];
+
     /**
      *  获取当前Self
      */
@@ -215,6 +239,282 @@ const char *LoadMapViewQueue_GCD;
     self.ImageDataArray1 = [NSMutableArray array];
 
 }
+-(void)fangshiGenjinClick:(UIButton *)sender
+{
+    sender.selected=!sender.selected;
+    if (sender.selected) {
+        fangshiGenjinBtn.selected=YES;
+        [smallView1 addSubview:colViewGenjin];
+        
+    }
+    else
+    {
+        fangshiGenjinBtn.selected=NO;
+        [colViewGenjin removeFromSuperview];
+        
+    }
+}
+
+-(void)styleClickGenjinList:(UIButton *)sender
+{
+    NSLog(@"******");
+    styleArray = [NSArray array];
+    
+    sender.selected=!sender.selected;
+    if (sender.selected) {
+        styleGenjinBtn.selected=YES;
+        PL_PROGRESS_SHOW;
+        [[MyRequest defaultsRequest]GetFollowTypeList:^(NSMutableString *string) {
+            NSLog(@"%@",string);
+            if ([string isEqualToString:@"NOLOGIN"]) {
+                ViewController *login=[[ViewController alloc]init];
+                [self.navigationController popToViewController:login animated:YES];
+            }
+            if ([string isEqualToString:@"[]"]) {
+                PL_ALERT_SHOW(@"暂无数据");
+            }
+            PL_PROGRESS_DISMISS;
+            SBJSON *json=[[SBJSON alloc]init];
+            styleArray=[json objectWithString:string error:nil];
+            [tableVeiwList reloadData];
+            [smallView1 addSubview:sousuoViewstyleGenjin];
+        } userid:[[NSUserDefaults standardUserDefaults]objectForKey:PL_USER_NAME] token:[[NSUserDefaults standardUserDefaults]objectForKey:PL_USER_TOKEN]];
+        
+    }else{
+        styleGenjinBtn.selected=NO;
+        [sousuoViewstyleGenjin removeFromSuperview];
+    }
+
+}
+
+-(void)buttonClickGenjinlie:(UIButton *)sender
+{
+    fangshiGenjinBtn.selected=NO;
+    switch (sender.tag) {
+        case 2500:
+        {
+            fangshiGenjin.text=@"电话";
+            [colViewGenjin removeFromSuperview];
+        }
+            break;
+        case 2501:
+        {
+            fangshiGenjin.text=@"手机";
+            [colViewGenjin removeFromSuperview];
+        }
+            break;
+        case 2502:
+        {
+            fangshiGenjin.text=@"微信";
+            [colViewGenjin removeFromSuperview];
+        }
+            break;
+        case 2503:
+        {
+            fangshiGenjin.text=@"QQ";
+            [colViewGenjin removeFromSuperview];
+        }
+            break;
+        case 2504:
+        {
+            fangshiGenjin.text=@"其他";
+            [colViewGenjin removeFromSuperview];
+        }
+            break;
+        default:
+            break;
+    }
+
+}
+-(void)sureClickGenjin
+{
+    [textViewGenjin resignFirstResponder];
+    NSLog(@"-------");
+    if ([fangshiGenjin.text isEqualToString:@"跟进方式"]&&[styleGenjin.text isEqualToString:@"跟进类型"]&&[textViewGenjin.text isEqualToString:@""]) {
+        PL_ALERT_SHOW(@"跟进方式、跟进类型、跟进内容不能为空");
+    }else if([styleGenjin.text isEqualToString:@"跟进类型"]&&[textViewGenjin.text isEqualToString:@""]){
+        PL_ALERT_SHOW(@"跟进类型、跟进内容不能为空");
+    }
+    else if([fangshiGenjin.text isEqualToString:@"跟进方式"]&&[textViewGenjin.text isEqualToString:@""]){
+        PL_ALERT_SHOW(@"跟进方式、跟进内容不能为空");
+    }else if([fangshiGenjin.text isEqualToString:@"跟进方式"]&&[styleGenjin.text isEqualToString:@"跟进类型"]){
+        PL_ALERT_SHOW(@"跟进方式、跟进类型不能为空");
+    }else if([fangshiGenjin.text isEqualToString:@"跟进方式"]){
+        PL_ALERT_SHOW(@"跟进方式不能为空");
+    }else if([styleGenjin.text isEqualToString:@"跟进类型"]){
+        PL_ALERT_SHOW(@"跟进类型不能为空");
+    }else if([textViewGenjin.text isEqualToString:@""]){
+        PL_ALERT_SHOW(@"跟进内容不能为空");
+    }else if ([self validateNumber:textViewGenjin.text]){
+        PL_ALERT_SHOW(@"输入的内容不能含有电话号码");
+        
+    }
+    else{
+        [textViewGenjin resignFirstResponder];
+        ADDPropertyContactData *follow = [[ADDPropertyContactData alloc] init];
+        follow.PropertyId = [[NSUserDefaults standardUserDefaults]objectForKey:@"PropertyId"];
+        //        follow.PropertyId = [[NSUserDefaults standardUserDefaults]objectForKey:@"PropertyId"];
+        follow.FollowType = styleGenjin.text;
+        follow.Content = textViewGenjin.text;
+        follow.FollowWay = fangshiGenjin.text;
+        follow.followID = [[NSUserDefaults standardUserDefaults]objectForKey:@"ROOMFOLLOWID"];
+        follow.userid = [[NSUserDefaults standardUserDefaults] objectForKey:PL_USER_NAME];
+        follow.token = [[NSUserDefaults standardUserDefaults]objectForKey:@"Token"];
+        NSLog(@"%@  %@  %@  %@  %@  %@",follow.PropertyId,follow.FollowType,follow.Content,follow.FollowWay,follow.userid,follow.token);
+        [[MyRequest defaultsRequest] addPropertyContact:follow backInfoMessage:^(NSMutableString *string) {
+            if ([string isEqualToString:@"NOLOGIN"]) {
+                ViewController *login = [[ViewController alloc] init];
+                [self.navigationController popToViewController:login animated:YES];
+            }
+            else if ([string isEqualToString:@"OK"])
+            {
+                PL_ALERT_SHOWNOT_OKAND_YES(@"提交成功");
+            }
+            else if ([string isEqualToString:@"ERR"])
+            {
+                PL_ALERT_SHOW(@"提交失败");
+            }else
+            {
+                PL_ALERT_SHOW(@"提交内容有敏感词汇!");
+            }
+        }];
+        [bgViewGenjin removeFromSuperview];
+        [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"ROOMFOLLOWID"];
+    }
+    
+}
+//打电话弹跟进
+-(void)addGenjin
+{
+    NSLog(@"写跟进");
+    //背景
+    bgViewGenjin=[[UIView alloc]initWithFrame:CGRectMake(0, 0, PL_WIDTH, PL_HEIGHT)];
+    bgViewGenjin.backgroundColor = [[UIColor grayColor]colorWithAlphaComponent:0.5];
+    
+    [self.view addSubview:bgViewGenjin];
+    //小背景
+    smallView1=[[UIView alloc]initWithFrame:CGRectMake(20, PL_HEIGHT/3, PL_WIDTH-40, 200)];
+    smallView1.alpha=1;
+    smallView1.backgroundColor=[UIColor whiteColor];
+    [bgViewGenjin addSubview:smallView1];
+    
+    
+    //标题
+    UILabel *title=[[UILabel alloc]initWithFrame:CGRectMake(PL_WIDTH/2-80, 5, 200, 30)];
+    title.text=@"录入跟进信息";
+    [smallView1  addSubview:title];
+    //跟进方式、按钮
+    UIButton *FSBtn=[[UIButton alloc]initWithFrame:CGRectMake(20+20, 30, 80, 30)];
+    FSBtn.highlighted = YES;
+    [FSBtn addTarget:self action:@selector(fangshiGenjinClick:) forControlEvents:UIControlEventTouchUpInside];
+    //FSBtn.backgroundColor=[UIColor redColor];
+    [smallView1 addSubview:FSBtn];
+    
+    fangshiGenjin=[[UILabel alloc]initWithFrame:CGRectMake(20+20, 35, 50, 20)];
+    fangshiGenjin.text=@"跟进方式";
+    fangshiGenjin.font=[UIFont systemFontOfSize:12];
+    [smallView1 addSubview:fangshiGenjin];
+    fangshiGenjinBtn=[[UIButton alloc]initWithFrame:CGRectMake(71+20, 40, 10, 10)];
+    [fangshiGenjinBtn addTarget:self action:@selector(fangshiGenjinClick:) forControlEvents:UIControlEventTouchUpInside];
+    [fangshiGenjinBtn setImage:[UIImage imageNamed:@"dropdown.png"] forState:UIControlStateNormal];
+    [fangshiGenjinBtn setImage:[UIImage imageNamed:@"dropup.png"] forState:UIControlStateSelected];
+    [smallView1 addSubview:fangshiGenjinBtn];
+    //跟进类型、按钮
+    UIButton *STBtn=[[UIButton alloc]initWithFrame:CGRectMake(120+40, 30, 80, 30)];
+    STBtn.highlighted = YES;
+    [STBtn addTarget:self action:@selector(styleClickGenjinList:) forControlEvents:UIControlEventTouchUpInside];
+    //STBtn.backgroundColor=[UIColor redColor];
+    [smallView1 addSubview:STBtn];
+    styleGenjin=[[UILabel alloc]initWithFrame:CGRectMake(120+40, 35, 50, 20)];
+    styleGenjin.text=@"跟进类型";
+    styleGenjin.font=[UIFont systemFontOfSize:12];
+    [smallView1 addSubview:styleGenjin];
+    styleGenjinBtn=[[UIButton alloc]initWithFrame:CGRectMake(171+40, 40, 10, 10)];
+    [styleGenjinBtn setImage:[UIImage imageNamed:@"dropdown.png"] forState:UIControlStateNormal];
+    [styleGenjinBtn setImage:[UIImage imageNamed:@"dropup.png"] forState:UIControlStateSelected];
+    [styleGenjinBtn addTarget:self action:@selector(styleClickGenjinList:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [smallView1 addSubview:styleGenjinBtn];
+    //跟进方式
+    NSMutableArray * arrTitleRoom = [NSMutableArray arrayWithObjects:@"电话",@"手机",@"微信",@"QQ",@"其他", nil];
+    colViewGenjin = [[UIView alloc]initWithFrame:CGRectMake(CGRectGetMidX(fangshiGenjin.frame)-8, CGRectGetMaxY(fangshiGenjinBtn.frame)+5, 80, 30*arrTitleRoom.count)];
+    UIImageView * viewBg = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"black.png"]];
+    viewBg.frame = CGRectMake(0, 0, CGRectGetWidth(colViewGenjin.frame), CGRectGetHeight(colViewGenjin.frame));
+    [colViewGenjin addSubview:viewBg];
+    for (int i=0; i<arrTitleRoom.count; i++)
+    {
+        UIImageView * sousuoImage = [[UIImageView alloc]initWithFrame:CGRectMake(0,i*28+36, 80, 0.5)];
+        sousuoImage.image = [UIImage imageNamed:@"black_in_hengxian.png"];
+        sousuoImage.backgroundColor = [UIColor clearColor];
+        [colViewGenjin addSubview:sousuoImage];
+    }
+    
+    for (int j=0; j<arrTitleRoom.count; j++)
+    {
+        UIButton * buttonLable = [UIButton buttonWithType:UIButtonTypeCustom];
+        buttonLable.frame = CGRectMake(0, j*28+15, 80, 20);
+        //buttonLable.backgroundColor = [UIColor clearColor];
+        buttonLable.titleLabel.font=[UIFont systemFontOfSize:13];
+        [buttonLable setTitle:[arrTitleRoom objectAtIndex:j] forState:UIControlStateNormal];
+        [buttonLable setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        buttonLable.tag =2500+j;
+        [buttonLable addTarget:self action:@selector(buttonClickGenjinlie:) forControlEvents:UIControlEventTouchUpInside];
+        [colViewGenjin addSubview:buttonLable];
+    }
+    sousuoViewstyleGenjin = [[UIView alloc]initWithFrame:CGRectMake(CGRectGetMidX(styleGenjin.frame)-8, CGRectGetMaxY(styleGenjinBtn.frame)+5, 90, 80+40)];
+    UIImageView * leixingIMge = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"black.png"]];
+    leixingIMge.frame = CGRectMake(0, 0, CGRectGetWidth(sousuoViewstyleGenjin.frame), CGRectGetHeight(sousuoViewstyleGenjin.frame));
+    [sousuoViewstyle addSubview:leixingIMge];
+    tableVeiwList=[[UITableView alloc]initWithFrame:CGRectMake(0, 7, CGRectGetWidth(sousuoViewstyleGenjin.frame), 80+40-7) style:UITableViewStylePlain];
+    tableVeiwList.delegate=self;
+    tableVeiwList.dataSource=self;
+//    tableVeiwList.tag = 1991;
+//    tableVeiwList.rowHeight = 30;
+//    tableVeiwList.separatorColor = [UIColor grayColor];
+//    tableVeiwList.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+//    
+//    tableVeiwList.separatorInset = UIEdgeInsetsZero;
+//    tableVeiwList.backgroundColor=[UIColor clearColor];
+    
+    [sousuoViewstyleGenjin addSubview:tableVeiwList];
+    if ([tableVeiwList respondsToSelector:@selector(setSeparatorInset:)])
+    {
+        tableVeiwList.separatorInset = UIEdgeInsetsZero;
+        
+    }
+    if ([tableVeiwList respondsToSelector:@selector(setLayoutMargins:)])
+    {
+        [tableVeiwList setLayoutMargins:UIEdgeInsetsZero];
+        
+    }
+    
+    //输入框
+    textViewGenjin=[[UITextView alloc]initWithFrame:CGRectMake(20, 55, PL_WIDTH-40-40, 100)];
+    textViewGenjin.layer.borderWidth=1.5;
+    textViewGenjin.layer.borderColor = [UIColor grayColor].CGColor;
+    textViewGenjin.delegate=self;
+    [smallView1 addSubview:textViewGenjin];
+    
+    placeholderGenjin=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, PL_WIDTH-40, 30)];
+    placeholderGenjin.text=@"请输入跟进内容";
+    placeholderGenjin.textColor=[UIColor grayColor];
+    placeholderGenjin.font=[UIFont systemFontOfSize:13];
+    //placeholder.hidden=YES;
+    [textViewGenjin addSubview:placeholderGenjin];
+    
+    //统计
+    countGenjin=[[UILabel alloc]initWithFrame:CGRectMake(25, 157, 100, 20)];
+    countGenjin.text=[NSString stringWithFormat:@"0/100"];
+    [smallView1 addSubview:countGenjin];
+    //确认按钮
+    UIButton *button=[[UIButton alloc]initWithFrame:CGRectMake(PL_WIDTH-135, 150+10, 77, 30)];
+    //button.backgroundColor=[UIColor redColor];
+    [button setImage:[UIImage imageNamed:@"提交按钮.png"] forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(sureClickGenjin) forControlEvents:UIControlEventTouchUpInside];
+    [smallView1 addSubview:button];
+}
+
 - (void)request
 {
     [[CountRequest defaultsRequest]GetLegelProperties:^(NSMutableString *string) {
@@ -246,33 +546,46 @@ const char *LoadMapViewQueue_GCD;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section==0)
-    {
-        return 620;
-    }
-    
-    else if (section==1)
-        
-    {
-        return 210;
-    }
-    else if (section==6)
-    {
-        return 69;
-        
+    if (tableView == tableVeiwList) {
+        return 0;
     }
     else
     {
-        return 44;
+        if (section==0)
+        {
+            return 620;
+        }
+        
+        else if (section==1)
+            
+        {
+            return 210;
+        }
+        else if (section==6)
+        {
+            return 69;
+            
+        }
+        else
+        {
+            return 44;
+        }
+
     }
-    
-    
     return 0;
     
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    
+    if (tableView == tableVeiwList) {
+        return 1;
+
+    }
+    else
+    {
+        return 10;
+
+    }
     return 10;
     
 }
@@ -305,128 +618,137 @@ const char *LoadMapViewQueue_GCD;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    
-//    if (indexPath.section==9||indexPath.section==7)
-    if (indexPath.section==7)
+    if(tableView == tableVeiwList)
     {
-       // [detailTableView beginUpdates];
-        
-        return 180;
-    }
-    if (indexPath.section==8)
-    {
-        
-        LouPanCell * cell =(LouPanCell *) [self tableView:detailTableView cellForRowAtIndexPath:indexPath];
-              return cell.frame.size.height;
-      
-        
-    }
-    if (indexPath.section==2)
-    {
-        if (![[loupanDic objectForKey:@"Transportation"] length]) {
-            return 30;
-        }
-        else
-        {
-            return 90;
-        }
-        
-    }
-    
-    if (indexPath.section==3)
-    {
-        if (![[loupanDic objectForKey:@"Education"] length]) {
-            return 30;
-        }
-        else
-        {
-            return 90;
-        }
-        
-    }
-    
-    if (indexPath.section==4)
-    {
-        if (![[loupanDic objectForKey:@"Business"] length]) {
-            return 30;
-        }
-        else
-        {
-            return 85;
-        }
-        
-    }
-   
-    if (indexPath.section==5)
-    {
-        if (![[loupanDic objectForKey:@"Hospital"] length]) {
-            return 30;
-        }
-        else
-        {
-            return 50;
-        }
-        
-        
-    }
-    if (indexPath.section==6) {
         return 30;
     }
-    if (indexPath.section == 9) {
-        return 200;
+    else
+    {
+        //    if (indexPath.section==9||indexPath.section==7)
+        if (indexPath.section==7)
+        {
+            // [detailTableView beginUpdates];
+            
+            return 180;
+        }
+        if (indexPath.section==8)
+        {
+            
+            LouPanCell * cell =(LouPanCell *) [self tableView:detailTableView cellForRowAtIndexPath:indexPath];
+            return cell.frame.size.height;
+            
+            
+        }
+        if (indexPath.section==2)
+        {
+            if (![[loupanDic objectForKey:@"Transportation"] length]) {
+                return 30;
+            }
+            else
+            {
+                return 90;
+            }
+            
+        }
+        
+        if (indexPath.section==3)
+        {
+            if (![[loupanDic objectForKey:@"Education"] length]) {
+                return 30;
+            }
+            else
+            {
+                return 90;
+            }
+            
+        }
+        
+        if (indexPath.section==4)
+        {
+            if (![[loupanDic objectForKey:@"Business"] length]) {
+                return 30;
+            }
+            else
+            {
+                return 85;
+            }
+            
+        }
+        
+        if (indexPath.section==5)
+        {
+            if (![[loupanDic objectForKey:@"Hospital"] length]) {
+                return 30;
+            }
+            else
+            {
+                return 50;
+            }
+            
+            
+        }
+        if (indexPath.section==6) {
+            return 30;
+        }
+        if (indexPath.section == 9) {
+            return 200;
+        }
+
     }
+    
     return 0;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (section==0)
-    {
-        return [self loadWithContentView];
+    if (tableView == tableVeiwList) {
+        return nil;
     }
-    else if(section==1)
+    else
     {
-        return [self loadSection1VIEW];
-        
-    }
-    else if (section==2)
-    {
-        return [self loadSection2View];
-    }
-    else if (section==3)
-    {
-        return [self loadSectionVeiw3];
-    }
-    else if (section==4)
-    {
-        return [self loadSectionView4];
-    }
-    else if(section==5)
-    {
-        return [self loadSectionView5];
-    }
-    else if (section==6)
-    {
-        return [self loadSectionView6];
-    }
-    else if (section==7)
-    {
-        return [self loadRecordView7];
-    }
-    else if (section==8)
-    {
-        return [self loadSection8];
-    }
-    else if (section==9)
-    {
-        return [self loadSectionView9];
+        if (section==0)
+        {
+            return [self loadWithContentView];
+        }
+        else if(section==1)
+        {
+            return [self loadSection1VIEW];
+            
+        }
+        else if (section==2)
+        {
+            return [self loadSection2View];
+        }
+        else if (section==3)
+        {
+            return [self loadSectionVeiw3];
+        }
+        else if (section==4)
+        {
+            return [self loadSectionView4];
+        }
+        else if(section==5)
+        {
+            return [self loadSectionView5];
+        }
+        else if (section==6)
+        {
+            return [self loadSectionView6];
+        }
+        else if (section==7)
+        {
+            return [self loadRecordView7];
+        }
+        else if (section==8)
+        {
+            return [self loadSection8];
+        }
+        else if (section==9)
+        {
+            return [self loadSectionView9];
+        }
+
     }
     return nil;
-    
-    
-    
-    
-    
 }
 
 #pragma mark --图片加载+地图显示
@@ -2402,49 +2724,54 @@ const char *LoadMapViewQueue_GCD;
 {
     if (tableView==phoneTable) {
         return phoneArr.count;
+    }else if(tableView == tableVeiwList)
+    {
+        return styleArray.count;
     }
-    if (section==2)
+    else
     {
-        return 1;
-    } 
-    if (section==3)
-    {
-        return 1;
-    }
-    if (section==4)
-    {
-        return 1;
-    }
-    if (section==5)
-    {
-        return 1;
-    }
-    if (section==6)
-    {
-        if (_genjinArray.count==0) {
+        
+        if (section==2)
+        {
             return 1;
         }
-        else
+        if (section==3)
         {
-             return _genjinArray.count;
+            return 1;
         }
-       
-    }
-    if (section==7)
-    {
-        return 1;
-    }
-    if (section==8)
-    {
-        return 1;
-    }
-    if (section==9)
-    {
-        return 1;
+        if (section==4)
+        {
+            return 1;
+        }
+        if (section==5)
+        {
+            return 1;
+        }
+        if (section==6)
+        {
+            if (_genjinArray.count==0) {
+                return 1;
+            }
+            else
+            {
+                return _genjinArray.count;
+            }
+            
+        }
+        if (section==7)
+        {
+            return 1;
+        }
+        if (section==8)
+        {
+            return 1;
+        }
+        if (section==9)
+        {
+            return 1;
+        }
     }
     return 0;
-    
-    
 }
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -2458,227 +2785,257 @@ const char *LoadMapViewQueue_GCD;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    if (indexPath.section==2||indexPath.section==3||indexPath.section==4||indexPath.section==5)
-    {
-        RoomDetailCell * cell = [detailTableView dequeueReusableCellWithIdentifier:@"description" ];
-        if (cell==nil)
-        {
-            cell = [[[NSBundle mainBundle]loadNibNamed:@"RoomDetailCell" owner:nil options:nil] objectAtIndex:0];
-        }
-        if (indexPath.section==2) {
-            if ([[loupanDic objectForKey:@"Transportation"] length]) {
-                cell.descriptionLable.text =[NSString stringWithFormat:@"%@",[loupanDic objectForKey:@"Transportation"]];
-            }
-            else
-            {
-                cell.descriptionLable.text =@"暂无信息";
-            }
-            
-        }
-        else if (indexPath.section==3)
-        {
-            if ([[loupanDic objectForKey:@"Education"] length]) {
-                cell.descriptionLable.text =[NSString stringWithFormat:@"%@",[loupanDic objectForKey:@"Education"]];
-            }
-            else
-            {
-                cell.descriptionLable.text =@"暂无信息";
-            }
-            
-        }
-        else if (indexPath.section==4)
-        {
-            if ([[loupanDic objectForKey:@"Business"] length]) {
-                cell.descriptionLable.text =[NSString stringWithFormat:@"%@",[loupanDic objectForKey:@"Business"]];
-            }
-            else
-            {
-                cell.descriptionLable.text=@"暂无信息";
-            }
-            
-        }
-        else if (indexPath.section==5)
-        {
-             if ([[loupanDic objectForKey:@"Hospital"] length]) {
-                 cell.descriptionLable.text =[NSString stringWithFormat:@"%@",[loupanDic objectForKey:@"Hospital"]];
-             }
-            else
-            {
-                cell.descriptionLable.text=@"暂无信息";
-            }
-            
-        }
-        else
-        {
-        }
-        //cell.descriptionLable.text = @"123";
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        return cell;
-    }
-    if (indexPath.section==6)
-    {
-        static NSString * cellider = @"cellidertifer";
-        WriteMessageCell * cell =[detailTableView dequeueReusableCellWithIdentifier:cellider];
+    if (tableView == tableVeiwList) {
+        static  NSString * identifer = @"cell";
+        UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifer];
         
         if (!cell)
         {
-            cell = [[WriteMessageCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellider];
-        }
-        if (_genjinArray.count>0) {
-            NSDictionary *dict=[_genjinArray objectAtIndex:indexPath.row];
-            cell.lable1.text =[dict objectForKey:@"UserName"];
-            cell.lable2.text =[dict objectForKey:@"FollowWay"];
-            cell.lable3.text = [dict objectForKey:@"FollowType"];
-            cell.lable4.text = [dict objectForKey:@"Content"];
-            NSArray * dateA = [[dict objectForKey:@"FollowDate"] componentsSeparatedByString:@" "];
             
-            cell.lable5.text =dateA[0];
+            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifer];
         }
-        return cell;
-    }
-    if (indexPath.section==8)
-    {
-        LouPanCell * cell = [detailTableView dequeueReusableCellWithIdentifier:@"loupan" ];
-        if (cell==nil)
-        {
-            cell = [[LouPanCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"loupan"];
-            cell.backgroundColor = [UIColor clearColor];
-            
-        }
-      
-        [cell setCellChangeHeight_roomDistrict:[loupanDic objectForKey:@"Address2"]];
-        
-    cell.squreLable.text=[NSString stringWithFormat:@"%@ ㎡",[loupanDic objectForKey:@"EstSquare"]];
-       
-        [cell.areaLable setText:[loupanDic objectForKey:@"DistArea"]];
-        NSLog(@"%@1111",cell.areaLable.text);
-        cell.countUser.text=[NSString stringWithFormat:@"%@ 户",[loupanDic objectForKey:@"EstRoom"]];
-        cell.stopingCount.text=[NSString stringWithFormat:@"%@ 个",[loupanDic objectForKey:@"CarPark"]];
-        //cell.componyLableName.text=[loupanDic objectForKey:@"DevCompany"];
-        [cell.componyLableName setText:[loupanDic objectForKey:@"DevCompany"]];
-        
-        cell.areaPrice.text=[NSString stringWithFormat:@"%@月/㎡",[loupanDic objectForKey:@"MgtPrice"]];
-        
-        cell.completeTime.text=[NSString stringWithFormat:@"%@ 年",[loupanDic objectForKey:@"CompleteYear"]];
-    
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        return cell;
-
-    }
-//    if (indexPath.section==7||indexPath.section==9)
-        if (indexPath.section==7)
-    {
-        loadCell = [detailTableView dequeueReusableCellWithIdentifier:@"cellwrite" ];
-
-        if (loadCell==nil)
-        {
-            loadCell = [[[NSBundle mainBundle]loadNibNamed:@"WriteLoadCell" owner:nil options:nil] objectAtIndex:0];
-            loadCell.genjinTextView.delegate=self;
-        }
-        if (indexPath.section==7) {
-            [loadCell.commitBtn addTarget:self action:@selector(commitClick2) forControlEvents:UIControlEventTouchUpInside];
-        }
-        if (indexPath.section==9)
-        {
-            loadCell.countNum.hidden = YES;
-            [loadCell.commitBtn addTarget:self action:@selector(commitClick) forControlEvents:UIControlEventTouchUpInside];
-        }
-        loadCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        return loadCell;
-    }
-    if (indexPath.section == 9) {
-        NSString *strID = @"ID";
-       cell1 = [tableView dequeueReusableCellWithIdentifier:strID];
-        if (cell1 == nil) {
-            cell1 = [[[NSBundle mainBundle] loadNibNamed:@"JiuCuoCell" owner:self options:nil] lastObject];
-        }
-        cell1.jiuCuoDescription.layer.borderWidth = 1;
-        cell1.jiuCuoDescription.layer.borderColor = [UIColor grayColor].CGColor;
-        cell1.jiuCuoText.layer.borderWidth = 1;
-        cell1.jiuCuoText.layer.borderColor = [UIColor grayColor].CGColor;
-         cell1.textField1.userInteractionEnabled = NO;
-        cell1.textField1.layer.borderWidth =1;
-        cell1.textField1.layer.borderColor =[UIColor grayColor].CGColor;
-        cell1.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell1.jiuCuoDescription.delegate=self;
-        cell1.jiuCuoText.delegate=self;
-        return cell1;
-   
-    }
-    static NSString * identifer = @"cell";
-    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifer ];
-    if (!cell)
-    {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifer];
-    }
-    cell.backgroundColor =nil;
-    if (tableView.tag==1523)
-    {
-        cell.textLabel.font=[UIFont systemFontOfSize:14];
-        NSLog(@"%ld",(unsigned long)_genjinArray.count);
-        if (_genjinArray.count==0) {
-            cell.textLabel.text=@"暂无跟进";
-            //cell.textLabel.text = [NSString stringWithFormat:@"%ld  第%ld次跟进描述",(long)indexPath.row+1,(long)indexPath.row+1];
-        }else
-        {
-            NSDictionary *dict=[_genjinArray objectAtIndex:indexPath.row];
-            cell.textLabel.text=[NSString stringWithFormat:@"%ld. %@",(unsigned long)indexPath.row+1,[dict objectForKey:@"Content"]];
-        }
-        
-        
-    }
-    if (tableView.tag==1524)
-    {
         NSDictionary *dic=[styleArray objectAtIndex:indexPath.row];
         
         cell.textLabel.text = [dic objectForKey:@"FollowType"];
-        cell.textLabel.font=[UIFont systemFontOfSize:14];
+        cell.textLabel.font=[UIFont systemFontOfSize:13];
         cell.textLabel.textColor=[UIColor whiteColor];
-        cell.backgroundColor=[UIColor clearColor];
+        cell.backgroundColor=PL_CUSTOM_COLOR(62, 58, 57, 1);
+        return cell;
+
     }
-    if (tableView==phoneTable) {
+    else
+    {
+        if (indexPath.section==2||indexPath.section==3||indexPath.section==4||indexPath.section==5)
+        {
+            RoomDetailCell * cell = [detailTableView dequeueReusableCellWithIdentifier:@"description" ];
+            if (cell==nil)
+            {
+                cell = [[[NSBundle mainBundle]loadNibNamed:@"RoomDetailCell" owner:nil options:nil] objectAtIndex:0];
+            }
+            if (indexPath.section==2) {
+                if ([[loupanDic objectForKey:@"Transportation"] length]) {
+                    cell.descriptionLable.text =[NSString stringWithFormat:@"%@",[loupanDic objectForKey:@"Transportation"]];
+                }
+                else
+                {
+                    cell.descriptionLable.text =@"暂无信息";
+                }
+                
+            }
+            else if (indexPath.section==3)
+            {
+                if ([[loupanDic objectForKey:@"Education"] length]) {
+                    cell.descriptionLable.text =[NSString stringWithFormat:@"%@",[loupanDic objectForKey:@"Education"]];
+                }
+                else
+                {
+                    cell.descriptionLable.text =@"暂无信息";
+                }
+                
+            }
+            else if (indexPath.section==4)
+            {
+                if ([[loupanDic objectForKey:@"Business"] length]) {
+                    cell.descriptionLable.text =[NSString stringWithFormat:@"%@",[loupanDic objectForKey:@"Business"]];
+                }
+                else
+                {
+                    cell.descriptionLable.text=@"暂无信息";
+                }
+                
+            }
+            else if (indexPath.section==5)
+            {
+                if ([[loupanDic objectForKey:@"Hospital"] length]) {
+                    cell.descriptionLable.text =[NSString stringWithFormat:@"%@",[loupanDic objectForKey:@"Hospital"]];
+                }
+                else
+                {
+                    cell.descriptionLable.text=@"暂无信息";
+                }
+                
+            }
+            else
+            {
+            }
+            //cell.descriptionLable.text = @"123";
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
+        }
+        if (indexPath.section==6)
+        {
+            static NSString * cellider = @"cellidertifer";
+            WriteMessageCell * cell =[detailTableView dequeueReusableCellWithIdentifier:cellider];
             
+            if (!cell)
+            {
+                cell = [[WriteMessageCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellider];
+            }
+            if (_genjinArray.count>0) {
+                NSDictionary *dict=[_genjinArray objectAtIndex:indexPath.row];
+                cell.lable1.text =[dict objectForKey:@"UserName"];
+                cell.lable2.text =[dict objectForKey:@"FollowWay"];
+                cell.lable3.text = [dict objectForKey:@"FollowType"];
+                cell.lable4.text = [dict objectForKey:@"Content"];
+                NSArray * dateA = [[dict objectForKey:@"FollowDate"] componentsSeparatedByString:@" "];
+                
+                cell.lable5.text =dateA[0];
+            }
+            return cell;
+        }
+        if (indexPath.section==8)
+        {
+            LouPanCell * cell = [detailTableView dequeueReusableCellWithIdentifier:@"loupan" ];
+            if (cell==nil)
+            {
+                cell = [[LouPanCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"loupan"];
+                cell.backgroundColor = [UIColor clearColor];
+                
+            }
+            
+            [cell setCellChangeHeight_roomDistrict:[loupanDic objectForKey:@"Address2"]];
+            
+            cell.squreLable.text=[NSString stringWithFormat:@"%@ ㎡",[loupanDic objectForKey:@"EstSquare"]];
+            
+            [cell.areaLable setText:[loupanDic objectForKey:@"DistArea"]];
+            NSLog(@"%@1111",cell.areaLable.text);
+            cell.countUser.text=[NSString stringWithFormat:@"%@ 户",[loupanDic objectForKey:@"EstRoom"]];
+            cell.stopingCount.text=[NSString stringWithFormat:@"%@ 个",[loupanDic objectForKey:@"CarPark"]];
+            //cell.componyLableName.text=[loupanDic objectForKey:@"DevCompany"];
+            [cell.componyLableName setText:[loupanDic objectForKey:@"DevCompany"]];
+            
+            cell.areaPrice.text=[NSString stringWithFormat:@"%@月/㎡",[loupanDic objectForKey:@"MgtPrice"]];
+            
+            cell.completeTime.text=[NSString stringWithFormat:@"%@ 年",[loupanDic objectForKey:@"CompleteYear"]];
+            
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
+            
+        }
+        //    if (indexPath.section==7||indexPath.section==9)
+        if (indexPath.section==7)
+        {
+            loadCell = [detailTableView dequeueReusableCellWithIdentifier:@"cellwrite" ];
+            
+            if (loadCell==nil)
+            {
+                loadCell = [[[NSBundle mainBundle]loadNibNamed:@"WriteLoadCell" owner:nil options:nil] objectAtIndex:0];
+                loadCell.genjinTextView.delegate=self;
+            }
+            if (indexPath.section==7) {
+                [loadCell.commitBtn addTarget:self action:@selector(commitClick2) forControlEvents:UIControlEventTouchUpInside];
+            }
+            if (indexPath.section==9)
+            {
+                loadCell.countNum.hidden = YES;
+                [loadCell.commitBtn addTarget:self action:@selector(commitClick) forControlEvents:UIControlEventTouchUpInside];
+            }
+            loadCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return loadCell;
+        }
+        if (indexPath.section == 9) {
+            NSString *strID = @"ID";
+            cell1 = [tableView dequeueReusableCellWithIdentifier:strID];
+            if (cell1 == nil) {
+                cell1 = [[[NSBundle mainBundle] loadNibNamed:@"JiuCuoCell" owner:self options:nil] lastObject];
+            }
+            cell1.jiuCuoDescription.layer.borderWidth = 1;
+            cell1.jiuCuoDescription.layer.borderColor = [UIColor grayColor].CGColor;
+            cell1.jiuCuoText.layer.borderWidth = 1;
+            cell1.jiuCuoText.layer.borderColor = [UIColor grayColor].CGColor;
+            cell1.textField1.userInteractionEnabled = NO;
+            cell1.textField1.layer.borderWidth =1;
+            cell1.textField1.layer.borderColor =[UIColor grayColor].CGColor;
+            cell1.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell1.jiuCuoDescription.delegate=self;
+            cell1.jiuCuoText.delegate=self;
+            return cell1;
+            
+        }
+        static NSString * identifer = @"cell";
+        UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifer ];
+        if (!cell)
+        {
+            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifer];
+        }
+        cell.backgroundColor =nil;
+        if (tableView.tag==1523)
+        {
+            cell.textLabel.font=[UIFont systemFontOfSize:14];
+            NSLog(@"%ld",(unsigned long)_genjinArray.count);
+            if (_genjinArray.count==0) {
+                cell.textLabel.text=@"暂无跟进";
+                //cell.textLabel.text = [NSString stringWithFormat:@"%ld  第%ld次跟进描述",(long)indexPath.row+1,(long)indexPath.row+1];
+            }else
+            {
+                NSDictionary *dict=[_genjinArray objectAtIndex:indexPath.row];
+                cell.textLabel.text=[NSString stringWithFormat:@"%ld. %@",(unsigned long)indexPath.row+1,[dict objectForKey:@"Content"]];
+            }
+            
+            
+        }
+        if (tableView.tag==1524)
+        {
+            NSDictionary *dic=[styleArray objectAtIndex:indexPath.row];
+            
+            cell.textLabel.text = [dic objectForKey:@"FollowType"];
+            cell.textLabel.font=[UIFont systemFontOfSize:14];
+            cell.textLabel.textColor=[UIColor whiteColor];
+            cell.backgroundColor=[UIColor clearColor];
+        }
+        if (tableView==phoneTable) {
+            
+            
+        }
         
+        cell.selectionStyle=UITableViewCellSelectionStyleNone;
+        return cell;
+
     }
-    
-    cell.selectionStyle=UITableViewCellSelectionStyleNone;
-    return cell;
-    
+    return nil;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"%ld",(long)indexPath.section);
 //    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.section==6)
-    {
+    if (tableView == tableVeiwList) {
+        UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
+        styleGenjin.text = cell.textLabel.text;
+        //[tableVeiwList removeFromSuperview];
+        styleGenjinBtn.selected=NO;
+        [sousuoViewstyleGenjin removeFromSuperview];
 
-        if (_genjinArray.count>0)
-            
-        {
-            NSDictionary * dict = [_genjinArray objectAtIndex:indexPath.row];
-            
-            WriteMessageCell * cell = (WriteMessageCell *)[detailTableView cellForRowAtIndexPath:indexPath];
-            GenjinView * genjin = [[GenjinView alloc]initWithUser_Name:cell.lable1.text writeFs:cell.lable2.text writeLX:cell.lable3.text contentString:cell.lable4.text writeDate:[dict objectForKey:@"FollowDate"]];
-            [genjin showInView:self.view  animation:YES];
-            
-        }
-        else
-        {
-            
-        }
     }
-    [cell1.jiuCuoDescription resignFirstResponder];
-    [cell1.jiuCuoText resignFirstResponder];
-    [loadCell.genjinTextView resignFirstResponder];
+    else
+    {
+        if (indexPath.section==6)
+        {
+            
+            if (_genjinArray.count>0)
+                
+            {
+                NSDictionary * dict = [_genjinArray objectAtIndex:indexPath.row];
+                
+                WriteMessageCell * cell = (WriteMessageCell *)[detailTableView cellForRowAtIndexPath:indexPath];
+                GenjinView * genjin = [[GenjinView alloc]initWithUser_Name:cell.lable1.text writeFs:cell.lable2.text writeLX:cell.lable3.text contentString:cell.lable4.text writeDate:[dict objectForKey:@"FollowDate"]];
+                [genjin showInView:self.view  animation:YES];
+                
+            }
+            else
+            {
+                
+            }
+        }
+        [cell1.jiuCuoDescription resignFirstResponder];
+        [cell1.jiuCuoText resignFirstResponder];
+        [loadCell.genjinTextView resignFirstResponder];
+    }
 }
-
-
-
 -(void)genjinListRequest
 {
     NSLog(@" -%@ -%@ -%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"PropertyId"] ,[[NSUserDefaults standardUserDefaults]objectForKey:@"userName" ],[[NSUserDefaults standardUserDefaults]objectForKey:PL_USER_TOKEN]);
+        PL_PROGRESS_SHOW;
         [[MyRequest defaultsRequest] GetPropertyContactListPropertyId:[[NSUserDefaults standardUserDefaults]objectForKey:@"PropertyId"] userid:[PL_USER_STORAGE objectForKey:PL_USER_NAME] token:[[NSUserDefaults standardUserDefaults]objectForKey:PL_USER_TOKEN]string:^(NSMutableString *string) {
             
                 if ([string isEqual:PL_NO_LOGIN_])
@@ -2705,7 +3062,7 @@ const char *LoadMapViewQueue_GCD;
                     [detailTableView reloadData];
                     
                 }
-
+            PL_PROGRESS_DISMISS;
         }];
     
 //    [[MyRequest defaultsRequest]GetPropertyContactList:^(NSMutableString *string) {
@@ -2745,7 +3102,7 @@ const char *LoadMapViewQueue_GCD;
            
        }
        NSLog(@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"PropertyId"]);
-
+       PL_PROGRESS_DISMISS;
    }];
 //    [[MyRequest defaultsRequest]CollectProperty:^(NSMutableString *string) {
 //        if ([string isEqualToString:@"OK"])
@@ -2799,55 +3156,107 @@ const char *LoadMapViewQueue_GCD;
 */
 - (void)textViewDidChange:(UITextView *)textView
 {
-    if (textView.text.length >BOOKMARK_WORD_LIMIT)
+    
+    if(textView == textViewGenjin)
     {
-        textView.text = [textView.text substringToIndex:BOOKMARK_WORD_LIMIT];
-       
-        
-    }
-    else
-    {
-        NSIndexPath *index=[NSIndexPath indexPathForRow:0 inSection:7];
-        WriteLoadCell *write=(WriteLoadCell *)[detailTableView cellForRowAtIndexPath:index];
-        
-        write.countNum.text=[NSString stringWithFormat:@"%ld/100",(unsigned long)textView.text.length];
-       
-    }
+        if (textViewGenjin.text.length >BOOKMARK_WORD_LIMIT)
+        {
+            textViewGenjin.text = [textViewGenjin.text substringToIndex:BOOKMARK_WORD_LIMIT];
+            
+        }
+        else
+        {
+            countGenjin.text=[NSString stringWithFormat:@"%ld/100",(unsigned long)textViewGenjin.text.length];
+        }
 
+    }else
+    {
+        if (textView.text.length >BOOKMARK_WORD_LIMIT)
+        {
+            textView.text = [textView.text substringToIndex:BOOKMARK_WORD_LIMIT];
+            
+            
+        }
+        else
+        {
+            NSIndexPath *index=[NSIndexPath indexPathForRow:0 inSection:7];
+            WriteLoadCell *write=(WriteLoadCell *)[detailTableView cellForRowAtIndexPath:index];
+            
+            write.countNum.text=[NSString stringWithFormat:@"%ld/100",(unsigned long)textView.text.length];
+            
+        }
+        
+
+    }
     
 }
 -  (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-   
-    if (![text isEqualToString:@""]) {
-        placeholder.hidden=YES;
-    }
-    if ([text isEqualToString:@""] && range.location == 0 && range.length == 1) {
-        placeholder.hidden=NO;
-    }
-    NSString * str = [NSString stringWithFormat:@"%@%@",textView.text,text];
-    if (str.length >BOOKMARK_WORD_LIMIT)
+    if(textView == textViewGenjin)
     {
-        textView.text = [textView.text substringToIndex:BOOKMARK_WORD_LIMIT];
-        return NO;
+        if (![[NSString stringWithFormat:@"%@",text] isEqualToString:@""])
+            
+        {
+            
+            placeholderGenjin.hidden = YES;
+            
+        }
+        
+        if ([text isEqualToString:@""] && range.location == 0 && range.length == 1)
+            
+        {
+            
+            placeholderGenjin.hidden = NO;
+            
+        }
+        NSString * str = [NSString stringWithFormat:@"%@%@",textViewGenjin.text,text];
+        if (str.length >BOOKMARK_WORD_LIMIT)
+        {
+            textViewGenjin.text = [textViewGenjin.text substringToIndex:BOOKMARK_WORD_LIMIT];
+            return NO;
+        }
+        else
+        {
+            countGenjin.text=[NSString stringWithFormat:@"%ld/100",(unsigned long)str.length];
+        }
+        
+
     }
-     if ([text isEqualToString:@"\n"])
-      {
-       
-          [cell1.jiuCuoDescription resignFirstResponder];
-       
-        NSIndexPath *index=[NSIndexPath indexPathForRow:0 inSection:7];
-        WriteLoadCell *write=(WriteLoadCell *)[detailTableView cellForRowAtIndexPath:index];
-        [write.genjinTextView resignFirstResponder];
-      }
-        return YES;
+    else
+    {
     
+        if (![text isEqualToString:@""]) {
+            placeholder.hidden=YES;
+        }
+        if ([text isEqualToString:@""] && range.location == 0 && range.length == 1) {
+            placeholder.hidden=NO;
+        }
+        NSString * str = [NSString stringWithFormat:@"%@%@",textView.text,text];
+        if (str.length >BOOKMARK_WORD_LIMIT)
+        {
+            textView.text = [textView.text substringToIndex:BOOKMARK_WORD_LIMIT];
+            return NO;
+        }
+        if ([text isEqualToString:@"\n"])
+        {
+            
+            [cell1.jiuCuoDescription resignFirstResponder];
+            
+            NSIndexPath *index=[NSIndexPath indexPathForRow:0 inSection:7];
+            WriteLoadCell *write=(WriteLoadCell *)[detailTableView cellForRowAtIndexPath:index];
+            [write.genjinTextView resignFirstResponder];
+        }
+
+    }
+    return YES;
+
 }
 
 
 #pragma mark 请求房源修改前数据
 -(void)postGetHouseValueUpd
 {
+    PL_PROGRESS_SHOW;
     [[MyRequest defaultsRequest]afGetHouseValueUpdWithPropertyID:self.aRoomData.roomPropertyId completeBack:^(NSString *str) {
         NSLog(@">>>>>>>>%@",str);
         if ([str isEqualToString:@"NOLOGIN"]) {
@@ -2868,6 +3277,7 @@ const char *LoadMapViewQueue_GCD;
             NSLog(@"<<<<%@",houseDictionary);
             [self refreshPice:houseDictionary];
         }
+        PL_PROGRESS_DISMISS;
     }];
 }
 #pragma mark 刷新价格和装修情况
@@ -2949,10 +3359,13 @@ const char *LoadMapViewQueue_GCD;
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"ROOMFOLLOWID"];
+    [bgViewGenjin removeFromSuperview];
     self.mapView=nil;
     [self.self.mapView viewWillAppear];
     [self LoadingMapView];
     [self initLoadImageView];
+    
    }
 /**
  *  在即将进入界面的时候加载地图
@@ -3018,11 +3431,29 @@ const char *LoadMapViewQueue_GCD;
 }
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [textViewGenjin resignFirstResponder];
+
     NSLog(@"=======%s",__FUNCTION__);
     [_scrollow endEditing:YES];
-    
     [[RoomVC_ViewModel DefalutRoomVC]CalltouchesBegan];
     
+    UITouch *touch=[touches anyObject];
+
+    CGPoint point=[touch locationInView:bgView];
+    if (CGRectContainsPoint(smallView1.frame, point)) {
+        [smallView1 endEditing:YES];
+        CGAffineTransform pTransform = CGAffineTransformMakeTranslation(0, 0);
+        //使视图使用这个变换
+        bgViewGenjin.transform = pTransform;
+        
+    }
+    else
+    {
+        [bgViewGenjin removeFromSuperview];
+        [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"ROOMFOLLOWID"];
+    }
+    
+
 }
 
 
@@ -3078,6 +3509,7 @@ const char *LoadMapViewQueue_GCD;
 -(void)ListRefresh
 {
     NSLog(@" %@ %@ %@",[[NSUserDefaults standardUserDefaults]objectForKey:@"PropertyId"] ,[[NSUserDefaults standardUserDefaults]objectForKey:@"userName" ],[[NSUserDefaults standardUserDefaults]objectForKey:PL_USER_TOKEN]);
+    PL_PROGRESS_SHOW;
     [[VisitersRequest defaultsRequest]GetPropertyContactList:^(NSMutableString *string) {
         NSLog(@"%@",string);
         if ([string isEqualToString:PL_NO_LOGIN_])
@@ -3106,7 +3538,7 @@ const char *LoadMapViewQueue_GCD;
         }
 
         
-        
+        PL_PROGRESS_DISMISS;
     } PropertyId:[[NSUserDefaults standardUserDefaults]objectForKey:@"PropertyId"] userid:[PL_USER_STORAGE objectForKey:PL_USER_NAME] token:[[NSUserDefaults standardUserDefaults]objectForKey:PL_USER_TOKEN]];
     
 }
@@ -3273,7 +3705,6 @@ const char *LoadMapViewQueue_GCD;
             }
             PL_PROGRESS_IMAGE;
             [[MyRequest defaultsRequest]uploadImage:[NSString stringWithFormat:@"%@",self.propertyID] type:_photoCacheType phovalue:@"房源" photoValue:strG imagebytes:lipeng userid:[PL_USER_STORAGE objectForKey:PL_USER_NAME] token:[PL_USER_STORAGE objectForKey:PL_USER_TOKEN] string:^(NSString *str) {
-                PL_PROGRESS_DISMISS;
                 
                 if ([str isEqualToString:@"OK"])
                 {
@@ -3290,7 +3721,8 @@ const char *LoadMapViewQueue_GCD;
                     
                 }
                 
-                
+                PL_PROGRESS_DISMISS;
+
             }];
         }
 
@@ -3321,7 +3753,9 @@ const char *LoadMapViewQueue_GCD;
     //创建一个仿射变换，平移(0, -100)视图上移100像素
     CGAffineTransform pTransform = CGAffineTransformMakeTranslation(0, -200);
 //    //使视图使用这个变换
-  detailTableView.transform = pTransform;
+    detailTableView.transform = pTransform;
+    bgViewGenjin.transform = pTransform;
+    placeholderGenjin.text = @"";
  }
 
 
@@ -3332,8 +3766,11 @@ const char *LoadMapViewQueue_GCD;
     CGAffineTransform pTransform = CGAffineTransformMakeTranslation(0, 0);
 //    //使视图使用这个变换
     detailTableView.transform = pTransform;
-    
-    
+    bgViewGenjin.transform = pTransform;
+    if([textViewGenjin.text isEqualToString:@""])
+    {
+        placeholderGenjin.text = @"请输入跟进内容";
+    }
 
 }
 

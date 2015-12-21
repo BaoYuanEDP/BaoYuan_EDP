@@ -42,7 +42,7 @@
 
 #define PL_ALERT_SHOWNOT_OKAND_YES(MSG)  [UIAlertView showAlertViewWithMessage:MSG]
 //判断外网和内网 正式版发布 test1 = 16,   测试版 test1 = 14
-static  NSInteger test1=16,test2=15;
+static  NSInteger test1=14,test2=15;
 //内网URL
 //@"http://61.129.51.211:9091/"   http://10.55.253.21:9091/
 #define PL_content_url_tesg @"http://61.129.51.211:9091/"
