@@ -402,7 +402,7 @@
                  NSLog(@"====================== %@==================",dict[@"UserCode"]);
                 
                 [PL_USER_STORAGE setObject:nameTF.text forKey:PL_USER_NAME];
-                [PL_USER_STORAGE setObject:pswTF.text forKey:PL_USER_PASSWORD];
+//                [PL_USER_STORAGE setObject:pswTF.text forKey:PL_USER_PASSWORD];
                 [PL_USER_STORAGE setObject:[NSString stringWithFormat:@"%d",isClick] forKey:PL_USER_COOKIES];
                 [PL_USER_STORAGE setObject:[dict objectForKey:@"DutyCodeIsE"] forKey:PL_USER_DutyCodeIsE];
                 NSLog(@"********%@",dict[@"DutyCodeIsE"]);

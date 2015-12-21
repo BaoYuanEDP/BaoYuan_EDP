@@ -156,6 +156,11 @@
 - (BOOL)resetPassword:(NSString *)result{
     if ([previousString isEqualToString:@""]) {
         previousString=result;
+        if (result.length<4) {
+            [gesturePasswordView.state setText:@"密码至少3位以上"];
+            return NO;
+        }
+
         [gesturePasswordView.tentacleView enterArgin];
         [gesturePasswordView.state setTextColor:[UIColor colorWithRed:2/255.f green:174/255.f blue:240/255.f alpha:1]];
         [gesturePasswordView.state setText:@"请验证输入密码"];
@@ -163,6 +168,11 @@
     }
     else {
         if ([result isEqualToString:previousString]) {
+            if (result.length<4) {
+                [gesturePasswordView.state setText:@"密码至少3位以上"];
+                return NO;
+            }
+
             KeychainItemWrapper * keychin = [[KeychainItemWrapper alloc]initWithIdentifier:@"Gesture" accessGroup:nil];
             [keychin setObject:@"<帐号>" forKey:(__bridge id)kSecAttrAccount];
             [keychin setObject:result forKey:(__bridge id)kSecValueData];
