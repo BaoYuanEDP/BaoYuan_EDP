@@ -224,7 +224,7 @@
                   [_tableView2 reloadData];
                  [_bagroundView addSubview:_tableView2];
                 
-                UITableViewCell * cell = [_tableView1 cellForRowAtIndexPath:indexPath];
+                UITableViewCell * cell  = [_tableView1 cellForRowAtIndexPath:indexPath];
                 if ([self.delegate respondsToSelector:@selector(didSelectRowIndexPath:administrativeArea:)])
                 {
                     [self.delegate didSelectRowIndexPath:indexPath administrativeArea:cell.textLabel.text];
